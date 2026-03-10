@@ -19,45 +19,44 @@
 
         .container { padding: 85px 15px 10px; }
 
-        /* --- PAGE PROFIL --- */
-        #profile-page { display: none; flex-direction: column; align-items: center; gap: 15px; padding-top: 10px; }
-        .profile-pic-container { position: relative; width: 150px; height: 150px; cursor: pointer; }
-        #display-profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: #eee; }
-        .name-inputs { display: flex; flex-direction: column; gap: 8px; width: 85%; }
-        .name-inputs input { border: none; background: transparent; text-align: center; font-size: 20px; font-weight: 800; color: var(--text); border-bottom: 2px solid #ddd; padding: 5px; }
-        .id-card-box { width: 100%; max-width: 320px; background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-top: 5px; text-align: center; }
-        #display-id-card { width: 100%; height: 180px; border-radius: 12px; object-fit: cover; display: none; margin-bottom: 15px; border: 1px solid #eee; cursor: zoom-in; }
-        .upload-id-btn { color: var(--primary); font-size: 14px; font-weight: 700; cursor: pointer; display: block; padding: 15px; border: 2px dashed #5d5fef; border-radius: 15px; text-align: center; background: #fbfbff; }
-        .share-btn { margin-top: 20px; background: white; color: var(--primary); border: 2px solid var(--primary); padding: 12px 25px; border-radius: 15px; font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        /* --- CATEGORIES --- */
+        .categories { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; padding: 5px 0; }
+        .category-btn { flex: 0 0 100px; background: white; border: none; padding: 12px 5px; border-radius: 18px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); color: var(--text); cursor: pointer; }
+        .category-btn.active { background-color: var(--primary); color: white; }
 
-        /* --- CARTES & BADGE --- */
+        /* --- CARTES --- */
         .card { background: white; border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); cursor: pointer; }
         .card-emoji { font-size: 28px; background: #f0f1ff; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
         .card-info h3 { margin: 0; font-size: 16px; display: flex; align-items: center; gap: 5px; }
-        .card-info p { margin: 3px 0 0; color: #636e72; font-size: 13px; }
+        .card-info p { margin: 3px 0; color: #636e72; font-size: 13px; }
         .verified-badge { color: var(--verified); font-size: 14px; }
+        .btn-go-list { background: #f0f1ff; color: var(--primary); border: none; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; }
+
+        /* --- PROFIL --- */
+        #profile-page { display: none; flex-direction: column; align-items: center; gap: 15px; }
+        .id-card-box { width: 100%; max-width: 320px; background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        #display-id-card { width: 100%; height: 180px; border-radius: 12px; object-fit: cover; display: none; margin-bottom: 15px; cursor: zoom-in; }
+        .share-btn { margin-top: 30px; background: var(--primary); color: white; border: none; padding: 18px 40px; border-radius: 20px; font-weight: 800; font-size: 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; width: 90%; justify-content: center; box-shadow: 0 10px 20px rgba(93, 95, 239, 0.3); }
 
         /* --- MODAL --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 30px; padding: 30px; text-align: center; position: relative; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #b2bec3; cursor: pointer; }
-        .map-go-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px; }
-        .report-btn { margin-top: 15px; background: #fff1f2; color: #ff4757; border: none; padding: 10px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; width: 100%; }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
+        .map-go-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; margin-top: 15px; }
 
-        /* --- NAV BAS --- */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 70px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; font-size: 10px; flex: 1; cursor: pointer; }
+        /* --- NAVIGATION --- */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; font-size: 11px; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 18px; margin-bottom: 3px; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
         
-        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 18px; color: #ddd; cursor: pointer; z-index: 5; }
+        #map-page { display: none; height: 75vh; }
+        #map { height: 100%; width: 100%; border-radius: 25px; }
+        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; }
         .fav-btn.is-fav { color: var(--heart-red); }
         #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; }
         #zoom-overlay img { max-width: 95%; max-height: 80%; border-radius: 10px; }
         .hidden { display: none !important; }
-        #map-page { display: none; height: 75vh; width: 100%; }
-        #map { height: 100%; width: 100%; border-radius: 25px; }
+        input[type="file"] { display: none; }
     </style>
 </head>
 <body>
@@ -71,46 +70,65 @@
     </div>
 
     <div class="container">
-        <div id="profile-page">
-            <label for="profile-upload" class="profile-pic-container">
-                <img id="display-profile-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-            </label>
-            <input type="file" id="profile-upload" accept="image/*" onchange="handleImageUpload(event, 'profile')">
-            
-            <div class="name-inputs">
-                <input type="text" id="userName" placeholder="Prénom" oninput="saveProfileData()">
-                <input type="text" id="userSurname" placeholder="Nom" oninput="saveProfileData()">
-            </div>
-
-            <div class="id-card-box">
-                <h3 style="margin: 0 0 10px 0; color: var(--primary); font-size: 16px;">Ma carte étudiante</h3>
-                <img id="display-id-card" src="" onclick="toggleZoom(true)">
-                <label for="id-upload" class="upload-id-btn">
-                    <i class="fa-solid fa-camera"></i><br>Ajouter/Modifier ma carte
-                </label>
-                <input type="file" id="id-upload" accept="image/*" onchange="handleImageUpload(event, 'idcard')">
-            </div>
-            <button class="share-btn" onclick="shareApp()"><i class="fa-solid fa-share-nodes"></i> Partager l'appli</button>
-        </div>
-
         <div id="main-content">
-            <div id="deals-list">
-                <div class="card" id="deal-1" data-cat="restos" onclick="openDetails('Le Daily', '🍕', '8.50€ le menu complet (Plat + Dessert + Boisson) pour les étudiants.', 46.1218, 3.4278, true)">
-                    <div class="card-emoji">🍕</div>
-                    <div class="card-info">
-                        <h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3>
-                        <p>8.50€ le menu Lardy</p>
-                    </div>
-                    <i class="fa-solid fa-heart fav-btn" onclick="event.stopPropagation(); toggleFavorite('deal-1')"></i>
-                </div>
+            <div class="categories" id="cat-scroll">
+                <button class="category-btn active" onclick="filterCat('tous', this)">🚀<span>Tous</span></button>
+                <button class="category-btn" onclick="filterCat('restos', this)">🍔<span>Restos</span></button>
+                <button class="category-btn" onclick="filterCat('loisirs', this)">🍿<span>Loisirs</span></button>
+                <button class="category-btn" onclick="filterCat('utiles', this)">🛍️<span>Courses</span></button>
+                <button class="category-btn" onclick="filterCat('sport', this)">🏊<span>Sport</span></button>
+            </div>
 
-                <div class="card" id="deal-2" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', 'Un Tacos M acheté, le 3ème offert sur présentation de ta carte.', 46.1250, 3.4220, true)">
+            <div id="deals-list">
+                <div class="card" data-cat="restos" onclick="openDetails('Le Daily', '🍕', '8.50€ le menu complet.', 46.1218, 3.4278, true)">
+                    <div class="card-emoji">🍕</div>
+                    <div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>8.50€ le menu Lardy</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-1" onclick="event.stopPropagation(); toggleFav('fav-1')"></i>
+                </div>
+                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true)">
                     <div class="card-emoji">🌮</div>
-                    <div class="card-info">
-                        <h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3>
-                        <p>Le 3ème offert !</p>
-                    </div>
-                    <i class="fa-solid fa-heart fav-btn" onclick="event.stopPropagation(); toggleFavorite('deal-2')"></i>
+                    <div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Le 3ème offert</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-2" onclick="event.stopPropagation(); toggleFav('fav-2')"></i>
+                </div>
+                <div class="card" data-cat="restos" onclick="openDetails('Columbus Cafe', '☕', '10% de remise sur ta commande.', 46.1235, 3.4245, false)">
+                    <div class="card-emoji">☕</div>
+                    <div class="card-info"><h3>Columbus Cafe</h3><p>-10% sur tout</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-3" onclick="event.stopPropagation(); toggleFav('fav-3')"></i>
+                </div>
+                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Cinéma', '🍿', 'Tarif unique 7€ la place.', 46.1221, 3.4215, true)">
+                    <div class="card-emoji">🍿</div>
+                    <div class="card-info"><h3>CGR Vichy <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Place à 7€</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-4" onclick="event.stopPropagation(); toggleFav('fav-4')"></i>
+                </div>
+                <div class="card" data-cat="loisirs" onclick="openDetails('Bowling de Vichy', '🎳', 'Location de chaussures offerte.', 46.1310, 3.4150, false)">
+                    <div class="card-emoji">🎳</div>
+                    <div class="card-info"><h3>Bowling</h3><p>Chaussures offertes</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-5" onclick="event.stopPropagation(); toggleFav('fav-5')"></i>
+                </div>
+                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '10% de remise immédiate en caisse.', 46.1248, 3.4235, true)">
+                    <div class="card-emoji">🛒</div>
+                    <div class="card-info"><h3>Monoprix <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>-10% en caisse</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-6" onclick="event.stopPropagation(); toggleFav('fav-6')"></i>
+                </div>
+                <div class="card" data-cat="utiles" onclick="openDetails('Boulangerie Lardy', '🥐', 'Formule sandwich -1€.', 46.1205, 3.4285, false)">
+                    <div class="card-emoji">🥐</div>
+                    <div class="card-info"><h3>Boulangerie Lardy</h3><p>-1€ sur les formules</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-7" onclick="event.stopPropagation(); toggleFav('fav-7')"></i>
+                </div>
+                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée piscine à 3.50€.', 46.1450, 3.4050, true)">
+                    <div class="card-emoji">🏊</div>
+                    <div class="card-info"><h3>Stade Aquatique <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Entrée 3.50€</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-8" onclick="event.stopPropagation(); toggleFav('fav-8')"></i>
+                </div>
+                <div class="card" data-cat="sport" onclick="openDetails('Fitness Park', '🏋️', 'Frais d\'adhésion offerts.', 46.1280, 3.4290, false)">
+                    <div class="card-emoji">🏋️</div>
+                    <div class="card-info"><h3>Fitness Park</h3><p>Inscription offerte</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-9" onclick="event.stopPropagation(); toggleFav('fav-9')"></i>
+                </div>
+                <div class="card" data-cat="sport" onclick="openDetails('Patinoire', '⛸️', 'Entrée + patins à 5€.', 46.1440, 3.4060, false)">
+                    <div class="card-emoji">⛸️</div>
+                    <div class="card-info"><h3>Patinoire</h3><p>Pack complet 5€</p><button class="btn-go-list">Y aller</button></div>
+                    <i class="fa-solid fa-heart fav-btn" id="fav-10" onclick="event.stopPropagation(); toggleFav('fav-10')"></i>
                 </div>
             </div>
         </div>
@@ -118,154 +136,133 @@
         <div id="map-page">
             <div id="map"></div>
         </div>
-    </div>
 
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">×</span>
-            <div id="modalEmoji" style="font-size: 60px; margin-bottom: 15px;"></div>
-            <h2 id="modalTitle" style="display:flex; align-items:center; justify-content:center; gap:8px;"></h2>
-            <p id="modalDesc" style="color: #636e72; line-height: 1.5; margin: 20px 0;"></p>
-            <button id="modalGoBtn" class="map-go-btn">Y aller maintenant</button>
-            <button class="report-btn" onclick="reportIssue()">
-                <i class="fa-solid fa-triangle-exclamation"></i> Signaler un problème
+        <div id="profile-page">
+            <label for="p-up" class="profile-pic-container">
+                <img id="display-profile-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid white; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+            </label>
+            <input type="file" id="p-up" accept="image/*" onchange="upImg(event, 'p')">
+            <div class="name-inputs">
+                <input type="text" id="u-fn" placeholder="Prénom" oninput="sv()">
+                <input type="text" id="u-ln" placeholder="Nom" oninput="sv()">
+            </div>
+            <div class="id-card-box">
+                <img id="display-id-card" src="" onclick="zom(true)">
+                <label for="id-up" class="upload-id-btn" style="color:var(--primary); font-weight:bold; cursor:pointer; border:2px dashed #ddd; padding:15px; display:block; border-radius:15px;">
+                    <i class="fa-solid fa-camera"></i> Ajouter ma carte étudiante
+                </label>
+                <input type="file" id="id-up" accept="image/*" onchange="upImg(event, 'id')">
+            </div>
+            <button class="share-btn" onclick="shareApp()">
+                <i class="fa-solid fa-paper-plane"></i> PARTAGER L'APPLI
             </button>
         </div>
     </div>
 
-    <div id="zoom-overlay" onclick="toggleZoom(false)"><img id="zoomed-image" src=""></div>
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:20px; font-size:28px; cursor:pointer;" onclick="closeM()">×</span>
+            <div id="mEmoji" style="font-size:60px; margin-bottom:10px;"></div>
+            <h2 id="mTitle"></h2>
+            <p id="mDesc" style="color:#636e72; margin:20px 0;"></p>
+            <button id="mGo" class="map-go-btn">Y aller maintenant</button>
+            <button class="report-btn" style="margin-top:15px; background:#fff1f2; color:#ff4757; border:none; padding:10px; border-radius:12px; width:100%; font-weight:700;" onclick="rep()">Signaler un problème</button>
+        </div>
+    </div>
+
+    <div id="zoom-overlay" onclick="zom(false)"><img id="zImg" src=""></div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" id="nav-home" onclick="showPage('home')"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
-        <div class="nav-item" id="nav-map" onclick="showPage('map')"><i class="fa-solid fa-map-location-dot"></i><span>Carte</span></div>
-        <div class="nav-item" id="nav-fav" onclick="showPage('fav')"><i class="fa-solid fa-heart"></i><span>Favoris</span></div>
-        <div class="nav-item" id="nav-profile" onclick="showPage('profile')"><i class="fa-solid fa-user"></i><span>Profil</span></div>
+        <div class="nav-item active" id="n-h" onclick="go('home')"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
+        <div class="nav-item" id="n-m" onclick="go('map')"><i class="fa-solid fa-map-location-dot"></i><span>Carte</span></div>
+        <div class="nav-item" id="n-f" onclick="go('fav')"><i class="fa-solid fa-heart"></i><span>Favoris</span></div>
+        <div class="nav-item" id="n-p" onclick="go('profile')"><i class="fa-solid fa-user"></i><span>Profil</span></div>
     </nav>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let map;
-        let currentDealName = "";
+        let curT = "";
 
-        function openDetails(title, emoji, desc, lat, lng, verified) {
-            currentDealName = title;
-            document.getElementById('modalEmoji').innerText = emoji;
-            document.getElementById('modalTitle').innerHTML = title + (verified ? ' <i class="fa-solid fa-circle-check verified-badge"></i>' : '');
-            document.getElementById('modalDesc').innerText = desc;
-            document.getElementById('modalGoBtn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
+        function go(p) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none');
+            document.getElementById('search-container').style.display = (p === 'home' || p === 'fav') ? 'flex' : 'none';
+            if (p === 'home') { document.getElementById('n-h').classList.add('active'); document.getElementById('main-content').style.display = 'block'; filterCat('tous', document.querySelector('.category-btn')); }
+            if (p === 'map') { document.getElementById('n-m').classList.add('active'); document.getElementById('map-page').style.display = 'block'; setTimeout(initMap, 200); }
+            if (p === 'fav') { document.getElementById('n-f').classList.add('active'); document.getElementById('main-content').style.display = 'block'; updateFavs(true); }
+            if (p === 'profile') { document.getElementById('n-p').classList.add('active'); document.getElementById('profile-page').style.display = 'flex'; }
+        }
+
+        function openDetails(t, e, d, lat, lng, v) {
+            curT = t;
+            document.getElementById('mEmoji').innerText = e;
+            document.getElementById('mTitle').innerHTML = t + (v ? ' <i class="fa-solid fa-circle-check" style="color:#00a8ff"></i>' : '');
+            document.getElementById('mDesc').innerText = d;
+            document.getElementById('mGo').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
             document.getElementById('detailModal').style.display = 'flex';
         }
 
-        function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
-
-        function reportIssue() {
-            const email = "ton-email@exemple.com"; 
-            const subject = encodeURIComponent("Signalement Vichy'U : " + currentDealName);
-            const body = encodeURIComponent("Bonjour,\n\nJe signale un problème sur : " + currentDealName + "\n\nPrécisions :");
-            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-        }
-
-        function showPage(page) {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none');
-            document.getElementById('search-container').style.display = (page === 'home' || page === 'fav') ? 'flex' : 'none';
-
-            if (page === 'home') {
-                document.getElementById('nav-home').classList.add('active');
-                document.getElementById('main-content').style.display = 'block';
-                document.getElementById('page-title').innerText = "Vichy'U 🎓";
-                updateFavView(false);
-            } else if (page === 'map') {
-                document.getElementById('nav-map').classList.add('active');
-                document.getElementById('map-page').style.display = 'block';
-                document.getElementById('page-title').innerText = "Carte 📍";
-                setTimeout(() => { if(!map) initMap(); map.invalidateSize(); }, 200);
-            } else if (page === 'fav') {
-                document.getElementById('nav-fav').classList.add('active');
-                document.getElementById('main-content').style.display = 'block';
-                document.getElementById('page-title').innerText = "Mes Favoris ❤️";
-                updateFavView(true);
-            } else if (page === 'profile') {
-                document.getElementById('nav-profile').classList.add('active');
-                document.getElementById('profile-page').style.display = 'flex';
-                document.getElementById('page-title').innerText = "Mon Profil";
-            }
-        }
-
-        function handleImageUpload(e, type) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const b64 = reader.result;
-                if (type === 'profile') {
-                    document.getElementById('display-profile-pic').src = b64;
-                    localStorage.setItem('user_profile_img', b64);
-                } else {
-                    const imgEl = document.getElementById('display-id-card');
-                    imgEl.src = b64; imgEl.style.display = 'block';
-                    localStorage.setItem('user_id_card_img', b64);
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function saveProfileData() {
-            localStorage.setItem('user_firstname', document.getElementById('userName').value);
-            localStorage.setItem('user_lastname', document.getElementById('userSurname').value);
-        }
-
-        function toggleFavorite(id) {
-            let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-            if (favs.includes(id)) favs = favs.filter(i => i !== id);
-            else favs.push(id);
-            localStorage.setItem('vichyu_favs', JSON.stringify(favs));
-            document.querySelector(`#${id} .fav-btn`).classList.toggle('is-fav');
-        }
-
-        function updateFavView(onlyFavs) {
-            const favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-            document.querySelectorAll('.card').forEach(c => {
-                if (onlyFavs) c.classList.toggle('hidden', !favs.includes(c.id));
-                else c.classList.remove('hidden');
-            });
-        }
-
-        function shareApp() {
-            if (navigator.share) {
-                navigator.share({ title: "Vichy'U 🎓", text: "Les meilleurs plans étudiants à Vichy !", url: window.location.href });
-            }
-        }
-
-        function toggleZoom(show) {
-            const overlay = document.getElementById('zoom-overlay');
-            const originalImg = document.getElementById('display-id-card');
-            if (show && originalImg.src) {
-                document.getElementById('zoomed-image').src = originalImg.src;
-                overlay.style.display = 'flex';
-            } else { overlay.style.display = 'none'; }
-        }
+        function closeM() { document.getElementById('detailModal').style.display = 'none'; }
 
         function initMap() {
-            map = L.map('map').setView([46.1215, 3.4275], 14);
+            if (map) return;
+            map = L.map('map').setView([46.123, 3.425], 14);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            L.marker([46.1218, 3.4278]).addTo(map).bindPopup('Le Daily');
-            L.marker([46.1250, 3.4220]).addTo(map).bindPopup('O\'Tacos');
+            const pts = [
+                {t:"Le Daily", l:[46.1218, 3.4278]}, {t:"O'Tacos", l:[46.1250, 3.4220]},
+                {t:"CGR Cinéma", l:[46.1221, 3.4215]}, {t:"Monoprix", l:[46.1248, 3.4235]}
+            ];
+            pts.forEach(p => {
+                L.marker(p.l).addTo(map).bindPopup(`<b>${p.t}</b><br><button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${p.l[0]},${p.l[1]}')" style="background:#5d5fef;color:white;border:none;padding:5px;border-radius:5px;margin-top:5px;width:100%">Y aller</button>`);
+            });
         }
 
-        window.onload = () => {
-            document.getElementById('userName').value = localStorage.getItem('user_firstname') || "";
-            document.getElementById('userSurname').value = localStorage.getItem('user_lastname') || "";
-            if (localStorage.getItem('user_profile_img')) document.getElementById('display-profile-pic').src = localStorage.getItem('user_profile_img');
-            if (localStorage.getItem('user_id_card_img')) {
-                const imgEl = document.getElementById('display-id-card');
-                imgEl.src = localStorage.getItem('user_id_card_img'); imgEl.style.display = 'block';
-            }
-            let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-            favs.forEach(id => {
-                const btn = document.querySelector(`#${id} .fav-btn`);
-                if (btn) btn.classList.add('is-fav');
+        function filterCat(c, b) {
+            document.querySelectorAll('.category-btn').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            document.querySelectorAll('.card').forEach(k => {
+                k.classList.toggle('hidden', c !== 'tous' && k.dataset.cat !== c);
             });
+        }
+
+        function toggleFav(id) {
+            let f = JSON.parse(localStorage.getItem('f')) || [];
+            if (f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
+            localStorage.setItem('f', JSON.stringify(f));
+            document.getElementById(id).classList.toggle('is-fav');
+        }
+
+        function updateFavs(only) {
+            let f = JSON.parse(localStorage.getItem('f')) || [];
+            document.querySelectorAll('.card').forEach(k => {
+                let id = k.querySelector('.fav-btn').id;
+                if (only) k.classList.toggle('hidden', !f.includes(id));
+                k.querySelector('.fav-btn').classList.toggle('is-fav', f.includes(id));
+            });
+        }
+
+        function upImg(e, t) {
+            const f = e.target.files[0]; if (!f) return;
+            const r = new FileReader();
+            r.onloadend = () => {
+                if (t === 'p') { document.getElementById('display-profile-pic').src = r.result; localStorage.setItem('p_img', r.result); }
+                else { const i = document.getElementById('display-id-card'); i.src = r.result; i.style.display = 'block'; localStorage.setItem('id_img', r.result); }
+            };
+            r.readAsDataURL(f);
+        }
+
+        function sv() { localStorage.setItem('fn', document.getElementById('u-fn').value); localStorage.setItem('ln', document.getElementById('u-ln').value); }
+        function zom(s) { if(s && document.getElementById('display-id-card').src) { document.getElementById('zImg').src = document.getElementById('display-id-card').src; document.getElementById('zoom-overlay').style.display = 'flex'; } else { document.getElementById('zoom-overlay').style.display = 'none'; } }
+        function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", text:"Bons plans Lardy !", url:window.location.href}); }
+        function rep() { window.location.href = `mailto:contact@vichyu.fr?subject=Signalement ${curT}`; }
+
+        window.onload = () => {
+            document.getElementById('u-fn').value = localStorage.getItem('fn') || "";
+            document.getElementById('u-ln').value = localStorage.getItem('ln') || "";
+            if(localStorage.getItem('p_img')) document.getElementById('display-profile-pic').src = localStorage.getItem('p_img');
+            if(localStorage.getItem('id_img')) { const i = document.getElementById('display-id-card'); i.src = localStorage.getItem('id_img'); i.style.display = 'block'; }
+            updateFavs(false);
         };
     </script>
 </body>
