@@ -187,6 +187,30 @@
             });
         }
     </script>
+    <script>
+        // Gestion du clic sur les catégories
+        const buttons = document.querySelectorAll('.category-btn');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 1. On enlève la couleur bleue de tous les boutons
+                buttons.forEach(b => b.classList.remove('active'));
+                
+                // 2. On ajoute la couleur bleue au bouton cliqué
+                btn.classList.add('active');
+                
+                // 3. Ici on pourra ajouter plus tard le filtrage des promos
+                console.log("Catégorie choisie :", btn.innerText);
+            });
+        });
+
+        // Enregistrement du Service Worker (existant)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
 </body>
 </html>
 </html>
