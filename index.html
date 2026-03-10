@@ -62,38 +62,25 @@
             display: flex; align-items: center; justify-content: center;
         }
 
+        /* --- PROFIL --- */
+        #profile-page { display: none; text-align: center; }
+        .profile-header { margin-bottom: 30px; }
+        .profile-pic { width: 100px; height: 100px; background: #ddd; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .stat-card span { display: block; font-size: 20px; font-weight: 800; color: var(--primary); }
+        .menu-list { background: white; border-radius: 20px; padding: 10px; text-align: left; }
+        .menu-item { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; color: var(--text); font-weight: 600; }
+        .menu-item:last-child { border: none; }
+
         /* --- BANNIÈRES --- */
-        .ad-slider { 
-            display: flex; 
-            overflow-x: auto; 
-            scroll-snap-type: x mandatory; 
-            gap: 12px; 
-            margin-bottom: 25px; 
-            padding: 5px 0;
-            scrollbar-width: none; 
-        }
+        .ad-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-bottom: 25px; padding: 5px 0; scrollbar-width: none; }
         .ad-slider::-webkit-scrollbar { display: none; }
-        .ad-banner { 
-            flex: 0 0 85%; 
-            scroll-snap-align: center; 
-            border-radius: 25px; 
-            padding: 20px; 
-            color: white; 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-        }
+        .ad-banner { flex: 0 0 85%; scroll-snap-align: center; border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; gap: 15px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
 
         /* --- FILTRES --- */
         .categories { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; }
-        .categories::-webkit-scrollbar { display: none; }
-        .category-btn {
-            flex: 0 0 90px; background: white; border: none; padding: 12px 5px; border-radius: 18px;
-            font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            color: var(--text); cursor: pointer;
-        }
+        .category-btn { flex: 0 0 90px; background: white; border: none; padding: 12px 5px; border-radius: 18px; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); color: var(--text); cursor: pointer; }
         .category-btn.active { background-color: var(--primary); color: white; }
 
         /* --- CARTES --- */
@@ -101,20 +88,15 @@
         .card.hidden { display: none !important; }
         .card-emoji { font-size: 30px; background: #f0f1ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
         .card-info { flex-grow: 1; }
-        .card-info h3 { margin: 0; font-size: 16px; }
-        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: bold; font-size: 14px; }
-        
-        .btn-go {
-            background: #f0f1ff; color: var(--primary); border: none; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; margin-top: 8px; cursor: pointer;
-        }
+        .btn-go { background: #f0f1ff; color: var(--primary); border: none; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; }
 
         /* --- NAV BAS --- */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; font-size: 10px; cursor: pointer; flex: 1; }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
-        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; padding: 5px; z-index: 5;}
+        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; padding: 5px; }
         .fav-btn.is-fav { color: var(--heart-red); }
         #empty-msg { text-align: center; color: #b2bec3; margin-top: 50px; display: none; font-style: italic; }
     </style>
@@ -133,6 +115,23 @@
         <div id="map-page">
             <div id="map"></div>
             <button class="locate-btn" onclick="locateUser()"><i class="fa-solid fa-location-crosshairs"></i></button>
+        </div>
+
+        <div id="profile-page">
+            <div class="profile-header">
+                <div class="profile-pic">👤</div>
+                <h2>Étudiant Vichy</h2>
+                <p style="color:#636e72">Pôle Universitaire Lardy</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><span id="fav-count-stat">0</span>Favoris</div>
+                <div class="stat-card"><span>12€</span>Économisés</div>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item"><i class="fa-solid fa-id-card"></i> Ma carte étudiante</div>
+                <div class="menu-item"><i class="fa-solid fa-bell"></i> Notifications</div>
+                <div class="menu-item" style="color:#ff4757"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</div>
+            </div>
         </div>
 
         <div id="main-content">
@@ -158,31 +157,18 @@
                 <div class="card" id="deal-1" data-cat="restos">
                     <div class="card-emoji">🍕</div>
                     <div class="card-info">
-                        <h3>Le Daily</h3>
-                        <p>Formule Lardy : 8.50€</p>
+                        <h3>Le Daily</h3><p>Formule Lardy : 8.50€</p>
                         <button class="btn-go" onclick="openMaps(46.1218, 3.4278)"><i class="fa-solid fa-route"></i> Y aller</button>
                     </div>
                     <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-1')"></i>
                 </div>
-
                 <div class="card" id="deal-2" data-cat="sport">
                     <div class="card-emoji">🧗</div>
                     <div class="card-info">
-                        <h3>Vertical Limit</h3>
-                        <p>Accès réduit étudiant</p>
+                        <h3>Vertical Limit</h3><p>Accès réduit étudiant</p>
                         <button class="btn-go" onclick="openMaps(46.1210, 3.4168)"><i class="fa-solid fa-route"></i> Y aller</button>
                     </div>
                     <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-2')"></i>
-                </div>
-
-                <div class="card" id="deal-3" data-cat="loisirs">
-                    <div class="card-emoji">🎬</div>
-                    <div class="card-info">
-                        <h3>CGR Cinéma</h3>
-                        <p>Tarif étudiant permanent</p>
-                        <button class="btn-go" onclick="openMaps(46.1245, 3.4230)"><i class="fa-solid fa-route"></i> Y aller</button>
-                    </div>
-                    <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-3')"></i>
                 </div>
             </div>
             <div id="empty-msg">Aucun favori enregistré... 💔</div>
@@ -193,6 +179,7 @@
         <div class="nav-item active" id="nav-home" onclick="showPage('home')"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
         <div class="nav-item" id="nav-map" onclick="showPage('map')"><i class="fa-solid fa-map-location-dot"></i><span>Carte</span></div>
         <div class="nav-item" id="nav-fav" onclick="showPage('fav')"><i class="fa-solid fa-heart"></i><span>Favoris</span></div>
+        <div class="nav-item" id="nav-profile" onclick="showPage('profile')"><i class="fa-solid fa-user"></i><span>Profil</span></div>
     </nav>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -200,11 +187,11 @@
         let map;
         let userMarker;
 
-        // --- NAVIGATION ---
         function showPage(page) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('map-page').style.display = 'none';
+            document.getElementById('profile-page').style.display = 'none';
             document.getElementById('search-container').style.display = 'flex';
             document.getElementById('empty-msg').style.display = 'none';
 
@@ -214,54 +201,49 @@
                 document.getElementById('ad-container').style.display = 'flex';
                 document.getElementById('filter-container').style.display = 'flex';
                 document.getElementById('page-title').innerText = "Vichy'U 🎓";
-                filterByCat('tous', document.querySelector('.category-btn')); 
-            } 
-            else if (page === 'map') {
+            } else if (page === 'map') {
                 document.getElementById('nav-map').classList.add('active');
                 document.getElementById('map-page').style.display = 'block';
                 document.getElementById('search-container').style.display = 'none';
                 document.getElementById('page-title').innerText = "Carte 📍";
                 setTimeout(() => { if (!map) initMap(); map.invalidateSize(); }, 200);
-            } 
-            else if (page === 'fav') {
+            } else if (page === 'fav') {
                 document.getElementById('nav-fav').classList.add('active');
                 document.getElementById('main-content').style.display = 'block';
                 document.getElementById('ad-container').style.display = 'none';
                 document.getElementById('filter-container').style.display = 'none';
                 document.getElementById('page-title').innerText = "Mes Favoris ❤️";
                 updateFavView();
+            } else if (page === 'profile') {
+                document.getElementById('nav-profile').classList.add('active');
+                document.getElementById('profile-page').style.display = 'block';
+                document.getElementById('search-container').style.display = 'none';
+                document.getElementById('page-title').innerText = "Mon Profil";
+                const favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
+                document.getElementById('fav-count-stat').innerText = favs.length;
             }
         }
 
-        // --- FILTRES ---
         function filterByCat(category, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
             document.querySelectorAll('.card').forEach(card => {
-                if (category === 'tous' || card.getAttribute('data-cat') === category) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
+                if (category === 'tous' || card.getAttribute('data-cat') === category) card.classList.remove('hidden');
+                else card.classList.add('hidden');
             });
         }
 
-        // --- ITINÉRAIRE ---
         function openMaps(lat, lng) {
             window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
         }
 
-        // --- CARTE & LOC ---
         function initMap() {
             map = L.map('map').setView([46.1215, 3.4275], 14);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
             L.marker([46.1218, 3.4278]).addTo(map).bindPopup('Le Daily');
-            L.marker([46.1245, 3.4230]).addTo(map).bindPopup('CGR Cinéma');
         }
 
         function locateUser() {
-            if (!map) return;
             map.locate({setView: true, maxZoom: 16});
             map.on('locationfound', (e) => {
                 if (userMarker) map.removeLayer(userMarker);
@@ -269,7 +251,6 @@
             });
         }
 
-        // --- FAVORIS ---
         function toggleFavorite(id) {
             let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
             const heart = document.querySelector(`#${id} .fav-btn`);
@@ -289,12 +270,11 @@
             let count = 0;
             document.querySelectorAll('.card').forEach(card => {
                 if (favs.includes(card.id)) { card.classList.remove('hidden'); count++; }
-                else { card.classList.add('hidden'); }
+                else card.classList.add('hidden');
             });
             document.getElementById('empty-msg').style.display = count > 0 ? 'none' : 'block';
         }
 
-        // Recherche
         document.getElementById('searchInput').oninput = function() {
             let val = this.value.toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
