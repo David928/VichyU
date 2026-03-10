@@ -13,60 +13,132 @@
             --heart-red: #ff4757;
         }
 
-        body { font-family: sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 100px; }
-        .header { background: var(--primary); padding: 30px 20px 50px; border-bottom-left-radius: 40px; color: white; text-align: center;}
-        .container { padding: 20px 15px; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* --- STYLES DES CARTES --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0; padding-bottom: 100px;
+        }
+
+        /* --- HEADER & RECHERCHE --- */
+        .header { background: var(--primary); padding: 40px 20px 60px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; color: white; }
+        .header h1 { margin: 0; font-size: 32px; font-weight: 800; font-style: italic; }
+
+        .search-bar { background: white; margin: 20px 0 -80px; padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; color: var(--text); }
+
+        .container { padding: 95px 15px 20px; }
+
+        /* --- SLIDER DE PUBS --- */
+        .ad-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+        .ad-slider::-webkit-scrollbar { display: none; }
+
+        .ad-banner {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            border-radius: 25px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .ad-badge { position: absolute; top: 10px; right: 15px; background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 8px; font-size: 9px; text-transform: uppercase; }
+
+        /* --- FILTRES --- */
+        .categories { display: flex; gap: 8px; margin-bottom: 25px; }
+        .category-btn {
+            flex: 1; background: white; border: none; padding: 12px 2px; border-radius: 15px;
+            font-size: 11px; font-weight: 700; color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+        .category-btn.active { background-color: var(--primary) !important; color: white !important; }
+
+        /* --- CARTES --- */
         .card { 
-            background: white; border-radius: 20px; padding: 15px; margin-bottom: 15px; 
+            background: white; border-radius: 22px; padding: 15px; margin-bottom: 15px; 
             display: flex; align-items: center; gap: 15px; position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
         }
+        .card.hidden { display: none !important; }
+        .card-emoji { font-size: 30px; background: #f0f1ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
         .card-info h3 { margin: 0; font-size: 16px; }
-        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: bold; }
+        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: bold; font-size: 14px; }
 
-        /* --- BOUTON FAVORIS (CŒUR) --- */
+        /* --- BOUTON COEUR --- */
         .fav-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 20px;
-            color: #ccc; /* Gris par défaut */
-            transition: transform 0.2s;
-            cursor: pointer;
+            position: absolute; top: 15px; right: 15px;
+            font-size: 20px; color: #ddd; transition: 0.2s; cursor: pointer;
         }
-        .fav-btn.is-fav {
-            color: var(--heart-red); /* Rouge quand c'est en favori */
-        }
-        .fav-btn:active { transform: scale(1.3); }
+        .fav-btn.is-fav { color: var(--heart-red); }
 
         /* --- NAV BAS --- */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 70px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; font-size: 10px; cursor: pointer;}
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; font-size: 10px; font-weight: 600; text-decoration: none; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); }
+
+        /* --- MODALE --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 2000; }
+        .modal-content { background: white; width: 100%; padding: 30px 20px; border-top-left-radius: 30px; border-top-right-radius: 30px; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>Vichy'U 🎓</h1>
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Chercher un bon plan...">
+        </div>
     </div>
 
     <div class="container">
+        
+        <div class="ad-slider">
+            <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);" onclick="openModal('🔥','O\'Tacos','3ème Tacos Offert','Valable tous les jeudis !')">
+                <div class="ad-badge">Sponsorisé</div>
+                <div style="font-size: 35px;">🔥</div>
+                <div class="ad-content"><h4>O'Tacos Vichy</h4><p>Le 3ème tacos offert ce jeudi !</p></div>
+            </div>
+            <div class="ad-banner" style="background: linear-gradient(135deg, #005596, #00b0ff);" onclick="openModal('🍕','Domino\'s','-50% sur la 2ème','Mardi fou chez Domino\'s.')">
+                <div class="ad-badge">Sponsorisé</div>
+                <div style="font-size: 35px;">🍕</div>
+                <div class="ad-content"><h4>Domino's Pizza</h4><p>Mardi Fou : -50% sur la 2ème !</p></div>
+            </div>
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active" onclick="filterDeals('tous', this)">🚀<span>Tous</span></button>
+            <button class="category-btn" onclick="filterDeals('restos', this)">🍔<span>Restos</span></button>
+            <button class="category-btn" onclick="filterDeals('loisirs', this)">🍿<span>Loisirs</span></button>
+            <button class="category-btn" onclick="filterDeals('sport', this)">🏊<span>Sport</span></button>
+        </div>
+
         <div id="deals-list">
-            <div class="card" id="deal-1">
-                <div style="font-size: 30px;">🍕</div>
-                <div class="card-info">
+            <div class="card" id="deal-1" data-cat="restos">
+                <div class="card-emoji" onclick="openModal('🍕','Le Daily','8.50€','Le RDV du Pôle Lardy.')">🍕</div>
+                <div class="card-info" onclick="openModal('🍕','Le Daily','8.50€','Le RDV du Pôle Lardy.')">
                     <h3>Le Daily</h3>
                     <p>Formule Lardy : 8.50€</p>
                 </div>
                 <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-1')"></i>
             </div>
 
-            <div class="card" id="deal-2">
-                <div style="font-size: 30px;">🧗</div>
-                <div class="card-info">
+            <div class="card" id="deal-2" data-cat="sport">
+                <div class="card-emoji" onclick="openModal('🧗','Vertical Limit','Réduit','Escalade à Bellerive.')">🧗</div>
+                <div class="card-info" onclick="openModal('🧗','Vertical Limit','Réduit','Escalade à Bellerive.')">
                     <h3>Vertical Limit</h3>
                     <p>Accès réduit étudiant</p>
                 </div>
@@ -76,45 +148,82 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
-        <div class="nav-item"><i class="fa-solid fa-heart"></i><span>Mes Favoris</span></div>
+        <div class="nav-item active" onclick="setActiveNav(this)"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
+        <div class="nav-item" onclick="setActiveNav(this)"><i class="fa-solid fa-map-location-dot"></i><span>Carte</span></div>
+        <div class="nav-item" onclick="setActiveNav(this)"><i class="fa-solid fa-heart"></i><span>Favoris</span></div>
+        <div class="nav-item" onclick="setActiveNav(this)"><i class="fa-solid fa-user"></i><span>Profil</span></div>
     </nav>
 
+    <div id="infoModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div id="mEmoji" style="font-size:50px"></div>
+            <h2 id="mTitle"></h2>
+            <p id="mPromo" style="color:var(--primary);font-weight:bold;font-size:20px"></p>
+            <p id="mDesc"></p>
+            <button onclick="closeModal()" style="width:100%;padding:15px;background:var(--primary);color:white;border:none;border-radius:15px;font-weight:bold;margin-top:20px">Fermer</button>
+        </div>
+    </div>
+
     <script>
-        // Fonction pour activer/désactiver un favori
-        function toggleFavorite(dealId) {
-            const heartIcon = document.querySelector(`#${dealId} .fav-btn`);
-            
-            // 1. Récupérer la liste actuelle des favoris dans le téléphone
-            let favorites = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-
-            if (favorites.includes(dealId)) {
-                // Si déjà en favori, on l'enlève
-                favorites = favorites.filter(id => id !== dealId);
-                heartIcon.classList.remove('is-fav');
-            } else {
-                // Sinon, on l'ajoute
-                favorites.push(dealId);
-                heartIcon.classList.add('is-fav');
-            }
-
-            // 2. Sauvegarder la nouvelle liste dans le téléphone
-            localStorage.setItem('vichyu_favs', JSON.stringify(favorites));
-        }
-
-        // Fonction pour charger les favoris au démarrage
-        function loadFavorites() {
-            const favorites = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-            
-            favorites.forEach(dealId => {
-                const heartIcon = document.querySelector(`#${dealId} .fav-btn`);
-                if (heartIcon) {
-                    heartIcon.classList.add('is-fav');
+        // FILTRAGE CATEGORIES
+        function filterDeals(category, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.card').forEach(card => {
+                if (category === 'tous' || card.getAttribute('data-cat') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
                 }
             });
         }
 
-        // Lancer le chargement au démarrage
+        // BARRE DE RECHERCHE
+        document.getElementById('searchInput').oninput = function() {
+            let val = this.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.classList.toggle('hidden', !title.includes(val));
+            });
+        };
+
+        // GESTION DES FAVORIS (Mémoire)
+        function toggleFavorite(id) {
+            let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
+            const heart = document.querySelector(`#${id} .fav-btn`);
+            
+            if (favs.includes(id)) {
+                favs = favs.filter(item => item !== id);
+                heart.classList.remove('is-fav');
+            } else {
+                favs.push(id);
+                heart.classList.add('is-fav');
+            }
+            localStorage.setItem('vichyu_favs', JSON.stringify(favs));
+        }
+
+        function loadFavorites() {
+            let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
+            favs.forEach(id => {
+                const heart = document.querySelector(`#${id} .fav-btn`);
+                if (heart) heart.classList.add('is-fav');
+            });
+        }
+
+        function setActiveNav(el) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function openModal(emoji, title, promo, desc) {
+            document.getElementById('mEmoji').innerText = emoji;
+            document.getElementById('mTitle').innerText = title;
+            document.getElementById('mPromo').innerText = promo;
+            document.getElementById('mDesc').innerText = desc;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('infoModal').style.display = 'none'; }
+
         window.onload = loadFavorites;
     </script>
 </body>
