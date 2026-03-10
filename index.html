@@ -41,7 +41,7 @@
 
         /* --- GRILLE 2x4 --- */
         .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
-        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
         .cat-item i { font-size: 16px; }
 
@@ -57,7 +57,7 @@
         .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
         .map-go-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; width: 100%; font-size: 16px; margin-top: 15px; cursor: pointer; }
 
-        /* --- PROFILE PAGE --- */
+        /* --- PROFILE --- */
         #profile-page { display: none; flex-direction: column; align-items: center; width: 100%; }
 
         /* --- NAVIGATION --- */
@@ -67,11 +67,11 @@
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
         .hidden { display: none !important; }
-        #map-page { display: none; height: 70vh; }
-        #map { height: 100%; width: 100%; border-radius: 25px; }
+        #map-page { display: none; }
+        #map { height: 70vh; width: 100%; border-radius: 25px; }
         .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; }
         .fav-btn.is-fav { color: var(--heart-red); }
-        .share-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 16px; width: 100%; margin-top: 20px; cursor: pointer; box-shadow: 0 8px 15px rgba(93, 95, 239, 0.3); }
+        .share-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 16px; width: 100%; margin-top: 20px; cursor: pointer; }
         #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; justify-content: center; align-items: center; }
         #zoom-overlay img { max-width: 90%; border-radius: 10px; }
     </style>
@@ -120,10 +120,45 @@
                     <div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 4.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
                 </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Cinéma', '🍿', 'La place à 7€.', 46.1221, 3.4215, true, 3.50)">
+                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place à 7€.', 46.1221, 3.4215, true, 3.50)">
                     <div class="card-emoji">🍿</div>
                     <div class="card-info"><h3>CGR Vichy <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 3.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
+                </div>
+                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '-10% en caisse.', 46.1248, 3.4235, true, 5.00)">
+                    <div class="card-emoji">🛒</div>
+                    <div class="card-info"><h3>Monoprix <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 5.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f4" onclick="event.stopPropagation(); toggleFav('f4')"></i>
+                </div>
+                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée piscine 3.50€.', 46.1450, 3.4050, true, 1.50)">
+                    <div class="card-emoji">🏊</div>
+                    <div class="card-info"><h3>Piscine <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 1.50€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f5" onclick="event.stopPropagation(); toggleFav('f5')"></i>
+                </div>
+                <div class="card" data-cat="restos" onclick="openDetails('McDonalds', '🍔', 'Sandwich offert pour un menu.', 46.1285, 3.4180, false, 4.50)">
+                    <div class="card-emoji">🍔</div>
+                    <div class="card-info"><h3>McDonalds</h3><p>Économise env. 4.50€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f6" onclick="event.stopPropagation(); toggleFav('f6')"></i>
+                </div>
+                <div class="card" data-cat="utiles" onclick="openDetails('Boulangerie Lardy', '🥖', 'Formule dej 5.50€.', 46.1205, 3.4285, false, 2.00)">
+                    <div class="card-emoji">🥖</div>
+                    <div class="card-info"><h3>Boulangerie Lardy</h3><p>Économise env. 2.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f7" onclick="event.stopPropagation(); toggleFav('f7')"></i>
+                </div>
+                <div class="card" data-cat="beaute" onclick="openDetails('Coiffeur Duo', '💇‍♂️', '-20% sur la coupe.', 46.1230, 3.4250, false, 6.00)">
+                    <div class="card-emoji">💇‍♂️</div>
+                    <div class="card-info"><h3>Coiffeur Duo</h3><p>Économise env. 6.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f8" onclick="event.stopPropagation(); toggleFav('f8')"></i>
+                </div>
+                <div class="card" data-cat="restos" onclick="openDetails('Subway', '🥪', 'Sub30 au prix du Sub15.', 46.1245, 3.4210, false, 3.00)">
+                    <div class="card-emoji">🥪</div>
+                    <div class="card-info"><h3>Subway</h3><p>Économise env. 3.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f9" onclick="event.stopPropagation(); toggleFav('f9')"></i>
+                </div>
+                <div class="card" data-cat="loisirs" onclick="openDetails('Laser Game', '🔫', 'Partie à 6€.', 46.1350, 3.4120, false, 3.00)">
+                    <div class="card-emoji">🔫</div>
+                    <div class="card-info"><h3>Laser Game</h3><p>Économise env. 3.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f10" onclick="event.stopPropagation(); toggleFav('f10')"></i>
                 </div>
             </div>
         </div>
@@ -135,18 +170,14 @@
                 <span style="font-size: 12px; opacity: 0.9;">MON BUDGET SAUVÉ 💰</span>
                 <span class="budget-amount" id="total-saved">0.00 €</span>
             </div>
-            
             <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label>
             <input type="file" id="p-up" hidden onchange="upImg(event,'p')">
-            
             <input type="text" id="fn" placeholder="Ton Prénom" oninput="sv()" style="width:100%; padding:15px; margin:20px 0; border-radius:15px; border:1px solid var(--border); background:var(--card-bg); color:var(--text); text-align:center; font-weight:bold;">
-
             <div style="background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); width:100%; text-align:center;">
                 <img id="id-img" onclick="zoomID(true)" style="width:100%; height:160px; object-fit:cover; border-radius:12px; display:none; margin-bottom:10px; cursor:zoom-in;">
                 <label for="id-up" style="color:var(--primary); font-weight:bold; cursor:pointer;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label>
                 <input type="file" id="id-up" hidden onchange="upImg(event,'id')">
             </div>
-
             <button class="share-btn" onclick="shareApp()"><i class="fa-solid fa-share-nodes"></i> PARTAGER L'APPLI</button>
         </div>
     </div>
@@ -185,7 +216,6 @@
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none');
             document.getElementById('search-container').style.display = (p === 'profile') ? 'none' : 'flex';
-            
             if(p==='home'){document.getElementById('n-h').classList.add('active');document.getElementById('main-content').style.display='block';}
             if(p==='map'){document.getElementById('n-m').classList.add('active');document.getElementById('map-page').style.display='block';setTimeout(initMap,200);}
             if(p==='profile'){document.getElementById('n-p').classList.add('active');document.getElementById('profile-page').style.display='flex';updateSavedDisplay();}
@@ -209,6 +239,7 @@
             document.getElementById('mGo').onclick = () => {
                 let total = parseFloat(localStorage.getItem('b_s')) || 0;
                 localStorage.setItem('b_s', (total + curSave).toFixed(2));
+                alert(`Bravo ! Tu as économisé ${curSave.toFixed(2)}€ sur ce bon plan ! ✨`);
                 window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
             };
             document.getElementById('detailModal').style.display = 'flex';
@@ -227,10 +258,6 @@
             if (map) return;
             map = L.map('map').setView([46.123, 3.425], 14);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            const pts = [{t:"Le Daily",l:[46.1218,3.4278]},{t:"O'Tacos",l:[46.1250,3.4220]},{t:"CGR",l:[46.1221,3.4215]}];
-            pts.forEach(p => {
-                L.marker(p.l).addTo(map).bindPopup(`<b>${p.t}</b><br><button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${p.l[0]},${p.l[1]}')" style="background:#5d5fef;color:white;border:none;padding:5px;border-radius:5px;margin-top:5px;width:100%">Y aller</button>`);
-            });
         }
 
         function upImg(e,t) {
