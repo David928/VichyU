@@ -32,8 +32,11 @@
         .container { padding: 85px 15px 10px; }
 
         /* --- BUDGET WIDGET --- */
-        .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0, 184, 148, 0.2); width: 100%; }
-        .budget-amount { font-size: 28px; font-weight: 900; display: block; }
+        .budget-container { width: 100%; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0, 184, 148, 0.2); }
+        .budget-amount { font-size: 24px; font-weight: 900; display: block; }
+        .budget-sub { background: var(--card-bg); border: 1px solid var(--border); padding: 10px; border-radius: 15px; display: flex; justify-content: space-around; font-size: 12px; }
+        .budget-sub b { display: block; color: var(--green); font-size: 14px; }
 
         /* --- BANNIÈRES --- */
         .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 20px; scrollbar-width: none; padding: 5px 0; }
@@ -45,40 +48,32 @@
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
         .cat-item i { font-size: 16px; }
 
-        /* --- CARTES BONS PLANS --- */
+        /* --- CARTES --- */
         .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; }
         .card-emoji { font-size: 26px; background: rgba(93, 95, 239, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 15px; }
         .card-info h3 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 5px; }
         .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; }
         .verified-badge { color: var(--verified); font-size: 13px; }
 
-        /* --- AGENDA STYLES --- */
-        .event-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--orange); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; gap: 15px; }
+        /* --- AGENDA --- */
+        .event-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--orange); border: 1px solid var(--border); border-left: 5px solid var(--orange); display: flex; gap: 15px; }
         .event-date { background: var(--orange); color: white; padding: 10px; border-radius: 12px; min-width: 60px; text-align: center; font-weight: 800; display: flex; flex-direction: column; justify-content: center; }
         .event-date span { font-size: 10px; text-transform: uppercase; font-weight: 400; }
-        .event-info h4 { margin: 0; font-size: 16px; }
-        .event-info p { margin: 5px 0 0; font-size: 12px; color: var(--text-light); }
 
-        /* --- MODAL --- */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
-        .map-go-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; width: 100%; font-size: 16px; margin-top: 15px; cursor: pointer; }
-
-        /* --- PAGES --- */
-        #map-page, #profile-page, #agenda-page { display: none; }
-        #profile-page { flex-direction: column; align-items: center; width: 100%; }
-
-        /* --- NAV --- */
+        /* --- NAVIGATION --- */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
-        .hidden { display: none !important; }
+        #map-page, #profile-page, #agenda-page { display: none; }
+        #profile-page { flex-direction: column; align-items: center; width: 100%; }
         #map { height: 70vh; width: 100%; border-radius: 25px; }
         .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; }
         .fav-btn.is-fav { color: var(--heart-red); }
         .share-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 16px; width: 100%; margin-top: 20px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
         #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; justify-content: center; align-items: center; }
         #zoom-overlay img { max-width: 90%; border-radius: 10px; }
     </style>
@@ -86,7 +81,7 @@
 <body>
 
     <div class="header">
-        <div class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></div>
+        <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fa-solid fa-moon"></i></div>
         <h1>Vichy'U</h1>
         <div class="search-bar" id="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -100,62 +95,44 @@
                 <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
                     <div style="font-size:30px">🔥</div><div><h4 style="margin:0">O'Tacos</h4><p style="margin:0;font-size:12px">Le 3ème offert !</p></div>
                 </div>
-                <div class="ad-banner" style="background: linear-gradient(135deg, #ff7675, #fab1a0);">
-                    <div style="font-size:30px">🍕</div><div><h4 style="margin:0">Le Daily</h4><p style="margin:0;font-size:12px">Menu Lardy 8.50€</p></div>
-                </div>
             </div>
-
             <div class="categories-grid">
                 <div class="cat-item active" onclick="filterCat('tous', this)"><i class="fa-solid fa-rocket"></i>Tous</div>
                 <div class="cat-item" onclick="filterCat('restos', this)"><i class="fa-solid fa-burger"></i>Restos</div>
                 <div class="cat-item" onclick="filterCat('loisirs', this)"><i class="fa-solid fa-film"></i>Loisirs</div>
-                <div class="cat-item" onclick="filterCat('utiles', this)"><i class="fa-solid fa-bag-shopping"></i>Courses</div>
-                <div class="cat-item" onclick="filterCat('sport', this)"><i class="fa-solid fa-swimmer"></i>Sport</div>
-                <div class="cat-item" onclick="filterCat('beaute', this)"><i class="fa-solid fa-scissors"></i>Beauté</div>
-                <div class="cat-item" onclick="filterCat('tech', this)"><i class="fa-solid fa-laptop"></i>Tech</div>
                 <div class="cat-item" onclick="filterCat('fav', this)"><i class="fa-solid fa-heart"></i>Favs</div>
             </div>
-
             <div id="deals-list">
                 <div class="card" data-cat="restos" onclick="openDetails('Le Daily', '🍕', '8.50€ le menu complet.', 46.1218, 3.4278, true, 2.50)">
                     <div class="card-emoji">🍕</div><div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 2.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true, 4.00)">
-                    <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 4.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
-                </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place à 7€.', 46.1221, 3.4215, true, 3.50)">
-                    <div class="card-emoji">🍿</div><div class="card-info"><h3>CGR Vichy <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 3.50€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
-                </div>
             </div>
         </div>
 
         <div id="agenda-page">
-            <h2 style="margin-top:0">📅 Événements à venir</h2>
+            <h2 style="margin-top:0">📅 Agenda</h2>
             <div class="event-card">
                 <div class="event-date">12<span>Mars</span></div>
-                <div class="event-info"><h4>Soirée d'Intégration BDE</h4><p><i class="fa-solid fa-clock"></i> 21h00 - Bar Le 15</p></div>
+                <div class="event-info"><h4>Soirée BDE</h4><p><i class="fa-solid fa-clock"></i> 21h00 - Bar Le 15</p></div>
             </div>
-            <div class="event-card">
-                <div class="event-date">15<span>Mars</span></div>
-                <div class="event-info"><h4>Tournoi Beach-Volley</h4><p><i class="fa-solid fa-location-dot"></i> Stade Aquatique</p></div>
-            </div>
-            <div class="event-card" style="border-left-color: var(--primary);">
-                <div class="event-date" style="background: var(--primary);">20<span>Mars</span></div>
-                <div class="event-info"><h4>Afterwork Étudiant</h4><p><i class="fa-solid fa-clock"></i> 18h30 - Place de la Victoire</p></div>
-            </div>
-            <p style="text-align:center; font-size:12px; color:var(--text-light); margin-top:20px;">Contacte ton BDE pour ajouter un événement !</p>
         </div>
 
         <div id="map-page"><div id="map"></div></div>
 
         <div id="profile-page">
-            <div class="budget-widget">
-                <span style="font-size: 12px; opacity: 0.9;">MON BUDGET SAUVÉ 💰</span>
-                <span class="budget-amount" id="total-saved">0.00 €</span>
+            <div class="budget-container">
+                <div class="budget-widget">
+                    <span style="font-size: 11px; opacity: 0.9;">ÉCONOMIES DU MOIS 💰</span>
+                    <span class="budget-amount" id="month-saved">0.00 €</span>
+                </div>
+                <div class="budget-sub">
+                    <div style="text-align:center">ANNÉE <b id="year-saved">0.00 €</b></div>
+                    <div style="text-align:center">TOTAL <b id="total-saved">0.00 €</b></div>
+                </div>
+                <p onclick="resetBudget()" style="font-size:10px; text-align:right; color:var(--text-light); margin:0; cursor:pointer;">Réinitialiser les compteurs</p>
             </div>
+            
             <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label>
             <input type="file" id="p-up" hidden onchange="upImg(event,'p')">
             <input type="text" id="fn" placeholder="Ton Prénom" oninput="sv()" style="width:100%; padding:15px; margin:20px 0; border-radius:15px; border:1px solid var(--border); background:var(--card-bg); color:var(--text); text-align:center; font-weight:bold;">
@@ -164,7 +141,7 @@
                 <label for="id-up" style="color:var(--primary); font-weight:bold; cursor:pointer;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label>
                 <input type="file" id="id-up" hidden onchange="upImg(event,'id')">
             </div>
-            <button class="share-btn" onclick="shareApp()"><i class="fa-solid fa-share-nodes"></i> PARTAGER L'APPLI</button>
+            <button class="share-btn" onclick="shareApp()"><i class="fa-solid fa-share-nodes"></i> PARTAGER</button>
         </div>
     </div>
 
@@ -174,8 +151,8 @@
             <div id="mEmoji" style="font-size:60px;margin-bottom:10px"></div>
             <h2 id="mTitle"></h2>
             <p id="mDesc" style="color:var(--text-light); margin:15px 0;"></p>
-            <button id="mGo" class="map-go-btn">Y aller maintenant</button>
-            <p onclick="rep()" style="margin-top:20px; color:#ff4757; font-size:12px; font-weight:bold; cursor:pointer;">Signaler un problème / bon plan</p>
+            <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; font-size:16px; cursor:pointer;">Y aller maintenant</button>
+            <p onclick="rep()" style="margin-top:20px; color:#ff4757; font-size:12px; font-weight:bold; cursor:pointer;">Signaler un problème</p>
         </div>
     </div>
 
@@ -192,22 +169,86 @@
     <script>
         let map, curT = "", curSave = 0;
 
-        function searchDeals() {
-            let val = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => {
-                c.style.display = c.innerText.toLowerCase().includes(val) ? "flex" : "none";
-            });
+        // --- GESTION DES COMPTEURS ---
+        function checkMonthlyReset() {
+            const now = new Date();
+            const currentMonthYear = now.getMonth() + "-" + now.getFullYear();
+            const lastSavedMonth = localStorage.getItem('last_reset_month');
+
+            if (lastSavedMonth !== currentMonthYear) {
+                localStorage.setItem('m_s', "0.00"); // Reset mois
+                localStorage.setItem('last_reset_month', currentMonthYear);
+            }
         }
 
+        function addToBudget(amt) {
+            checkMonthlyReset();
+            let m = parseFloat(localStorage.getItem('m_s')) || 0;
+            let y = parseFloat(localStorage.getItem('y_s')) || 0;
+            let t = parseFloat(localStorage.getItem('t_s')) || 0;
+
+            localStorage.setItem('m_s', (m + amt).toFixed(2));
+            localStorage.setItem('y_s', (y + amt).toFixed(2));
+            localStorage.setItem('t_s', (t + amt).toFixed(2));
+            
+            alert(`Bravo ! Tu as économisé ${amt.toFixed(2)}€ ! ✨`);
+        }
+
+        function updateSavedDisplay() {
+            checkMonthlyReset();
+            document.getElementById('month-saved').innerText = (parseFloat(localStorage.getItem('m_s')) || 0).toFixed(2) + " €";
+            document.getElementById('year-saved').innerText = (parseFloat(localStorage.getItem('y_s')) || 0).toFixed(2) + " €";
+            document.getElementById('total-saved').innerText = (parseFloat(localStorage.getItem('t_s')) || 0).toFixed(2) + " €";
+        }
+
+        function resetBudget() {
+            if(confirm("Voulez-vous vraiment remettre vos économies à zéro ?")) {
+                localStorage.setItem('m_s', "0.00"); localStorage.setItem('y_s', "0.00"); localStorage.setItem('t_s', "0.00");
+                updateSavedDisplay();
+            }
+        }
+
+        // --- NAVIGATION & UI ---
         function go(p) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             ['main-content', 'map-page', 'profile-page', 'agenda-page'].forEach(id => document.getElementById(id).style.display = 'none');
             document.getElementById('search-container').style.display = (p === 'home') ? 'flex' : 'none';
-            
             if(p==='home'){document.getElementById('n-h').classList.add('active');document.getElementById('main-content').style.display='block';}
             if(p==='agenda'){document.getElementById('n-a').classList.add('active');document.getElementById('agenda-page').style.display='block';}
             if(p==='map'){document.getElementById('n-m').classList.add('active');document.getElementById('map-page').style.display='block';setTimeout(initMap,200);}
             if(p==='profile'){document.getElementById('n-p').classList.add('active');document.getElementById('profile-page').style.display='flex';updateSavedDisplay();}
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('th', isDark);
+        }
+
+        function openDetails(t, e, d, lat, lng, v, s) {
+            curT = t; curSave = s;
+            document.getElementById('mEmoji').innerText = e;
+            document.getElementById('mTitle').innerHTML = t + (v ? ' <i class="fa-solid fa-circle-check" style="color:#00a8ff"></i>' : '');
+            document.getElementById('mDesc').innerText = d;
+            document.getElementById('mGo').onclick = () => {
+                addToBudget(curSave);
+                window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
+            };
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function closeM() { document.getElementById('detailModal').style.display = 'none'; }
+        
+        function initMap() {
+            if (map) return;
+            map = L.map('map').setView([46.123, 3.425], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        }
+
+        function searchDeals() {
+            let val = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(val) ? "flex" : "none");
         }
 
         function filterCat(c, b) {
@@ -220,33 +261,11 @@
             });
         }
 
-        function openDetails(t, e, d, lat, lng, v, s) {
-            curT = t; curSave = s;
-            document.getElementById('mEmoji').innerText = e;
-            document.getElementById('mTitle').innerHTML = t + (v ? ' <i class="fa-solid fa-circle-check" style="color:#00a8ff"></i>' : '');
-            document.getElementById('mDesc').innerText = d;
-            document.getElementById('mGo').onclick = () => {
-                let total = parseFloat(localStorage.getItem('b_s')) || 0;
-                localStorage.setItem('b_s', (total + curSave).toFixed(2));
-                alert(`Bravo ! Tu as économisé ${curSave.toFixed(2)}€ ! ✨`);
-                window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
-            };
-            document.getElementById('detailModal').style.display = 'flex';
-        }
-
-        function closeM() { document.getElementById('detailModal').style.display = 'none'; }
-        function updateSavedDisplay() { document.getElementById('total-saved').innerText = (parseFloat(localStorage.getItem('b_s')) || 0).toFixed(2) + " €"; }
         function toggleFav(id) {
             let f = JSON.parse(localStorage.getItem('f')) || [];
             if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
             localStorage.setItem('f', JSON.stringify(f));
             document.getElementById(id).classList.toggle('is-fav');
-        }
-
-        function initMap() {
-            if (map) return;
-            map = L.map('map').setView([46.123, 3.425], 14);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         }
 
         function upImg(e,t) {
@@ -258,18 +277,21 @@
         }
 
         function zoomID(s) { if(s && document.getElementById('id-img').src){ document.getElementById('zImg').src=document.getElementById('id-img').src; document.getElementById('zoom-overlay').style.display='flex'; } else { document.getElementById('zoom-overlay').style.display='none'; }}
-        function toggleTheme() { document.body.classList.toggle('dark'); localStorage.setItem('th', document.body.classList.contains('dark')); }
         function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
-        function rep() { window.location.href = "mailto:contact@vichyu.fr?subject=Signalement"; }
+        function rep() { window.location.href = "mailto:contact@vichyu.fr"; }
         function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", url:window.location.href}); }
 
         window.onload = () => {
-            if(localStorage.getItem('th') === 'true') document.body.classList.add('dark');
+            if(localStorage.getItem('th') === 'true') {
+                document.body.classList.add('dark');
+                document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+            }
             document.getElementById('fn').value = localStorage.getItem('u_f') || "";
             if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i');
             if(localStorage.getItem('id_i')){ document.getElementById('id-img').src=localStorage.getItem('id_i'); document.getElementById('id-img').style.display='block'; }
             let f = JSON.parse(localStorage.getItem('f')) || [];
             f.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
+            updateSavedDisplay();
         };
     </script>
 </body>
