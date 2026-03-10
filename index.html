@@ -15,7 +15,6 @@
             --bg: #f8f9fe;
             --text: #2d3436;
             --light-text: #636e72;
-            --accent: #ff7675; /* Couleur pour le badge promo */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -32,22 +31,32 @@
         .search-bar { background: white; margin: 20px 0 -80px; padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; }
 
-        .container { padding: 100px 15px 20px; }
+        .container { padding: 90px 15px 20px; } /* Espace réduit ici */
 
-        /* --- BANNIERE PUB --- */
+        /* --- SYSTEME DE SLIDER POUR LES PUBS --- */
+        .ad-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+            scrollbar-width: none; /* Cache la scrollbar sur Firefox */
+        }
+        .ad-slider::-webkit-scrollbar { display: none; } /* Cache la scrollbar sur Chrome/Safari */
+
         .ad-banner {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            flex: 0 0 100%; /* Chaque pub prend 100% de la largeur */
+            scroll-snap-align: center;
             border-radius: 25px;
             padding: 20px;
-            margin-bottom: 25px;
             color: white;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
             display: flex;
             align-items: center;
             gap: 15px;
             cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
         .ad-badge {
@@ -58,7 +67,6 @@
             border-radius: 8px;
             font-size: 9px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .ad-content h4 { margin: 0; font-size: 18px; font-weight: 800; }
@@ -102,13 +110,35 @@
 
     <div class="container">
         
-        <div class="ad-banner" onclick="openModal('🎁','Offre Partenaire','-20% sur tout le menu','Offre exceptionnelle chez notre partenaire du mois ! Présente ce coupon lors de ton passage en caisse.')">
-            <div class="ad-badge">Sponsorisé</div>
-            <div style="font-size: 35px;">🔥</div>
-            <div class="ad-content">
-                <h4>O'Tacos Vichy</h4>
-                <p>Le 3ème tacos offert ce jeudi !</p>
+        <div class="ad-slider">
+            
+            <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);" onclick="openModal('🎁','O\'Tacos','3ème Tacos Offert','Valable tous les jeudis soir sur les tailles M et L.')">
+                <div class="ad-badge">Sponsorisé</div>
+                <div style="font-size: 35px;">🔥</div>
+                <div class="ad-content">
+                    <h4>O'Tacos Vichy</h4>
+                    <p>Le 3ème tacos offert ce jeudi !</p>
+                </div>
             </div>
+
+            <div class="ad-banner" style="background: linear-gradient(135deg, #005596, #00b0ff);" onclick="openModal('🍕','Domino\'s Pizza','-50% sur la 2ème','Offre valable sur toutes les pizzas larges à emporter.')">
+                <div class="ad-badge">Sponsorisé</div>
+                <div style="font-size: 35px;">🍕</div>
+                <div class="ad-content">
+                    <h4>Domino's Pizza</h4>
+                    <p>Mardi Fou : -50% sur la 2ème !</p>
+                </div>
+            </div>
+
+            <div class="ad-banner" style="background: linear-gradient(135deg, #ff7675, #fab1a0);" onclick="openModal('🍻','Le Bar de la Marine','Happy Hour Étudiant','Pinte au prix du demi de 18h à 20h.')">
+                <div class="ad-badge">Sponsorisé</div>
+                <div style="font-size: 35px;">🍹</div>
+                <div class="ad-content">
+                    <h4>Bar de la Marine</h4>
+                    <p>Happy Hour prolongé pour vous !</p>
+                </div>
+            </div>
+
         </div>
 
         <div class="categories">
