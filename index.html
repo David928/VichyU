@@ -100,7 +100,6 @@
             transform: scale(0.95);
         }
 
-        /* --- STYLE DU TEXTE D'INTRODUCTION --- */
         .intro-text {
             background: white;
             padding: 15px;
@@ -117,10 +116,7 @@
             line-height: 1.4;
         }
 
-        .intro-text strong {
-            color: var(--primary);
-        }
-
+        /* --- CARTES ET FILTRAGE --- */
         .card {
             background: white;
             border-radius: 22px;
@@ -130,6 +126,12 @@
             align-items: center;
             gap: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        /* Quand on cache une carte */
+        .card.hidden {
+            display: none;
         }
 
         .card-emoji {
@@ -162,24 +164,24 @@
         <h1>Vichy'U 🎓</h1>
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass" style="color: #ccc;"></i>
-            <input type="text" placeholder="Burger, Ciné, Salle de sport...">
+            <input type="text" id="searchInput" placeholder="Burger, Ciné, Salle de sport...">
         </div>
     </div>
 
     <div class="container">
         <div class="categories">
-            <button class="category-btn active">🚀 <span>Tous</span></button>
-            <button class="category-btn">🍔 <span>Restos</span></button>
-            <button class="category-btn">🍿 <span>Loisirs</span></button>
-            <button class="category-btn">🏊 <span>Sport</span></button>
+            <button class="category-btn active" data-filter="tous">🚀 <span>Tous</span></button>
+            <button class="category-btn" data-filter="restos">🍔 <span>Restos</span></button>
+            <button class="category-btn" data-filter="loisirs">🍿 <span>Loisirs</span></button>
+            <button class="category-btn" data-filter="sport">🏊 <span>Sport</span></button>
         </div>
 
         <div class="intro-text">
-            <p>Bienvenue sur <strong>Vichy'U</strong> ! L'application dédiée aux étudiants de Vichy pour retrouver les meilleurs <strong>bons plans</strong>, réductions et sorties de la ville en un clin d'œil. ⚡</p>
+            <p>Bienvenue sur <strong>Vichy'U</strong> ! Les meilleurs bons plans étudiants de Vichy. ⚡</p>
         </div>
 
         <div id="deals-list">
-            <div class="card">
+            <div class="card" data-category="restos">
                 <div class="card-emoji">🍕</div>
                 <div class="card-info">
                     <h3>Le Daily</h3>
@@ -187,11 +189,19 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" data-category="sport">
                 <div class="card-emoji">🏋️</div>
                 <div class="card-info">
                     <h3>Liberty Gym</h3>
                     <p>Frais d'inscription offerts</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="loisirs">
+                <div class="card-emoji">🎬</div>
+                <div class="card-info">
+                    <h3>Ciné Palace</h3>
+                    <p>Place à 6€ pour les étudiants</p>
                 </div>
             </div>
         </div>
@@ -199,11 +209,38 @@
 
     <script>
         const buttons = document.querySelectorAll('.category-btn');
+        const cards = document.querySelectorAll('.card');
 
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
+                // 1. Gérer l'apparence des boutons
                 buttons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+
+                // 2. Filtrer les cartes
+                const filter = btn.getAttribute('data-filter');
+
+                cards.forEach(card => {
+                    if (filter === 'tous' || card.getAttribute('data-category') === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Optionnel : Petite barre de recherche simple
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const text = e.target.value.toLowerCase();
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                if (title.includes(text)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
             });
         });
 
