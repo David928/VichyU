@@ -17,10 +17,7 @@
             --light-text: #636e72;
         }
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -39,12 +36,7 @@
             position: relative;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 800;
-            font-style: italic;
-        }
+        .header h1 { margin: 0; font-size: 32px; font-weight: 800; font-style: italic; }
 
         .search-bar {
             background: white;
@@ -56,24 +48,11 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .search-bar input {
-            border: none;
-            width: 100%;
-            margin-left: 10px;
-            font-size: 16px;
-            outline: none;
-        }
+        .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; }
 
-        .container {
-            padding: 100px 15px 20px;
-        }
+        .container { padding: 100px 15px 20px; }
 
-        .categories {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 25px;
-            width: 100%;
-        }
+        .categories { display: flex; gap: 6px; margin-bottom: 25px; width: 100%; }
 
         .category-btn {
             flex: 1;
@@ -88,35 +67,12 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 0;
             color: var(--text);
         }
 
-        .category-btn.active {
-            background: var(--primary);
-            color: white;
-            transform: scale(0.95);
-        }
+        .category-btn.active { background: var(--primary); color: white; }
 
-        .intro-text {
-            background: white;
-            padding: 15px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-        }
-
-        .intro-text p {
-            margin: 0;
-            font-size: 14px;
-            color: var(--light-text);
-            line-height: 1.4;
-        }
-
-        /* --- CARTES ET FILTRAGE --- */
+        /* --- STYLES DES CARTES --- */
         .card {
             background: white;
             border-radius: 22px;
@@ -126,13 +82,10 @@
             align-items: center;
             gap: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        /* Quand on cache une carte */
-        .card.hidden {
-            display: none;
-        }
+        .card.hidden { display: none; }
 
         .card-emoji {
             font-size: 30px;
@@ -145,16 +98,58 @@
             border-radius: 18px;
         }
 
-        .card-info h3 {
-            margin: 0;
-            font-size: 18px;
+        .card-info h3 { margin: 0; font-size: 18px; }
+        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: 600; font-size: 14px; }
+
+        /* --- STYLE DE LA MODALE (FICHE PRÉSENTATION) --- */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none; /* Cachée par défaut */
+            justify-content: center;
+            align-items: flex-end; /* S'ouvre par le bas sur mobile */
+            z-index: 1000;
         }
 
-        .card-info p {
-            margin: 5px 0 0;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 14px;
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px 20px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .modal-emoji { font-size: 50px; margin-bottom: 10px; }
+        .modal-title { font-size: 24px; font-weight: 800; margin: 10px 0; }
+        .modal-promo { color: var(--primary); font-weight: 700; font-size: 18px; margin-bottom: 15px; }
+        .modal-description { color: var(--light-text); font-size: 15px; margin-bottom: 20px; }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -164,7 +159,7 @@
         <h1>Vichy'U 🎓</h1>
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass" style="color: #ccc;"></i>
-            <input type="text" id="searchInput" placeholder="Burger, Ciné, Salle de sport...">
+            <input type="text" id="searchInput" placeholder="Chercher un bon plan...">
         </div>
     </div>
 
@@ -176,57 +171,70 @@
             <button class="category-btn" data-filter="sport">🏊 <span>Sport</span></button>
         </div>
 
-        <div class="intro-text">
-            <p>Bienvenue sur <strong>Vichy'U</strong> ! Les meilleurs bons plans étudiants de Vichy. ⚡</p>
-        </div>
-
         <div id="deals-list">
-            <div class="card" data-category="restos">
+            <div class="card" data-category="restos" 
+                 data-title="Le Daily" 
+                 data-promo="Formule Lardy : 8.50€"
+                 data-desc="Situé juste à côté du Pôle Lardy, Le Daily propose une formule midi complète pour les étudiants. Idéal pour manger vite et bien entre deux cours.">
                 <div class="card-emoji">🍕</div>
                 <div class="card-info">
-                    <h3>Le Delta</h3>
+                    <h3>Le Daily</h3>
                     <p>Formule Lardy : 8.50€</p>
                 </div>
             </div>
 
-            <div class="card" data-category="sport">
-                <div class="card-emoji">🥷</div>
+            <div class="card" data-category="sport" 
+                 data-title="Vertical Limit" 
+                 data-promo="Tarif réduit étudiant"
+                 data-desc="La salle d'escalade incontournable de Vichy. Que tu sois débutant ou pro, profite d'une réduction sur présentation de ta carte étudiante.">
+                <div class="card-emoji">🧗</div>
                 <div class="card-info">
-                    <h3>Vertical limit</h3>
-                    <p>8€ par ninja</p>
-                </div>
-            </div>
-    
-            <div class="card" data-category="sport">
-                 <div class="card-emoji">🧗</div>
-                 <div class="card-info">
                     <h3>Vertical Limit</h3>
-                     <p>Tarif étudiant sur l'accès libre</p>
-             </div>
-
-            <div class="card" data-category="loisirs">
-                <div class="card-emoji">🎬</div>
-                <div class="card-info">
-                    <h3>Ciné Palace</h3>
-                    <p>Place à 6€ pour les étudiants</p>
+                    <p>Accès réduit</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-emoji" id="modalEmoji"></div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-promo" id="modalPromo"></div>
+            <div class="modal-description" id="modalDesc"></div>
+            <button class="btn-action" onclick="closeModal()">J'en profite !</button>
         </div>
     </div>
 
     <script>
         const buttons = document.querySelectorAll('.category-btn');
         const cards = document.querySelectorAll('.card');
+        const modal = document.getElementById('infoModal');
 
+        // GESTION DU CLIC SUR LES CARTES POUR OUVRIR LA FICHE
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                document.getElementById('modalEmoji').innerText = card.querySelector('.card-emoji').innerText;
+                document.getElementById('modalTitle').innerText = card.getAttribute('data-title');
+                document.getElementById('modalPromo').innerText = card.getAttribute('data-promo');
+                document.getElementById('modalDesc').innerText = card.getAttribute('data-desc');
+                modal.style.display = 'flex';
+            });
+        });
+
+        // FERMER LA MODALE
+        function closeModal() { modal.style.display = 'none'; }
+        document.querySelector('.close-modal').onclick = closeModal;
+        window.onclick = (event) => { if (event.target == modal) closeModal(); };
+
+        // FILTRAGE DES CATÉGORIES
         buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // 1. Gérer l'apparence des boutons
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Évite d'ouvrir la modale en cliquant sur le filtre
                 buttons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-
-                // 2. Filtrer les cartes
                 const filter = btn.getAttribute('data-filter');
-
                 cards.forEach(card => {
                     if (filter === 'tous' || card.getAttribute('data-category') === filter) {
                         card.classList.remove('hidden');
@@ -237,25 +245,15 @@
             });
         });
 
-        // Optionnel : Petite barre de recherche simple
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
+        // BARRE DE RECHERCHE
+        document.getElementById('searchInput').addEventListener('input', (e) => {
             const text = e.target.value.toLowerCase();
             cards.forEach(card => {
-                const title = card.querySelector('h3').innerText.toLowerCase();
-                if (title.includes(text)) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
+                const title = card.getAttribute('data-title').toLowerCase();
+                card.classList.toggle('hidden', !title.includes(text));
             });
         });
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
-            });
-        }
     </script>
 </body>
 </html>
+
