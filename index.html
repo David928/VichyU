@@ -24,21 +24,18 @@
         .header h1 { margin: 0; font-size: 26px; font-weight: 800; font-style: italic; }
         .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; }
 
-        /* RECHERCHE ET ESPACEMENT */
         .search-bar { background: white; margin: 15px auto -30px; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; position: relative; z-index: 100; }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; background: transparent; color: #2d3436; }
         .clear-search { color: #ccc; cursor: pointer; padding: 5px; visibility: hidden; }
         body.dark .search-bar { background: #2d2d2d; }
         body.dark .search-bar input { color: white; }
 
-        .container { padding: 45px 15px 10px; } /* Réduit pour remonter les bannières */
+        .container { padding: 45px 15px 10px; }
 
-        /* BANNIÈRES AGRANDIES */
         .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 25px; scrollbar-width: none; padding: 10px 0; }
         .ad-banner { flex: 0 0 85%; border-radius: 25px; min-height: 120px; padding: 20px; color: white; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
         .ad-banner h4 { font-size: 18px; margin: 0; }
 
-        /* RESTE DU STYLE */
         .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
         .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
@@ -69,7 +66,6 @@
         #zoom-overlay img { max-width: 90%; border-radius: 10px; }
         .hidden { display: none !important; }
 
-        /* BUDGET PROFIL */
         .budget-container { width: 100%; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
         .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; text-align: center; }
         .budget-amount { font-size: 24px; font-weight: 900; display: block; }
@@ -125,7 +121,7 @@
 
         <div id="agenda-page">
             <h2 style="margin-top:0">📅 Agenda</h2>
-            <div class="event-card" onclick="openEvent('Soirée Spring Break', '📅 12 Mars à 21h00\n📍 Bar Le 15\n\nEntrée gratuite sur présentation de l\'appli.')">
+            <div class="event-card" onclick="openEvent('Soirée Spring Break', '📅 12 Mars à 21h00\n📍 Bar Le 15\n\nEntrée gratuite.')">
                 <div class="event-date">12<span>Mar</span></div><div class="event-info"><h4>Soirée Spring Break</h4><p>21h00 - Bar Le 15</p></div>
             </div>
         </div>
@@ -134,8 +130,8 @@
 
         <div id="profile-page">
             <div class="budget-container">
-                <div class="budget-widget"><span style="font-size: 11px; opacity: 0.9;">ÉCONOMIES DU MOIS 💰</span><span class="budget-amount">0.00 €</span></div>
-                <div class="budget-sub"><div style="text-align:center">ANNÉE <b>0.00 €</b></div><div style="text-align:center">TOTAL <b>0.00 €</b></div></div>
+                <div class="budget-widget"><span style="font-size: 11px; opacity: 0.9;">ÉCONOMIES DU MOIS 💰</span><span class="budget-amount" id="month-saved">0.00 €</span></div>
+                <div class="budget-sub"><div style="text-align:center">ANNÉE <b id="year-saved">0.00 €</b></div><div style="text-align:center">TOTAL <b id="total-saved">0.00 €</b></div></div>
             </div>
             <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label>
             <input type="file" id="p-up" hidden accept="image/*" onchange="upImg(event,'p')">
@@ -171,18 +167,22 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let map;
+        let totalSaved = parseFloat(localStorage.getItem('saved_total')) || 0;
+
+        function updateSaved(amount) {
+            totalSaved += amount;
+            localStorage.setItem('saved_total', totalSaved);
+            document.getElementById('month-saved').innerText = totalSaved.toFixed(2) + " €";
+            document.getElementById('year-saved').innerText = totalSaved.toFixed(2) + " €";
+            document.getElementById('total-saved').innerText = totalSaved.toFixed(2) + " €";
+        }
 
         function toggleTheme() {
             document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
             localStorage.setItem('th', isDark);
-            // On force le changement d'icône ici
             const icon = document.getElementById('theme-icon');
-            if(isDark) {
-                icon.classList.replace('fa-moon', 'fa-sun');
-            } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-            }
+            icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
 
         function searchDeals() {
@@ -203,7 +203,27 @@
             if(p==='home') document.getElementById('main-content').style.display='block';
             if(p==='agenda') document.getElementById('agenda-page').style.display='block';
             if(p==='map') { document.getElementById('map-page').style.display='block'; setTimeout(initMap, 200); }
-            if(p==='profile') document.getElementById('profile-page').style.display='flex';
+            if(p==='profile') { 
+                document.getElementById('profile-page').style.display='flex';
+                updateSaved(0); 
+            }
+        }
+
+        function openDetails(t, e, d, lat, lng, v, s) {
+            document.getElementById('mEmoji').innerText = e;
+            document.getElementById('mTitle').innerText = t;
+            document.getElementById('mDesc').innerText = d;
+            document.getElementById('mGo').innerText = "Y aller maintenant";
+            document.getElementById('mRep').style.display = 'block';
+            document.getElementById('mGo').onclick = () => { 
+                if(s > 0) {
+                    alert("BRAVO ! 🎉\nTu viens d'économiser " + s.toFixed(2) + "€ sur ce bon plan !");
+                    updateSaved(s);
+                }
+                window.open(`https://www.google.com/maps?q=${lat},${lng}`); 
+                closeM();
+            };
+            document.getElementById('detailModal').style.display = 'flex';
         }
 
         function openEvent(t, d) {
@@ -213,16 +233,6 @@
             document.getElementById('mGo').innerText = "Ajouter au calendrier";
             document.getElementById('mGo').onclick = () => { alert("Événement ajouté !"); closeM(); };
             document.getElementById('mRep').style.display = 'none';
-            document.getElementById('detailModal').style.display = 'flex';
-        }
-
-        function openDetails(t, e, d, lat, lng, v, s) {
-            document.getElementById('mEmoji').innerText = e;
-            document.getElementById('mTitle').innerText = t;
-            document.getElementById('mDesc').innerText = d;
-            document.getElementById('mGo').innerText = "Y aller maintenant";
-            document.getElementById('mRep').style.display = 'block';
-            document.getElementById('mGo').onclick = () => { window.open(`https://www.google.com/maps?q=${lat},${lng}`); };
             document.getElementById('detailModal').style.display = 'flex';
         }
 
@@ -278,17 +288,17 @@
             const isDark = localStorage.getItem('th') === 'true';
             if(isDark) {
                 document.body.classList.add('dark');
-                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+                document.getElementById('theme-icon').className = 'fa-solid fa-sun';
             }
             document.getElementById('fn').value = localStorage.getItem('u_f') || "";
             if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i');
             if(localStorage.getItem('id_i')) { document.getElementById('id-img').src = localStorage.getItem('id_i'); document.getElementById('id-img').style.display = 'block'; }
-            let f = JSON.parse(localStorage.getItem('f')) || [];
-            f.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
             
+            updateSaved(0);
+
             if(!sessionStorage.getItem('pop')) {
                 setTimeout(() => {
-                    openDetails('BON PLAN DU JOUR 🔥', '🌮', 'O\'Tacos : Le 3ème tacos est offert aujourd\'hui sur présentation de ton profil !', 46.1250, 3.4220, true, 0);
+                    openDetails('BON PLAN DU JOUR 🔥', '🌮', 'O\'Tacos : Le 3ème tacos est offert aujourd\'hui sur présentation de ton profil !', 46.1250, 3.4220, true, 4.50);
                     sessionStorage.setItem('pop', 'true');
                 }, 1000);
             }
