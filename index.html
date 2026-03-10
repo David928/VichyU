@@ -3,69 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#4f46e5">
+    <title>Vichy'U</title>
     <link rel="manifest" href="manifest.json">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Vichy'U - Bons Plans Étudiants</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3429/3429149.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .active-btn { background-color: #4f46e5 !important; color: white !important; transform: scale(1.05); }
-        .hidden-card { display: none; }
+        :root {
+            --primary: #5d5fef;
+            --bg: #f8f9fe;
+            --text: #2d3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .header {
+            background: var(--primary);
+            padding: 40px 20px 60px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            color: white;
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            font-style: italic;
+        }
+
+        .search-bar {
+            background: white;
+            margin: 20px 0 -80px;
+            padding: 15px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .search-bar input {
+            border: none;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .container {
+            padding: 100px 15px 20px;
+        }
+
+        /* --- SECTION BOUTONS MODIFIÉE --- */
+        .categories {
+            display: flex;
+            gap: 6px; /* Espace réduit entre les boutons */
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .category-btn {
+            flex: 1; /* Force les boutons à se partager l'espace équitablement */
+            background: white;
+            border: none;
+            padding: 12px 2px; /* Padding latéral réduit au minimum */
+            border-radius: 15px;
+            font-size: 12px; /* Texte légèrement plus petit pour tenir */
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-width: 0; /* Important pour le flexbox */
+        }
+
+        .category-btn span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .card {
+            background: white;
+            border-radius: 22px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .card-emoji {
+            font-size: 30px;
+            background: #f0f1ff;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+        }
+
+        .card-info h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .card-info p {
+            margin: 5px 0 0;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
-    <div class="max-w-md mx-auto bg-gray-50 min-h-screen relative pb-24 shadow-2xl">
-        <header class="bg-indigo-600 text-white p-8 rounded-b-[40px] shadow-lg">
-            <h1 class="text-3xl font-black italic tracking-tighter">Vichy'U 🎓</h1>
-            <div class="mt-6 relative text-gray-800">
-                <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Burger, Ciné, Salle de sport..." 
-                    class="w-full p-4 pl-12 rounded-2xl focus:outline-none shadow-xl border-none text-sm">
-                <span class="absolute left-4 top-3.5 text-xl">🔍</span>
-            </div>
-        </header>
+<body>
 
-        <div class="flex overflow-x-auto p-4 gap-3 no-scrollbar mt-2">
-            <button onclick="filterCategory('Tous', this)" class="cat-filter px-6 py-2.5 rounded-2xl bg-indigo-600 text-white text-xs font-bold active-btn flex-shrink-0 shadow-md">🚀 Tous</button>
-            <button onclick="filterCategory('Resto', this)" class="cat-filter px-6 py-2.5 rounded-2xl bg-white text-gray-600 border border-gray-100 text-xs font-bold flex-shrink-0 shadow-sm">🍔 Restos</button>
-            <button onclick="filterCategory('Loisirs', this)" class="cat-filter px-6 py-2.5 rounded-2xl bg-white text-gray-600 border border-gray-100 text-xs font-bold flex-shrink-0 shadow-sm">🍿 Loisirs</button>
-            <button onclick="filterCategory('Sport', this)" class="cat-filter px-6 py-2.5 rounded-2xl bg-white text-gray-600 border border-gray-100 text-xs font-bold flex-shrink-0 shadow-sm">🏊 Sport</button>
+    <div class="header">
+        <h1>Vichy'U 🎓</h1>
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass" style="color: #ccc;"></i>
+            <input type="text" placeholder="Burger, Ciné, Salle de sport...">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="categories">
+            <button class="category-btn active">🚀 <span>Tous</span></button>
+            <button class="category-btn">🍔 <span>Restos</span></button>
+            <button class="category-btn">🍿 <span>Loisirs</span></button>
+            <button class="category-btn">🏊 <span>Sport</span></button>
         </div>
 
-        <main id="offersList" class="p-4 space-y-4">
-            <div class="offer-card bg-white p-5 rounded-[25px] shadow-sm flex items-center gap-5" data-category="Resto">
-                <div class="text-3xl">🍕</div>
-                <div class="flex-1">
-                    <h3 class="font-extrabold text-gray-800 title">Le Daily</h3>
-                    <p class="text-indigo-600 font-bold text-sm">Formule Lardy : 8.50€</p>
+        <div id="deals-list">
+            <div class="card">
+                <div class="card-emoji">🍕</div>
+                <div class="card-info">
+                    <h3>Le Daily</h3>
+                    <p>Formule Lardy : 8.50€</p>
                 </div>
             </div>
-        </main>
+
+            <div class="card">
+                <div class="card-emoji">🏋️</div>
+                <div class="card-info">
+                    <h3>Liberty Gym</h3>
+                    <p>Frais d'inscription offerts</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        function filterCards() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('offer-card');
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].querySelector('.title').innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "flex" : "none";
-            }
-        }
-
-        function filterCategory(cat, btn) {
-            document.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active-btn', 'bg-indigo-600', 'text-white'));
-            btn.classList.add('active-btn');
-            let cards = document.getElementsByClassName('offer-card');
-            for (let i = 0; i < cards.length; i++) {
-                cards[i].style.display = (cat === 'Tous' || cards[i].getAttribute('data-category') === cat) ? "flex" : "none";
-            }
-        }
-
-        // Script pour enregistrer la PWA
+        // Enregistrement du Service Worker pour le mode PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
         }
     </script>
 </body>
+</html>
 </html>
