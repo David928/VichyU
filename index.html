@@ -30,23 +30,27 @@
             border-bottom-left-radius: 40px; 
             border-bottom-right-radius: 40px; 
             color: white; 
-            position: relative; 
-            z-index: 1001; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            text-align: center;
         }
-        .logo-img { height: 45px; margin-bottom: 5px; }
+        .header h1 { margin: 0; font-size: 32px; font-weight: 800; font-style: italic; }
 
-        .search-bar { background: white; margin: 20px 0 -80px; padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        .search-bar { 
+            background: white; 
+            margin: 20px auto -80px; 
+            padding: 15px 20px; 
+            border-radius: 20px; 
+            display: flex; 
+            align-items: center; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            width: 90%;
+        }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; color: var(--text); }
 
         .container { padding: 95px 15px 20px; }
 
-        /* --- CARTE & BOUTON LOC --- */
-        #map-page { display: none; height: 75vh; width: 100%; position: relative; }
+        /* --- CARTE --- */
+        #map-page { display: none; height: 70vh; width: 100%; position: relative; }
         #map { height: 100%; width: 100%; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
         .locate-btn {
             position: absolute; bottom: 20px; right: 20px;
             z-index: 1002; background: white; border: none;
@@ -56,15 +60,37 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- SLIDER & FILTRES --- */
-        .ad-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        /* --- SLIDER DE BANNIÈRES --- */
+        .ad-slider { 
+            display: flex; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            gap: 10px; 
+            margin-bottom: 25px; 
+            padding-bottom: 5px;
+            scrollbar-width: none; 
+        }
         .ad-slider::-webkit-scrollbar { display: none; }
-        .ad-banner { flex: 0 0 100%; scroll-snap-align: center; border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; gap: 15px; }
-        
-        .categories { display: flex; gap: 8px; margin-bottom: 25px; overflow-x: auto; scrollbar-width: none; }
+        .ad-banner { 
+            flex: 0 0 85%; 
+            scroll-snap-align: center; 
+            border-radius: 25px; 
+            padding: 20px; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        }
+
+        /* --- FILTRES --- */
+        .categories { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .categories::-webkit-scrollbar { display: none; }
         .category-btn {
-            flex: 0 0 85px; background: white; border: none; padding: 12px 2px; border-radius: 15px;
-            font-size: 11px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px;
+            flex: 0 0 90px; background: white; border: none; padding: 12px 5px; border-radius: 18px;
+            font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            color: var(--text);
         }
         .category-btn.active { background-color: var(--primary); color: white; }
 
@@ -72,6 +98,13 @@
         .card { background: white; border-radius: 22px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .card.hidden { display: none !important; }
         .card-emoji { font-size: 30px; background: #f0f1ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
+        .card-info { flex-grow: 1; }
+        .card-info h3 { margin: 0; font-size: 16px; }
+        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: bold; font-size: 14px; }
+        
+        .btn-go {
+            background: #f0f1ff; color: var(--primary); border: none; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; margin-top: 8px; cursor: pointer;
+        }
 
         /* --- NAV BAS --- */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 1000; }
@@ -79,9 +112,9 @@
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); }
 
-        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; }
+        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; padding: 5px;}
         .fav-btn.is-fav { color: var(--heart-red); }
-        #empty-msg { text-align: center; color: var(--light-text); margin-top: 50px; display: none; }
+        #empty-msg { text-align: center; color: #b2bec3; margin-top: 50px; display: none; font-style: italic; }
     </style>
 </head>
 <body>
@@ -90,7 +123,7 @@
         <h1 id="page-title">Vichy'U 🎓</h1>
         <div class="search-bar" id="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Où manger ce midi ?">
+            <input type="text" id="searchInput" placeholder="Rechercher une offre ou un lieu...">
         </div>
     </div>
 
@@ -100,34 +133,57 @@
             <button class="locate-btn" onclick="locateUser()"><i class="fa-solid fa-location-crosshairs"></i></button>
         </div>
 
-        <div id="home-content">
+        <div id="main-content">
             <div id="ad-container" class="ad-slider">
                 <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
                     <div style="font-size: 35px;">🔥</div>
-                    <div class="ad-content"><h4>O'Tacos</h4><p>Le 3ème offert !</p></div>
+                    <div class="ad-content"><h4>O'Tacos Vichy</h4><p>Le 3ème offert !</p></div>
+                </div>
+                <div class="ad-banner" style="background: linear-gradient(135deg, #ff7675, #fab1a0);">
+                    <div style="font-size: 35px;">🍕</div>
+                    <div class="ad-content"><h4>Le Daily</h4><p>Menu spécial Lardy</p></div>
                 </div>
             </div>
 
             <div class="categories" id="filter-container">
-                <button class="category-btn active" onclick="filterDeals('tous', this)">🚀<span>Tous</span></button>
-                <button class="category-btn" onclick="filterDeals('restos', this)">🍔<span>Restos</span></button>
-                <button class="category-btn" onclick="filterDeals('loisirs', this)">🍿<span>Loisirs</span></button>
-                <button class="category-btn" onclick="filterDeals('sport', this)">🏊<span>Sport</span></button>
+                <button class="category-btn active" onclick="filterByCat('tous', this)">🚀<span>Tous</span></button>
+                <button class="category-btn" onclick="filterByCat('restos', this)">🍔<span>Restos</span></button>
+                <button class="category-btn" onclick="filterByCat('loisirs', this)">🍿<span>Loisirs</span></button>
+                <button class="category-btn" onclick="filterByCat('sport', this)">🏊<span>Sport</span></button>
             </div>
 
             <div id="deals-list">
                 <div class="card" id="deal-1" data-cat="restos">
                     <div class="card-emoji">🍕</div>
-                    <div class="card-info"><h3>Le Daily</h3><p>Formule Lardy : 8.50€</p></div>
+                    <div class="card-info">
+                        <h3>Le Daily</h3>
+                        <p>Formule Lardy : 8.50€</p>
+                        <button class="btn-go" onclick="openMaps(46.1218, 3.4278)"><i class="fa-solid fa-route"></i> Y aller</button>
+                    </div>
                     <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-1')"></i>
                 </div>
+
                 <div class="card" id="deal-2" data-cat="sport">
                     <div class="card-emoji">🧗</div>
-                    <div class="card-info"><h3>Vertical Limit</h3><p>Accès réduit étudiant</p></div>
+                    <div class="card-info">
+                        <h3>Vertical Limit</h3>
+                        <p>Accès réduit étudiant</p>
+                        <button class="btn-go" onclick="openMaps(46.1210, 3.4168)"><i class="fa-solid fa-route"></i> Y aller</button>
+                    </div>
                     <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-2')"></i>
                 </div>
+
+                <div class="card" id="deal-3" data-cat="loisirs">
+                    <div class="card-emoji">🎬</div>
+                    <div class="card-info">
+                        <h3>CGR Cinéma</h3>
+                        <p>Tarif étudiant permanent</p>
+                        <button class="btn-go" onclick="openMaps(46.1245, 3.4230)"><i class="fa-solid fa-route"></i> Y aller</button>
+                    </div>
+                    <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-3')"></i>
+                </div>
             </div>
-            <div id="empty-msg">Aucun favori pour l'instant... 💔</div>
+            <div id="empty-msg">Aucun favori enregistré... 💔</div>
         </div>
     </div>
 
@@ -142,78 +198,62 @@
         let map;
         let userMarker;
 
-        function initMap() {
-            if (!map) {
-                map = L.map('map').setView([46.1215, 3.4275], 14);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-                // Marqueurs des restos
-                L.marker([46.1218, 3.4278]).addTo(map).bindPopup('<b>Le Daily</b><br>Promo étudiant !');
-                L.marker([46.1250, 3.4220]).addTo(map).bindPopup('<b>O\'Tacos</b><br>Offre spéciale');
-            }
+        // --- FONCTION ITINÉRAIRE ---
+        function openMaps(lat, lng) {
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+            window.open(url, '_blank');
         }
 
-        // --- FONCTION ME LOCALISER ---
-        function locateUser() {
-            if (!navigator.geolocation) {
-                alert("La géolocalisation n'est pas supportée par votre navigateur");
-                return;
-            }
-
-            map.locate({setView: true, maxZoom: 16});
-
-            map.on('locationfound', function(e) {
-                if (userMarker) map.removeLayer(userMarker);
-                userMarker = L.circleMarker(e.latlng, {
-                    radius: 10,
-                    fillColor: "#5d5fef",
-                    color: "white",
-                    weight: 3,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                }).addTo(map).bindPopup("Tu es ici !").openPopup();
-            });
-
-            map.on('locationerror', function() {
-                alert("Impossible de trouver votre position.");
-            });
-        }
-
+        // --- GESTION DES PAGES ---
         function showPage(page) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('home-content').style.display = 'none';
+            document.getElementById('main-content').style.display = 'none';
             document.getElementById('map-page').style.display = 'none';
             document.getElementById('search-container').style.display = 'flex';
             document.getElementById('empty-msg').style.display = 'none';
 
             if (page === 'home') {
                 document.getElementById('nav-home').classList.add('active');
-                document.getElementById('home-content').style.display = 'block';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('ad-container').style.display = 'flex';
+                document.getElementById('filter-container').style.display = 'flex';
                 document.getElementById('page-title').innerText = "Vichy'U 🎓";
-                document.querySelectorAll('.card').forEach(c => c.classList.remove('hidden'));
             } 
             else if (page === 'map') {
                 document.getElementById('nav-map').classList.add('active');
                 document.getElementById('map-page').style.display = 'block';
                 document.getElementById('search-container').style.display = 'none';
-                document.getElementById('page-title').innerText = "Vichy à la loupe 📍";
-                setTimeout(() => {
-                    initMap();
-                    map.invalidateSize(); // Force la carte à se rafraîchir
-                }, 100);
+                document.getElementById('page-title').innerText = "Carte 📍";
+                setTimeout(() => { if (!map) initMap(); map.invalidateSize(); }, 100);
             } 
             else if (page === 'fav') {
                 document.getElementById('nav-fav').classList.add('active');
-                document.getElementById('home-content').style.display = 'block';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('ad-container').style.display = 'none';
+                document.getElementById('filter-container').style.display = 'none';
                 document.getElementById('page-title').innerText = "Mes Favoris ❤️";
-                const favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-                let hasFavs = false;
-                document.querySelectorAll('.card').forEach(card => {
-                    if (favs.includes(card.id)) { card.classList.remove('hidden'); hasFavs = true; }
-                    else { card.classList.add('hidden'); }
-                });
-                document.getElementById('empty-msg').style.display = hasFavs ? 'none' : 'block';
+                updateFavView();
             }
+        }
+
+        // --- CARTE ---
+        function initMap() {
+            map = L.map('map').setView([46.1215, 3.4275], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Marqueurs avec bouton itinéraire dans la bulle
+            L.marker([46.1218, 3.4278]).addTo(map).bindPopup('<b>Le Daily</b><br><button onclick="openMaps(46.1218, 3.4278)" style="border:none; background:var(--primary); color:white; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer;">Y aller</button>');
+            L.marker([46.1245, 3.4230]).addTo(map).bindPopup('<b>CGR Cinéma</b><br><button onclick="openMaps(46.1245, 3.4230)" style="border:none; background:var(--primary); color:white; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer;">Y aller</button>');
+        }
+
+        // --- AUTRES FONCTIONS ---
+        function filterByCat(category, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.card').forEach(card => {
+                if (category === 'tous' || card.getAttribute('data-cat') === category) card.classList.remove('hidden');
+                else card.classList.add('hidden');
+            });
         }
 
         function toggleFavorite(id) {
@@ -222,7 +262,7 @@
             if (favs.includes(id)) {
                 favs = favs.filter(item => item !== id);
                 heart.classList.remove('is-fav');
-                if(document.getElementById('nav-fav').classList.contains('active')) document.getElementById(id).classList.add('hidden');
+                if(document.getElementById('nav-fav').classList.contains('active')) updateFavView();
             } else {
                 favs.push(id);
                 heart.classList.add('is-fav');
@@ -230,7 +270,17 @@
             localStorage.setItem('vichyu_favs', JSON.stringify(favs));
         }
 
-        window.onload = function() {
+        function updateFavView() {
+            const favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
+            let count = 0;
+            document.querySelectorAll('.card').forEach(card => {
+                if (favs.includes(card.id)) { card.classList.remove('hidden'); count++; }
+                else card.classList.add('hidden');
+            });
+            document.getElementById('empty-msg').style.display = count > 0 ? 'none' : 'block';
+        }
+
+        window.onload = () => {
             let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
             favs.forEach(id => {
                 const heart = document.querySelector(`#${id} .fav-btn`);
