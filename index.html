@@ -36,8 +36,9 @@
         .ad-banner { flex: 0 0 85%; border-radius: 25px; min-height: 120px; padding: 20px; color: white; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
         .ad-banner h4 { font-size: 18px; margin: 0; }
 
-        .categories-grid { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 20px; scrollbar-width: none; padding-bottom: 5px; }
-        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; min-width: 75px; flex-shrink: 0; }
+        /* Retour aux 2 lignes de boutons fixes */
+        .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
 
         .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; }
@@ -102,6 +103,8 @@
                 <div class="cat-item" onclick="filterCat('loisirs', this)"><i class="fa-solid fa-film"></i>Loisirs</div>
                 <div class="cat-item" onclick="filterCat('utiles', this)"><i class="fa-solid fa-bag-shopping"></i>Courses</div>
                 <div class="cat-item" onclick="filterCat('sport', this)"><i class="fa-solid fa-swimmer"></i>Sport</div>
+                <div class="cat-item" onclick="filterCat('beaute', this)"><i class="fa-solid fa-scissors"></i>Beauté</div>
+                <div class="cat-item" onclick="filterCat('tech', this)"><i class="fa-solid fa-laptop"></i>Tech</div>
                 <div class="cat-item" onclick="filterCat('fav', this)"><i class="fa-solid fa-heart"></i>Favs</div>
             </div>
 
@@ -110,42 +113,27 @@
                     <div class="card-emoji">🍕</div><div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check" style="color:#00a8ff"></i></h3><p>Économise 2.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert sur présentation du profil.', 46.1250, 3.4220, true, 5.00)">
+                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true, 5.00)">
                     <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos</h3><p>Économise 5.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('Columbus Cafe', '☕', '-15% sur toutes les boissons.', 46.1235, 3.4241, true, 0.80)">
+                <div class="card" data-cat="restos" onclick="openDetails('Columbus Cafe', '☕', '-15% sur les boissons.', 46.1235, 3.4241, true, 0.80)">
                     <div class="card-emoji">☕</div><div class="card-info"><h3>Columbus Cafe</h3><p>Économise 0.80€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('Sushi Shop', '🍣', 'Box midi à 12€ au lieu de 15€.', 46.1248, 3.4212, true, 3.00)">
-                    <div class="card-emoji">🍣</div><div class="card-info"><h3>Sushi Shop</h3><p>Économise 3.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f4" onclick="event.stopPropagation(); toggleFav('f4')"></i>
-                </div>
-
-                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place de ciné à 7€ pour les étudiants.', 46.1221, 3.4215, true, 4.00)">
+                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place de ciné à 7€.', 46.1221, 3.4215, true, 4.00)">
                     <div class="card-emoji">🍿</div><div class="card-info"><h3>CGR Vichy</h3><p>Économise 4.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f5" onclick="event.stopPropagation(); toggleFav('f5')"></i>
                 </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('Laser Game Evolution', '🔫', '2 parties achetées = 1 offerte.', 46.1310, 3.4150, true, 8.00)">
-                    <div class="card-emoji">🔫</div><div class="card-info"><h3>Laser Game</h3><p>Économise 8.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f6" onclick="event.stopPropagation(); toggleFav('f6')"></i>
-                </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('Opéra de Vichy', '🎭', 'Places de dernière minute à 5€.', 46.1232, 3.4195, true, 15.00)">
+                <div class="card" data-cat="loisirs" onclick="openDetails('Opéra de Vichy', '🎭', 'Places à 5€ (last minute).', 46.1232, 3.4195, true, 15.00)">
                     <div class="card-emoji">🎭</div><div class="card-info"><h3>Opéra Vichy</h3><p>Économise 15.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f7" onclick="event.stopPropagation(); toggleFav('f7')"></i>
                 </div>
-
-                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '10% de remise sur tout le magasin.', 46.1242, 3.4230, true, 2.00)">
+                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '10% de remise magasin.', 46.1242, 3.4230, true, 3.50)">
                     <div class="card-emoji">🛒</div><div class="card-info"><h3>Monoprix</h3><p>Économise 10%</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f8" onclick="event.stopPropagation(); toggleFav('f8')"></i>
                 </div>
-                <div class="card" data-cat="utiles" onclick="openDetails('Boulangerie Banette', '🥖', 'La formule sandwich à 5.50€.', 46.1210, 3.4260, true, 1.20)">
-                    <div class="card-emoji">🥖</div><div class="card-info"><h3>Banette Lardy</h3><p>Économise 1.20€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f9" onclick="event.stopPropagation(); toggleFav('f9')"></i>
-                </div>
-
-                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée à 3.20€ sur justificatif.', 46.1450, 3.4120, true, 2.00)">
+                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée à 3.20€.', 46.1450, 3.4120, true, 2.00)">
                     <div class="card-emoji">🏊</div><div class="card-info"><h3>Stade Aquatique</h3><p>Économise 2.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f10" onclick="event.stopPropagation(); toggleFav('f10')"></i>
                 </div>
@@ -153,28 +141,32 @@
                     <div class="card-emoji">💪</div><div class="card-info"><h3>Basic-Fit</h3><p>Économise 19.99€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f11" onclick="event.stopPropagation(); toggleFav('f11')"></i>
                 </div>
-                <div class="card" data-cat="sport" onclick="openDetails('Vichy Canoë', '🚣', 'Location 1h = 2h de navigation.', 46.1265, 3.4140, true, 10.00)">
-                    <div class="card-emoji">🚣</div><div class="card-info"><h3>Vichy Canoë</h3><p>Économise 10.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f12" onclick="event.stopPropagation(); toggleFav('f12')"></i>
+                <div class="card" data-cat="beaute" onclick="openDetails('Coiffeur Lardy', '✂️', '-20% sur la coupe.', 46.1220, 3.4280, true, 5.00)">
+                    <div class="card-emoji">✂️</div><div class="card-info"><h3>Coiffeur Lardy</h3><p>Économise 5.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f13" onclick="event.stopPropagation(); toggleFav('f13')"></i>
+                </div>
+                <div class="card" data-cat="tech" onclick="openDetails('Répar\'Tout', '📱', 'Protections écran à -50%.', 46.1240, 3.4210, true, 10.00)">
+                    <div class="card-emoji">📱</div><div class="card-info"><h3>Répar'Tout</h3><p>Économise 10.00€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f14" onclick="event.stopPropagation(); toggleFav('f14')"></i>
                 </div>
             </div>
         </div>
 
         <div id="agenda-page">
-            <h2 style="margin-top:0">📅 Agenda Étudiant</h2>
+            <h2 style="margin-top:0">📅 Agenda</h2>
             <div class="event-card" onclick="openEvent('Soirée Spring Break', '📅 12 Mars à 21h00\n📍 Bar Le 15\n\nEntrée gratuite.')">
                 <div class="event-date">12<span>Mar</span></div><div class="event-info"><h4>Soirée Spring Break</h4><p>21h00 - Bar Le 15</p></div>
             </div>
             <div class="event-card" onclick="openEvent('Forum Jobs d\'été', '📅 15 Mars à 10h00\n📍 Hôtel de Ville\n\nVient avec ton CV !')">
                 <div class="event-date">15<span>Mar</span></div><div class="event-info"><h4>Forum Jobs d'été</h4><p>10h00 - Mairie</p></div>
             </div>
-            <div class="event-card" onclick="openEvent('Tournoi de Padel', '📅 18 Mars à 14h00\n📍 Sporting Vichy\n\nInscription gratuite en équipe.')">
+            <div class="event-card" onclick="openEvent('Tournoi de Padel', '📅 18 Mars à 14h00\n📍 Sporting Vichy\n\nInscription gratuite.')">
                 <div class="event-date">18<span>Mar</span></div><div class="event-info"><h4>Tournoi de Padel</h4><p>14h00 - Sporting</p></div>
             </div>
-            <div class="event-card" onclick="openEvent('Conférence IA', '📅 22 Mars à 18h30\n📍 Pôle Lardy\n\nL\'avenir des métiers créatifs.')">
+            <div class="event-card" onclick="openEvent('Conférence IA', '📅 22 Mars à 18h30\n📍 Pôle Lardy\n\nL\'avenir des métiers.')">
                 <div class="event-date">22<span>Mar</span></div><div class="event-info"><h4>Conférence IA</h4><p>18h30 - Lardy</p></div>
             </div>
-            <div class="event-card" onclick="openEvent('Gala de l\'Université', '📅 28 Mars à 20h00\n📍 Palais des Congrès\n\nTenue correcte exigée.')">
+            <div class="event-card" onclick="openEvent('Gala de l\'Université', '📅 28 Mars à 20h00\n📍 Palais des Congrès\n\nTenue correcte.')">
                 <div class="event-date">28<span>Mar</span></div><div class="event-info"><h4>Gala Universitaire</h4><p>20h00 - Palais Congrès</p></div>
             </div>
         </div>
@@ -208,7 +200,6 @@
             <p onclick="rep()" id="mRep" style="margin-top:20px; color:#ff4757; font-size:12px; font-weight:bold; cursor:pointer;">Signaler un problème / bon plan</p>
         </div>
     </div>
-
     <div id="zoom-overlay" onclick="zoomID(false)"><img id="zImg" src=""></div>
 
     <nav class="bottom-nav">
@@ -226,16 +217,15 @@
         function updateSaved(amount) {
             totalSaved += amount;
             localStorage.setItem('saved_total', totalSaved);
-            const elements = ['month-saved', 'year-saved', 'total-saved'];
-            elements.forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = totalSaved.toFixed(2) + " €"; });
+            const els = ['month-saved', 'year-saved', 'total-saved'];
+            els.forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = totalSaved.toFixed(2) + " €"; });
         }
 
         function toggleTheme() {
             document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
             localStorage.setItem('th', isDark);
-            const icon = document.getElementById('theme-icon');
-            icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
 
         function searchDeals() {
@@ -266,12 +256,8 @@
             document.getElementById('mGo').innerText = "Y aller maintenant";
             document.getElementById('mRep').style.display = 'block';
             document.getElementById('mGo').onclick = () => { 
-                if(s > 0) {
-                    alert("BRAVO ! 🎉\nTu viens d'économiser " + s.toFixed(2) + "€ sur ce bon plan !");
-                    updateSaved(s);
-                }
-                window.open(`https://www.google.com/maps?q=${lat},${lng}`); 
-                closeM();
+                if(s > 0) { alert("BRAVO ! 🎉\nTu as économisé " + s.toFixed(2) + "€ !"); updateSaved(s); }
+                window.open(`https://www.google.com/maps?q=${lat},${lng}`); closeM();
             };
             document.getElementById('detailModal').style.display = 'flex';
         }
@@ -287,23 +273,12 @@
         }
 
         function closeM() { document.getElementById('detailModal').style.display = 'none'; }
+        function initMap() { if (!map) { map = L.map('map').setView([46.123, 3.425], 14); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); } }
         
-        function initMap() { 
-            if (!map) { 
-                map = L.map('map').setView([46.123, 3.425], 14); 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); 
-            } 
-        }
-
         function toggleFav(id) {
             let favs = JSON.parse(localStorage.getItem('f')) || [];
-            if(favs.includes(id)) {
-                favs = favs.filter(x => x !== id);
-                document.getElementById(id).classList.remove('is-fav');
-            } else {
-                favs.push(id);
-                document.getElementById(id).classList.add('is-fav');
-            }
+            if(favs.includes(id)) { favs = favs.filter(x => x !== id); document.getElementById(id).classList.remove('is-fav'); } 
+            else { favs.push(id); document.getElementById(id).classList.add('is-fav'); }
             localStorage.setItem('f', JSON.stringify(favs));
         }
 
@@ -347,33 +322,15 @@
         function rep() { window.location.href = "mailto:contact@vichyu.fr"; }
 
         window.onload = () => {
-            // Theme
-            const isDark = localStorage.getItem('th') === 'true';
-            if(isDark) {
-                document.body.classList.add('dark');
-                document.getElementById('theme-icon').className = 'fa-solid fa-sun';
-            }
-            
-            // Profil data
+            if(localStorage.getItem('th') === 'true') { document.body.classList.add('dark'); document.getElementById('theme-icon').className = 'fa-solid fa-sun'; }
             document.getElementById('fn').value = localStorage.getItem('u_f') || "";
             if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i');
             if(localStorage.getItem('id_i')) { document.getElementById('id-img').src = localStorage.getItem('id_i'); document.getElementById('id-img').style.display = 'block'; }
-            
-            // Favoris - FIX: On ne met plus "is-fav" par défaut sur tout
             let favs = JSON.parse(localStorage.getItem('f')) || [];
-            document.querySelectorAll('.fav-btn').forEach(btn => {
-                if(favs.includes(btn.id)) btn.classList.add('is-fav');
-                else btn.classList.remove('is-fav');
-            });
-            
+            document.querySelectorAll('.fav-btn').forEach(btn => { if(favs.includes(btn.id)) btn.classList.add('is-fav'); });
             updateSaved(0);
-
-            // Popup de bienvenue
             if(!sessionStorage.getItem('pop')) {
-                setTimeout(() => {
-                    openDetails('OFFRE DE BIENVENUE 🔥', '🌮', 'O\'Tacos : Le 3ème tacos est offert aujourd\'hui sur présentation de ton profil Vichy\'U !', 46.1250, 3.4220, true, 5.00);
-                    sessionStorage.setItem('pop', 'true');
-                }, 1000);
+                setTimeout(() => { openDetails('OFFRE DE BIENVENUE 🔥', '🌮', 'O\'Tacos : Le 3ème offert !', 46.1250, 3.4220, true, 5.00); sessionStorage.setItem('pop', 'true'); }, 1000);
             }
         };
     </script>
