@@ -43,6 +43,8 @@
             align-items: center; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
             width: 90%;
+            position: relative;
+            z-index: 10;
         }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; color: var(--text); }
 
@@ -55,19 +57,19 @@
             position: absolute; bottom: 20px; right: 20px;
             z-index: 1002; background: white; border: none;
             width: 50px; height: 50px; border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             color: var(--primary); font-size: 20px;
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- SLIDER DE BANNIÈRES --- */
+        /* --- BANNIÈRES --- */
         .ad-slider { 
             display: flex; 
             overflow-x: auto; 
             scroll-snap-type: x mandatory; 
-            gap: 10px; 
+            gap: 12px; 
             margin-bottom: 25px; 
-            padding-bottom: 5px;
+            padding: 5px 0;
             scrollbar-width: none; 
         }
         .ad-slider::-webkit-scrollbar { display: none; }
@@ -84,13 +86,13 @@
         }
 
         /* --- FILTRES --- */
-        .categories { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .categories { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; }
         .categories::-webkit-scrollbar { display: none; }
         .category-btn {
             flex: 0 0 90px; background: white; border: none; padding: 12px 5px; border-radius: 18px;
             font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            color: var(--text);
+            color: var(--text); cursor: pointer;
         }
         .category-btn.active { background-color: var(--primary); color: white; }
 
@@ -112,7 +114,7 @@
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); }
 
-        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; padding: 5px;}
+        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; padding: 5px; z-index: 5;}
         .fav-btn.is-fav { color: var(--heart-red); }
         #empty-msg { text-align: center; color: #b2bec3; margin-top: 50px; display: none; font-style: italic; }
     </style>
@@ -198,13 +200,7 @@
         let map;
         let userMarker;
 
-        // --- FONCTION ITINÉRAIRE ---
-        function openMaps(lat, lng) {
-            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-            window.open(url, '_blank');
-        }
-
-        // --- GESTION DES PAGES ---
+        // --- NAVIGATION ---
         function showPage(page) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             document.getElementById('main-content').style.display = 'none';
@@ -218,13 +214,14 @@
                 document.getElementById('ad-container').style.display = 'flex';
                 document.getElementById('filter-container').style.display = 'flex';
                 document.getElementById('page-title').innerText = "Vichy'U 🎓";
+                filterByCat('tous', document.querySelector('.category-btn')); 
             } 
             else if (page === 'map') {
                 document.getElementById('nav-map').classList.add('active');
                 document.getElementById('map-page').style.display = 'block';
                 document.getElementById('search-container').style.display = 'none';
                 document.getElementById('page-title').innerText = "Carte 📍";
-                setTimeout(() => { if (!map) initMap(); map.invalidateSize(); }, 100);
+                setTimeout(() => { if (!map) initMap(); map.invalidateSize(); }, 200);
             } 
             else if (page === 'fav') {
                 document.getElementById('nav-fav').classList.add('active');
@@ -236,26 +233,43 @@
             }
         }
 
-        // --- CARTE ---
-        function initMap() {
-            map = L.map('map').setView([46.1215, 3.4275], 14);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-            // Marqueurs avec bouton itinéraire dans la bulle
-            L.marker([46.1218, 3.4278]).addTo(map).bindPopup('<b>Le Daily</b><br><button onclick="openMaps(46.1218, 3.4278)" style="border:none; background:var(--primary); color:white; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer;">Y aller</button>');
-            L.marker([46.1245, 3.4230]).addTo(map).bindPopup('<b>CGR Cinéma</b><br><button onclick="openMaps(46.1245, 3.4230)" style="border:none; background:var(--primary); color:white; padding:5px 10px; border-radius:5px; margin-top:5px; cursor:pointer;">Y aller</button>');
-        }
-
-        // --- AUTRES FONCTIONS ---
+        // --- FILTRES ---
         function filterByCat(category, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            
             document.querySelectorAll('.card').forEach(card => {
-                if (category === 'tous' || card.getAttribute('data-cat') === category) card.classList.remove('hidden');
-                else card.classList.add('hidden');
+                if (category === 'tous' || card.getAttribute('data-cat') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
             });
         }
 
+        // --- ITINÉRAIRE ---
+        function openMaps(lat, lng) {
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+        }
+
+        // --- CARTE & LOC ---
+        function initMap() {
+            map = L.map('map').setView([46.1215, 3.4275], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            L.marker([46.1218, 3.4278]).addTo(map).bindPopup('Le Daily');
+            L.marker([46.1245, 3.4230]).addTo(map).bindPopup('CGR Cinéma');
+        }
+
+        function locateUser() {
+            if (!map) return;
+            map.locate({setView: true, maxZoom: 16});
+            map.on('locationfound', (e) => {
+                if (userMarker) map.removeLayer(userMarker);
+                userMarker = L.circleMarker(e.latlng, {radius: 8, fillColor: "#5d5fef", color: "white", weight: 2, fillOpacity: 1}).addTo(map);
+            });
+        }
+
+        // --- FAVORIS ---
         function toggleFavorite(id) {
             let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
             const heart = document.querySelector(`#${id} .fav-btn`);
@@ -275,10 +289,19 @@
             let count = 0;
             document.querySelectorAll('.card').forEach(card => {
                 if (favs.includes(card.id)) { card.classList.remove('hidden'); count++; }
-                else card.classList.add('hidden');
+                else { card.classList.add('hidden'); }
             });
             document.getElementById('empty-msg').style.display = count > 0 ? 'none' : 'block';
         }
+
+        // Recherche
+        document.getElementById('searchInput').oninput = function() {
+            let val = this.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.classList.toggle('hidden', !title.includes(val));
+            });
+        };
 
         window.onload = () => {
             let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
