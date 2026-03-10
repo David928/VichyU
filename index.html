@@ -24,7 +24,7 @@
             background-color: var(--bg);
             margin: 0;
             color: var(--text);
-            padding-bottom: 80px; /* Espace pour la barre du bas */
+            padding-bottom: 90px; /* Sécurité pour ne pas cacher le contenu derrière la nav bar */
         }
 
         .header {
@@ -51,6 +51,7 @@
 
         .container { padding: 100px 15px 20px; }
 
+        /* BOUTONS DU HAUT */
         .categories { display: flex; gap: 6px; margin-bottom: 25px; }
 
         .category-btn {
@@ -66,10 +67,16 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
+            color: var(--text);
+            transition: all 0.2s;
         }
 
-        .category-btn.active { background: var(--primary); color: white; }
+        .category-btn.active { 
+            background: var(--primary) !important; 
+            color: white !important; 
+        }
 
+        /* CARTES */
         .card {
             background: white;
             border-radius: 22px;
@@ -79,6 +86,7 @@
             align-items: center;
             gap: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            cursor: pointer;
         }
 
         .card.hidden { display: none; }
@@ -91,18 +99,21 @@
             border-radius: 18px;
         }
 
-        /* --- BARRE DE NAVIGATION BASSE --- */
+        .card-info h3 { margin: 0; font-size: 18px; }
+        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: 600; font-size: 14px; }
+
+        /* BARRE DE NAVIGATION BASSE */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
             background: white;
-            height: 70px;
+            height: 75px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             border-top: 1px solid #eee;
-            padding-bottom: env(safe-area-inset-bottom); /* Pour l'encoche des iPhones récents */
-            z-index: 100;
+            padding-bottom: env(safe-area-inset-bottom);
+            z-index: 1000;
         }
 
         .nav-item {
@@ -113,13 +124,16 @@
             text-decoration: none;
             font-size: 10px;
             font-weight: 600;
+            width: 25%;
         }
 
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
-        .nav-item.active { color: var(--primary); }
+        .nav-item.active { 
+            color: var(--primary) !important; 
+        }
 
-        /* --- MODALE --- */
+        /* MODALE */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -127,19 +141,32 @@
             display: none;
             justify-content: center;
             align-items: flex-end;
-            z-index: 1000;
+            z-index: 2000;
         }
 
         .modal-content {
             background: white;
             width: 100%;
+            max-width: 500px;
             padding: 30px 20px;
             border-top-left-radius: 30px;
             border-top-right-radius: 30px;
             animation: slideUp 0.3s ease-out;
+            position: relative;
         }
 
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .btn-close {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -161,11 +188,11 @@
         </div>
 
         <div id="deals-list">
-            <div class="card" data-category="restos" data-title="Le Daily" data-promo="Formule Lardy : 8.50€" data-desc="Le RDV des étudiants du Pôle Lardy.">
+            <div class="card" data-category="restos" data-title="Le Daily" data-promo="Formule Lardy : 8.50€" data-desc="Le RDV incontournable des étudiants du Pôle Lardy pour un déjeuner rapide et équilibré.">
                 <div class="card-emoji">🍕</div>
                 <div class="card-info"><h3>Le Daily</h3><p>Formule Lardy : 8.50€</p></div>
             </div>
-            <div class="card" data-category="sport" data-title="Vertical Limit" data-promo="Tarif réduit" data-desc="Escalade pour tous à Bellerive.">
+            <div class="card" data-category="sport" data-title="Vertical Limit" data-promo="Tarif réduit étudiant" data-desc="Salle d'escalade située à Bellerive. Idéal pour décompresser après les cours.">
                 <div class="card-emoji">🧗</div>
                 <div class="card-info"><h3>Vertical Limit</h3><p>Accès réduit</p></div>
             </div>
@@ -173,65 +200,43 @@
     </div>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active">
+        <div class="nav-item active" onclick="changeNav(this)">
             <i class="fa-solid fa-house"></i>
             <span>Accueil</span>
-        </a>
-        <a href="#" class="nav-item">
+        </div>
+        <div class="nav-item" onclick="changeNav(this)">
             <i class="fa-solid fa-map-location-dot"></i>
             <span>Carte</span>
-        </a>
-        <a href="#" class="nav-item">
+        </div>
+        <div class="nav-item" onclick="changeNav(this)">
             <i class="fa-solid fa-heart"></i>
             <span>Favoris</span>
-        </a>
-        <a href="#" class="nav-item">
+        </div>
+        <div class="nav-item" onclick="changeNav(this)">
             <i class="fa-solid fa-user"></i>
             <span>Profil</span>
-        </a>
+        </div>
     </nav>
 
     <div id="infoModal" class="modal">
         <div class="modal-content">
-            <div id="modalEmoji" style="font-size: 50px;"></div>
-            <h2 id="modalTitle"></h2>
-            <p id="modalPromo" style="color:var(--primary); font-weight:bold;"></p>
-            <p id="modalDesc"></p>
-            <button style="width:100%; padding:15px; border-radius:15px; background:var(--primary); color:white; border:none; font-weight:bold;" onclick="closeModal()">Fermer</button>
+            <div id="modalEmoji" style="font-size: 50px; margin-bottom: 10px;"></div>
+            <h2 id="modalTitle" style="margin: 0 0 10px 0;"></h2>
+            <p id="modalPromo" style="color:var(--primary); font-weight:bold; font-size: 18px;"></p>
+            <p id="modalDesc" style="color: var(--light-text);"></p>
+            <button class="btn-close" onclick="closeModal()">Fermer</button>
         </div>
     </div>
 
     <script>
+        // 1. GESTION DES BOUTONS DU HAUT (CATÉGORIES)
+        const catButtons = document.querySelectorAll('.category-btn');
         const cards = document.querySelectorAll('.card');
-        const modal = document.getElementById('infoModal');
 
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                document.getElementById('modalEmoji').innerText = card.querySelector('.card-emoji').innerText;
-                document.getElementById('modalTitle').innerText = card.getAttribute('data-title');
-                document.getElementById('modalPromo').innerText = card.getAttribute('data-promo');
-                document.getElementById('modalDesc').innerText = card.getAttribute('data-desc');
-                modal.style.display = 'flex';
-            });
-        });
-
-        function closeModal() { modal.style.display = 'none'; }
-
-        // Filtrage catégories
-        const buttons = document.querySelectorAll('.category-btn');
-        buttons.forEach(btn => {
+        catButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('active'));
+                catButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                
                 const filter = btn.getAttribute('data-filter');
-                cards.forEach(card => {
-                    card.classList.toggle('hidden', filter !== 'tous' && card.getAttribute('data-category') !== filter);
-                });
-            });
-        });
-
-        // Gestion clic barre nav (juste pour le style pour l'instant)
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                navItems.forEach(i => i.classList.
+                cards.forEach(
