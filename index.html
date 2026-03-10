@@ -7,87 +7,47 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #5d5fef;
-            --bg: #f8f9fe;
-            --text: #2d3436;
-            --heart-red: #ff4757;
-        }
-
+        :root { --primary: #5d5fef; --bg: #f8f9fe; --text: #2d3436; --heart-red: #ff4757; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            margin: 0; padding-bottom: 100px;
-            overflow-x: hidden;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 100px; overflow-x: hidden; }
 
         /* --- HEADER --- */
-        .header { 
-            background: var(--primary); 
-            padding: 40px 20px 60px; 
-            border-bottom-left-radius: 40px; 
-            border-bottom-right-radius: 40px; 
-            color: white; 
-            text-align: center;
-        }
+        .header { background: var(--primary); padding: 40px 20px 60px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; color: white; text-align: center; }
         .header h1 { margin: 0; font-size: 32px; font-weight: 800; font-style: italic; }
-
-        .search-bar { 
-            background: white; 
-            margin: 20px auto -80px; 
-            padding: 15px 20px; 
-            border-radius: 20px; 
-            display: flex; 
-            align-items: center; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-            width: 90%;
-            position: relative;
-            z-index: 10;
-        }
-        .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; color: var(--text); }
+        .search-bar { background: white; margin: 20px auto -80px; padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; position: relative; z-index: 10; }
+        .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; }
 
         .container { padding: 95px 15px 20px; }
 
-        /* --- CARTE --- */
+        /* --- PAGE CARTE --- */
         #map-page { display: none; height: 70vh; width: 100%; position: relative; }
-        #map { height: 100%; width: 100%; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .locate-btn {
-            position: absolute; bottom: 20px; right: 20px;
-            z-index: 1002; background: white; border: none;
-            width: 50px; height: 50px; border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            color: var(--primary); font-size: 20px;
-            display: flex; align-items: center; justify-content: center;
-        }
+        #map { height: 100%; width: 100%; border-radius: 25px; }
+        .locate-btn { position: absolute; bottom: 20px; right: 20px; z-index: 1002; background: white; border: none; width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 20px; }
 
-        /* --- PROFIL --- */
+        /* --- PAGE PROFIL --- */
         #profile-page { display: none; text-align: center; }
-        .profile-header { margin-bottom: 30px; }
-        .profile-pic { width: 100px; height: 100px; background: #ddd; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .stat-card span { display: block; font-size: 20px; font-weight: 800; color: var(--primary); }
-        .menu-list { background: white; border-radius: 20px; padding: 10px; text-align: left; }
-        .menu-item { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; color: var(--text); font-weight: 600; }
-        .menu-item:last-child { border: none; }
+        .profile-pic-container { position: relative; width: 110px; height: 110px; margin: 0 auto 15px; }
+        #display-profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #eee; }
+        .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid white; }
+        
+        .name-input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px; padding: 0 20px; }
+        .name-input-group input { border: none; background: transparent; text-align: center; font-size: 18px; font-weight: 700; color: var(--text); border-bottom: 1px solid #ddd; padding: 5px; }
+        
+        .id-card-section { background: white; border-radius: 20px; padding: 15px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        #display-id-card { width: 100%; border-radius: 12px; margin-top: 10px; display: none; border: 1px solid #eee; }
+        .upload-label { color: var(--primary); font-weight: 600; cursor: pointer; display: block; padding: 10px; border: 2px dashed #ddd; border-radius: 15px; margin-top: 10px; }
 
-        /* --- BANNIÈRES --- */
-        .ad-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-bottom: 25px; padding: 5px 0; scrollbar-width: none; }
-        .ad-slider::-webkit-scrollbar { display: none; }
-        .ad-banner { flex: 0 0 85%; scroll-snap-align: center; border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; gap: 15px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
-
-        /* --- FILTRES --- */
-        .categories { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; }
-        .category-btn { flex: 0 0 90px; background: white; border: none; padding: 12px 5px; border-radius: 18px; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); color: var(--text); cursor: pointer; }
+        /* --- BANNIÈRES & FILTRES --- */
+        .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 25px; scrollbar-width: none; }
+        .ad-banner { flex: 0 0 85%; border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; gap: 15px; }
+        .categories { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; scrollbar-width: none; }
+        .category-btn { flex: 0 0 90px; background: white; border: none; padding: 12px 5px; border-radius: 18px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor: pointer; }
         .category-btn.active { background-color: var(--primary); color: white; }
 
         /* --- CARTES --- */
         .card { background: white; border-radius: 22px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .card.hidden { display: none !important; }
         .card-emoji { font-size: 30px; background: #f0f1ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
-        .card-info { flex-grow: 1; }
         .btn-go { background: #f0f1ff; color: var(--primary); border: none; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; }
 
         /* --- NAV BAS --- */
@@ -98,7 +58,8 @@
 
         .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #ddd; cursor: pointer; padding: 5px; }
         .fav-btn.is-fav { color: var(--heart-red); }
-        #empty-msg { text-align: center; color: #b2bec3; margin-top: 50px; display: none; font-style: italic; }
+        #empty-msg { text-align: center; color: #b2bec3; margin-top: 50px; display: none; }
+        input[type="file"] { display: none; }
     </style>
 </head>
 <body>
@@ -107,7 +68,7 @@
         <h1 id="page-title">Vichy'U 🎓</h1>
         <div class="search-bar" id="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Rechercher une offre ou un lieu...">
+            <input type="text" id="searchInput" placeholder="Rechercher une offre...">
         </div>
     </div>
 
@@ -119,18 +80,25 @@
 
         <div id="profile-page">
             <div class="profile-header">
-                <div class="profile-pic">👤</div>
-                <h2>Étudiant Vichy</h2>
-                <p style="color:#636e72">Pôle Universitaire Lardy</p>
+                <label for="profile-upload" class="profile-pic-container">
+                    <img id="display-profile-pic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                    <div class="edit-badge"><i class="fa-solid fa-camera"></i></div>
+                </label>
+                <input type="file" id="profile-upload" accept="image/*" onchange="handleImageUpload(event, 'profile')">
+                
+                <div class="name-input-group">
+                    <input type="text" id="userName" placeholder="Prénom" oninput="saveProfileData()">
+                    <input type="text" id="userSurname" placeholder="Nom" oninput="saveProfileData()">
+                </div>
             </div>
-            <div class="stats-grid">
-                <div class="stat-card"><span id="fav-count-stat">0</span>Favoris</div>
-                <div class="stat-card"><span>12€</span>Économisés</div>
-            </div>
-            <div class="menu-list">
-                <div class="menu-item"><i class="fa-solid fa-id-card"></i> Ma carte étudiante</div>
-                <div class="menu-item"><i class="fa-solid fa-bell"></i> Notifications</div>
-                <div class="menu-item" style="color:#ff4757"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</div>
+
+            <div class="id-card-section">
+                <h3><i class="fa-solid fa-id-card"></i> Carte Étudiante</h3>
+                <img id="display-id-card" src="">
+                <label for="id-upload" class="upload-label">
+                    <i class="fa-solid fa-plus"></i> Ajouter / Modifier la photo
+                </label>
+                <input type="file" id="id-upload" accept="image/*" onchange="handleImageUpload(event, 'idcard')">
             </div>
         </div>
 
@@ -138,7 +106,7 @@
             <div id="ad-container" class="ad-slider">
                 <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
                     <div style="font-size: 35px;">🔥</div>
-                    <div class="ad-content"><h4>O'Tacos Vichy</h4><p>Le 3ème offert !</p></div>
+                    <div class="ad-content"><h4>O'Tacos</h4><p>Le 3ème offert !</p></div>
                 </div>
                 <div class="ad-banner" style="background: linear-gradient(135deg, #ff7675, #fab1a0);">
                     <div style="font-size: 35px;">🍕</div>
@@ -165,7 +133,7 @@
                 <div class="card" id="deal-2" data-cat="sport">
                     <div class="card-emoji">🧗</div>
                     <div class="card-info">
-                        <h3>Vertical Limit</h3><p>Accès réduit étudiant</p>
+                        <h3>Vertical Limit</h3><p>Accès réduit</p>
                         <button class="btn-go" onclick="openMaps(46.1210, 3.4168)"><i class="fa-solid fa-route"></i> Y aller</button>
                     </div>
                     <i class="fa-solid fa-heart fav-btn" onclick="toggleFavorite('deal-2')"></i>
@@ -187,6 +155,7 @@
         let map;
         let userMarker;
 
+        // --- NAVIGATION ---
         function showPage(page) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             document.getElementById('main-content').style.display = 'none';
@@ -198,8 +167,6 @@
             if (page === 'home') {
                 document.getElementById('nav-home').classList.add('active');
                 document.getElementById('main-content').style.display = 'block';
-                document.getElementById('ad-container').style.display = 'flex';
-                document.getElementById('filter-container').style.display = 'flex';
                 document.getElementById('page-title').innerText = "Vichy'U 🎓";
             } else if (page === 'map') {
                 document.getElementById('nav-map').classList.add('active');
@@ -210,20 +177,58 @@
             } else if (page === 'fav') {
                 document.getElementById('nav-fav').classList.add('active');
                 document.getElementById('main-content').style.display = 'block';
+                document.getElementById('page-title').innerText = "Mes Favoris ❤️";
                 document.getElementById('ad-container').style.display = 'none';
                 document.getElementById('filter-container').style.display = 'none';
-                document.getElementById('page-title').innerText = "Mes Favoris ❤️";
                 updateFavView();
             } else if (page === 'profile') {
                 document.getElementById('nav-profile').classList.add('active');
                 document.getElementById('profile-page').style.display = 'block';
                 document.getElementById('search-container').style.display = 'none';
                 document.getElementById('page-title').innerText = "Mon Profil";
-                const favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
-                document.getElementById('fav-count-stat').innerText = favs.length;
             }
         }
 
+        // --- GESTION PROFIL (Photos & Noms) ---
+        function handleImageUpload(event, type) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64String = reader.result;
+                if (type === 'profile') {
+                    document.getElementById('display-profile-pic').src = base64String;
+                    localStorage.setItem('user_profile_img', base64String);
+                } else {
+                    const imgEl = document.getElementById('display-id-card');
+                    imgEl.src = base64String;
+                    imgEl.style.display = 'block';
+                    localStorage.setItem('user_id_card_img', base64String);
+                }
+            }
+            if (file) reader.readAsDataURL(file);
+        }
+
+        function saveProfileData() {
+            localStorage.setItem('user_firstname', document.getElementById('userName').value);
+            localStorage.setItem('user_lastname', document.getElementById('userSurname').value);
+        }
+
+        function loadProfileData() {
+            document.getElementById('userName').value = localStorage.getItem('user_firstname') || "";
+            document.getElementById('userSurname').value = localStorage.getItem('user_lastname') || "";
+            
+            const savedProfileImg = localStorage.getItem('user_profile_img');
+            if (savedProfileImg) document.getElementById('display-profile-pic').src = savedProfileImg;
+            
+            const savedIdImg = localStorage.getItem('user_id_card_img');
+            if (savedIdImg) {
+                const imgEl = document.getElementById('display-id-card');
+                imgEl.src = savedIdImg;
+                imgEl.style.display = 'block';
+            }
+        }
+
+        // --- AUTRES FONCTIONS (Favoris, Carte, Filtres) ---
         function filterByCat(category, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -231,10 +236,6 @@
                 if (category === 'tous' || card.getAttribute('data-cat') === category) card.classList.remove('hidden');
                 else card.classList.add('hidden');
             });
-        }
-
-        function openMaps(lat, lng) {
-            window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
         }
 
         function initMap() {
@@ -275,15 +276,10 @@
             document.getElementById('empty-msg').style.display = count > 0 ? 'none' : 'block';
         }
 
-        document.getElementById('searchInput').oninput = function() {
-            let val = this.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                let title = card.querySelector('h3').innerText.toLowerCase();
-                card.classList.toggle('hidden', !title.includes(val));
-            });
-        };
+        function openMaps(lat, lng) { window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank'); }
 
         window.onload = () => {
+            loadProfileData();
             let favs = JSON.parse(localStorage.getItem('vichyu_favs')) || [];
             favs.forEach(id => {
                 const heart = document.querySelector(`#${id} .fav-btn`);
