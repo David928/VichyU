@@ -67,21 +67,21 @@
             padding: 100px 15px 20px;
         }
 
-        /* --- SECTION BOUTONS MODIFIÉE --- */
+        /* --- SECTION BOUTONS OPTIMISÉE --- */
         .categories {
             display: flex;
-            gap: 6px; /* Espace réduit entre les boutons */
+            gap: 6px;
             margin-bottom: 25px;
             width: 100%;
         }
 
         .category-btn {
-            flex: 1; /* Force les boutons à se partager l'espace équitablement */
+            flex: 1;
             background: white;
             border: none;
-            padding: 12px 2px; /* Padding latéral réduit au minimum */
+            padding: 12px 2px;
             border-radius: 15px;
-            font-size: 12px; /* Texte légèrement plus petit pour tenir */
+            font-size: 11px; /* Légèrement réduit pour garantir l'affichage sur iPhone SE/12/13 mini */
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             display: flex;
@@ -89,8 +89,9 @@
             align-items: center;
             gap: 5px;
             cursor: pointer;
-            transition: transform 0.2s;
-            min-width: 0; /* Important pour le flexbox */
+            transition: all 0.2s ease;
+            min-width: 0;
+            color: var(--text);
         }
 
         .category-btn span {
@@ -102,9 +103,11 @@
             text-align: center;
         }
 
+        /* Couleur quand le bouton est actif */
         .category-btn.active {
             background: var(--primary);
             color: white;
+            transform: scale(0.95);
         }
 
         .card {
@@ -180,6 +183,18 @@
     </div>
 
     <script>
+        // SCRIPT POUR L'INTERACTION DES BOUTONS
+        const buttons = document.querySelectorAll('.category-btn');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Retire la classe 'active' de tous les boutons
+                buttons.forEach(b => b.classList.remove('active'));
+                // Ajoute la classe 'active' au bouton cliqué
+                btn.classList.add('active');
+            });
+        });
+
         // Enregistrement du Service Worker pour le mode PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -187,30 +202,5 @@
             });
         }
     </script>
-    <script>
-        // Gestion du clic sur les catégories
-        const buttons = document.querySelectorAll('.category-btn');
-
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // 1. On enlève la couleur bleue de tous les boutons
-                buttons.forEach(b => b.classList.remove('active'));
-                
-                // 2. On ajoute la couleur bleue au bouton cliqué
-                btn.classList.add('active');
-                
-                // 3. Ici on pourra ajouter plus tard le filtrage des promos
-                console.log("Catégorie choisie :", btn.innerText);
-            });
-        });
-
-        // Enregistrement du Service Worker (existant)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
-            });
-        }
-    </script>
 </body>
-</html>
 </html>
