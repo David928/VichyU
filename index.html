@@ -10,7 +10,7 @@
         :root { 
             --primary: #5d5fef; --bg: #f8f9fe; --card-bg: #ffffff; 
             --text: #2d3436; --text-light: #636e72; --border: #eee;
-            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894;
+            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894; --orange: #fd9644;
         }
         body.dark { 
             --bg: #121212; --card-bg: #1e1e1e; --text: #f5f5f5; 
@@ -39,35 +39,42 @@
         .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 20px; scrollbar-width: none; padding: 5px 0; }
         .ad-banner { flex: 0 0 85%; border-radius: 22px; padding: 15px; color: white; display: flex; align-items: center; gap: 15px; }
 
-        /* --- GRILLE 2x4 --- */
+        /* --- GRILLE --- */
         .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
         .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
         .cat-item i { font-size: 16px; }
 
-        /* --- CARTES --- */
+        /* --- CARTES BONS PLANS --- */
         .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; }
         .card-emoji { font-size: 26px; background: rgba(93, 95, 239, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 15px; }
         .card-info h3 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 5px; }
         .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; }
         .verified-badge { color: var(--verified); font-size: 13px; }
 
+        /* --- AGENDA STYLES --- */
+        .event-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--orange); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; gap: 15px; }
+        .event-date { background: var(--orange); color: white; padding: 10px; border-radius: 12px; min-width: 60px; text-align: center; font-weight: 800; display: flex; flex-direction: column; justify-content: center; }
+        .event-date span { font-size: 10px; text-transform: uppercase; font-weight: 400; }
+        .event-info h4 { margin: 0; font-size: 16px; }
+        .event-info p { margin: 5px 0 0; font-size: 12px; color: var(--text-light); }
+
         /* --- MODAL --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
         .map-go-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; width: 100%; font-size: 16px; margin-top: 15px; cursor: pointer; }
 
-        /* --- PROFILE --- */
-        #profile-page { display: none; flex-direction: column; align-items: center; width: 100%; }
+        /* --- PAGES --- */
+        #map-page, #profile-page, #agenda-page { display: none; }
+        #profile-page { flex-direction: column; align-items: center; width: 100%; }
 
-        /* --- NAVIGATION --- */
+        /* --- NAV --- */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
         .hidden { display: none !important; }
-        #map-page { display: none; }
         #map { height: 70vh; width: 100%; border-radius: 25px; }
         .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; }
         .fav-btn.is-fav { color: var(--heart-red); }
@@ -111,56 +118,35 @@
 
             <div id="deals-list">
                 <div class="card" data-cat="restos" onclick="openDetails('Le Daily', '🍕', '8.50€ le menu complet.', 46.1218, 3.4278, true, 2.50)">
-                    <div class="card-emoji">🍕</div>
-                    <div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 2.50€</p></div>
+                    <div class="card-emoji">🍕</div><div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 2.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
                 </div>
                 <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true, 4.00)">
-                    <div class="card-emoji">🌮</div>
-                    <div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 4.00€</p></div>
+                    <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 4.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
                 </div>
                 <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place à 7€.', 46.1221, 3.4215, true, 3.50)">
-                    <div class="card-emoji">🍿</div>
-                    <div class="card-info"><h3>CGR Vichy <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 3.50€</p></div>
+                    <div class="card-emoji">🍿</div><div class="card-info"><h3>CGR Vichy <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 3.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
                 </div>
-                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '-10% en caisse.', 46.1248, 3.4235, true, 5.00)">
-                    <div class="card-emoji">🛒</div>
-                    <div class="card-info"><h3>Monoprix <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 5.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f4" onclick="event.stopPropagation(); toggleFav('f4')"></i>
-                </div>
-                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée piscine 3.50€.', 46.1450, 3.4050, true, 1.50)">
-                    <div class="card-emoji">🏊</div>
-                    <div class="card-info"><h3>Piscine <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise env. 1.50€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f5" onclick="event.stopPropagation(); toggleFav('f5')"></i>
-                </div>
-                <div class="card" data-cat="restos" onclick="openDetails('McDonalds', '🍔', 'Sandwich offert pour un menu.', 46.1285, 3.4180, false, 4.50)">
-                    <div class="card-emoji">🍔</div>
-                    <div class="card-info"><h3>McDonalds</h3><p>Économise env. 4.50€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f6" onclick="event.stopPropagation(); toggleFav('f6')"></i>
-                </div>
-                <div class="card" data-cat="utiles" onclick="openDetails('Boulangerie Lardy', '🥖', 'Formule dej 5.50€.', 46.1205, 3.4285, false, 2.00)">
-                    <div class="card-emoji">🥖</div>
-                    <div class="card-info"><h3>Boulangerie Lardy</h3><p>Économise env. 2.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f7" onclick="event.stopPropagation(); toggleFav('f7')"></i>
-                </div>
-                <div class="card" data-cat="beaute" onclick="openDetails('Coiffeur Duo', '💇‍♂️', '-20% sur la coupe.', 46.1230, 3.4250, false, 6.00)">
-                    <div class="card-emoji">💇‍♂️</div>
-                    <div class="card-info"><h3>Coiffeur Duo</h3><p>Économise env. 6.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f8" onclick="event.stopPropagation(); toggleFav('f8')"></i>
-                </div>
-                <div class="card" data-cat="restos" onclick="openDetails('Subway', '🥪', 'Sub30 au prix du Sub15.', 46.1245, 3.4210, false, 3.00)">
-                    <div class="card-emoji">🥪</div>
-                    <div class="card-info"><h3>Subway</h3><p>Économise env. 3.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f9" onclick="event.stopPropagation(); toggleFav('f9')"></i>
-                </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('Laser Game', '🔫', 'Partie à 6€.', 46.1350, 3.4120, false, 3.00)">
-                    <div class="card-emoji">🔫</div>
-                    <div class="card-info"><h3>Laser Game</h3><p>Économise env. 3.00€</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f10" onclick="event.stopPropagation(); toggleFav('f10')"></i>
-                </div>
             </div>
+        </div>
+
+        <div id="agenda-page">
+            <h2 style="margin-top:0">📅 Événements à venir</h2>
+            <div class="event-card">
+                <div class="event-date">12<span>Mars</span></div>
+                <div class="event-info"><h4>Soirée d'Intégration BDE</h4><p><i class="fa-solid fa-clock"></i> 21h00 - Bar Le 15</p></div>
+            </div>
+            <div class="event-card">
+                <div class="event-date">15<span>Mars</span></div>
+                <div class="event-info"><h4>Tournoi Beach-Volley</h4><p><i class="fa-solid fa-location-dot"></i> Stade Aquatique</p></div>
+            </div>
+            <div class="event-card" style="border-left-color: var(--primary);">
+                <div class="event-date" style="background: var(--primary);">20<span>Mars</span></div>
+                <div class="event-info"><h4>Afterwork Étudiant</h4><p><i class="fa-solid fa-clock"></i> 18h30 - Place de la Victoire</p></div>
+            </div>
+            <p style="text-align:center; font-size:12px; color:var(--text-light); margin-top:20px;">Contacte ton BDE pour ajouter un événement !</p>
         </div>
 
         <div id="map-page"><div id="map"></div></div>
@@ -197,6 +183,7 @@
 
     <nav class="bottom-nav">
         <div class="nav-item active" id="n-h" onclick="go('home')"><i class="fa-solid fa-house"></i>Accueil</div>
+        <div class="nav-item" id="n-a" onclick="go('agenda')"><i class="fa-solid fa-calendar-days"></i>Agenda</div>
         <div class="nav-item" id="n-m" onclick="go('map')"><i class="fa-solid fa-map-location-dot"></i>Carte</div>
         <div class="nav-item" id="n-p" onclick="go('profile')"><i class="fa-solid fa-user"></i>Profil</div>
     </nav>
@@ -214,9 +201,11 @@
 
         function go(p) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none');
-            document.getElementById('search-container').style.display = (p === 'profile') ? 'none' : 'flex';
+            ['main-content', 'map-page', 'profile-page', 'agenda-page'].forEach(id => document.getElementById(id).style.display = 'none');
+            document.getElementById('search-container').style.display = (p === 'home') ? 'flex' : 'none';
+            
             if(p==='home'){document.getElementById('n-h').classList.add('active');document.getElementById('main-content').style.display='block';}
+            if(p==='agenda'){document.getElementById('n-a').classList.add('active');document.getElementById('agenda-page').style.display='block';}
             if(p==='map'){document.getElementById('n-m').classList.add('active');document.getElementById('map-page').style.display='block';setTimeout(initMap,200);}
             if(p==='profile'){document.getElementById('n-p').classList.add('active');document.getElementById('profile-page').style.display='flex';updateSavedDisplay();}
         }
@@ -239,7 +228,7 @@
             document.getElementById('mGo').onclick = () => {
                 let total = parseFloat(localStorage.getItem('b_s')) || 0;
                 localStorage.setItem('b_s', (total + curSave).toFixed(2));
-                alert(`Bravo ! Tu as économisé ${curSave.toFixed(2)}€ sur ce bon plan ! ✨`);
+                alert(`Bravo ! Tu as économisé ${curSave.toFixed(2)}€ ! ✨`);
                 window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
             };
             document.getElementById('detailModal').style.display = 'flex';
@@ -271,7 +260,7 @@
         function zoomID(s) { if(s && document.getElementById('id-img').src){ document.getElementById('zImg').src=document.getElementById('id-img').src; document.getElementById('zoom-overlay').style.display='flex'; } else { document.getElementById('zoom-overlay').style.display='none'; }}
         function toggleTheme() { document.body.classList.toggle('dark'); localStorage.setItem('th', document.body.classList.contains('dark')); }
         function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
-        function rep() { window.location.href = "mailto:contact@vichyu.fr?subject=Signalement Bon Plan"; }
+        function rep() { window.location.href = "mailto:contact@vichyu.fr?subject=Signalement"; }
         function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", url:window.location.href}); }
 
         window.onload = () => {
