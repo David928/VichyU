@@ -51,10 +51,6 @@
         .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; }
         .verified-badge { color: var(--verified); font-size: 13px; }
 
-        .event-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border); border-left: 5px solid var(--orange); display: flex; gap: 15px; }
-        .event-date { background: var(--orange); color: white; padding: 10px; border-radius: 12px; min-width: 60px; text-align: center; font-weight: 800; display: flex; flex-direction: column; justify-content: center; }
-        .event-date span { font-size: 10px; text-transform: uppercase; font-weight: 400; }
-
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
@@ -172,18 +168,24 @@
                     <div style="text-align:center">TOTAL <b id="total-saved">0.00 €</b></div>
                 </div>
             </div>
-            <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label>
-            <input type="file" id="p-up" hidden onchange="upImg(event,'p')">
+            
+            <label for="p-up">
+                <img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;">
+            </label>
+            <input type="file" id="p-up" hidden accept="image/*" onchange="upImg(event,'p')">
+            
             <input type="text" id="fn" placeholder="Ton Prénom" oninput="sv()" style="width:100%; padding:15px; margin:20px 0; border-radius:15px; border:1px solid var(--border); background:var(--card-bg); color:var(--text); text-align:center; font-weight:bold;">
+            
             <div style="background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); width:100%; text-align:center;">
                 <img id="id-img" onclick="zoomID(true)" style="width:100%; height:160px; object-fit:cover; border-radius:12px; display:none; margin-bottom:10px; cursor:zoom-in;">
                 <label for="id-up" style="color:var(--primary); font-weight:bold; cursor:pointer;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label>
-                <input type="file" id="id-up" hidden onchange="upImg(event,'id')">
+                <input type="file" id="id-up" hidden accept="image/*" onchange="upImg(event,'id')">
             </div>
             <button class="share-btn" onclick="shareApp()">PARTAGER L'APPLI</button>
         </div>
     </div>
 
+    <div id="zoom-overlay" onclick="zoomID(false)"><img id="zImg" src=""></div>
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <span style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;" onclick="closeM()">×</span>
@@ -194,8 +196,6 @@
             <p onclick="rep()" style="margin-top:20px; color:#ff4757; font-size:12px; font-weight:bold; cursor:pointer;">Signaler un problème / bon plan</p>
         </div>
     </div>
-
-    <div id="zoom-overlay" onclick="zoomID(false)"><img id="zImg" src=""></div>
 
     <nav class="bottom-nav">
         <div class="nav-item active" id="n-h" onclick="go('home')"><i class="fa-solid fa-house"></i>Accueil</div>
@@ -208,6 +208,16 @@
     <script>
         let map, curLat, curLng, curSave;
 
+        // Sauvegarde immédiate et robuste
+        function savePhoto(key, data) {
+            try {
+                localStorage.setItem(key, data);
+            } catch (e) {
+                console.log("Image trop lourde, tentative de réduction...");
+                // On pourrait compresser ici, mais le plus simple est d'avertir ou de limiter
+            }
+        }
+
         function checkMonthlyReset() {
             const now = new Date();
             const currentMonthYear = now.getMonth() + "-" + now.getFullYear();
@@ -217,28 +227,45 @@
             }
         }
 
-        function addToBudget(val) {
-            checkMonthlyReset();
-            // Si val est un nombre (montant fixe)
-            if (typeof val === 'number') {
-                let m = parseFloat(localStorage.getItem('m_s')) || 0;
-                let y = parseFloat(localStorage.getItem('y_s')) || 0;
-                let t = parseFloat(localStorage.getItem('t_s')) || 0;
-                localStorage.setItem('m_s', (m + val).toFixed(2));
-                localStorage.setItem('y_s', (y + val).toFixed(2));
-                localStorage.setItem('t_s', (t + val).toFixed(2));
-                alert(`Bravo ! Tu as économisé ${val.toFixed(2)}€ ! ✨`);
-            } else {
-                // Si c'est un pourcentage (ex: "10%")
-                alert(`Profite bien de ta réduction ! ✨`);
-            }
-        }
-
         function updateSavedDisplay() {
             checkMonthlyReset();
             document.getElementById('month-saved').innerText = (parseFloat(localStorage.getItem('m_s')) || 0).toFixed(2) + " €";
             document.getElementById('year-saved').innerText = (parseFloat(localStorage.getItem('y_s')) || 0).toFixed(2) + " €";
             document.getElementById('total-saved').innerText = (parseFloat(localStorage.getItem('t_s')) || 0).toFixed(2) + " €";
+        }
+
+        function upImg(e, type) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Compression légère via Canvas pour garantir le stockage
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const maxW = 600; 
+                    const scale = maxW / img.width;
+                    canvas.width = maxW;
+                    canvas.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    const compressedData = canvas.toDataURL('image/jpeg', 0.7);
+                    
+                    if (type === 'p') {
+                        document.getElementById('p-img').src = compressedData;
+                        localStorage.setItem('p_i', compressedData);
+                    } else {
+                        const i = document.getElementById('id-img');
+                        i.src = compressedData;
+                        i.style.display = 'block';
+                        localStorage.setItem('id_i', compressedData);
+                    }
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function go(p) {
@@ -263,7 +290,18 @@
             document.getElementById('mEmoji').innerText = e;
             document.getElementById('mTitle').innerHTML = t + (v ? ' <i class="fa-solid fa-circle-check" style="color:#00a8ff"></i>' : '');
             document.getElementById('mDesc').innerText = d;
-            document.getElementById('mGo').onclick = () => { addToBudget(curSave); window.open(`https://www.google.com/maps/search/?api=1&query=${curLat},${curLng}`); };
+            document.getElementById('mGo').onclick = () => { 
+                if (typeof curSave === 'number') {
+                    let m = parseFloat(localStorage.getItem('m_s')) || 0;
+                    let y = parseFloat(localStorage.getItem('y_s')) || 0;
+                    let t_val = parseFloat(localStorage.getItem('t_s')) || 0;
+                    localStorage.setItem('m_s', (m + curSave).toFixed(2));
+                    localStorage.setItem('y_s', (y + curSave).toFixed(2));
+                    localStorage.setItem('t_s', (t_val + curSave).toFixed(2));
+                    alert(`Économie de ${curSave.toFixed(2)}€ ajoutée !`);
+                } else { alert("Profite bien de ta réduction ! ✨"); }
+                window.open(`https://www.google.com/maps/search/?api=1&query=${curLat},${curLng}`); 
+            };
             document.getElementById('detailModal').style.display = 'flex';
         }
 
@@ -272,18 +310,28 @@
         function searchDeals() { let val = document.getElementById('searchInput').value.toLowerCase(); document.querySelectorAll('.card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(val) ? "flex" : "none"); }
         function filterCat(c, b) { document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active')); b.classList.add('active'); let f = JSON.parse(localStorage.getItem('f')) || []; document.querySelectorAll('.card').forEach(k => { if(c === 'fav') k.classList.toggle('hidden', !f.includes(k.querySelector('.fav-btn').id)); else k.classList.toggle('hidden', c !== 'tous' && k.dataset.cat !== c); }); }
         function toggleFav(id) { let f = JSON.parse(localStorage.getItem('f')) || []; if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id); localStorage.setItem('f', JSON.stringify(f)); document.getElementById(id).classList.toggle('is-fav'); }
-        function upImg(e,t) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onloadend = () => { if(t==='p'){document.getElementById('p-img').src=r.result;localStorage.setItem('p_i',r.result);} else{const i=document.getElementById('id-img');i.src=r.result;i.style.display='block';localStorage.setItem('id_i',r.result);} }; r.readAsDataURL(f); }
         function zoomID(s) { if(s && document.getElementById('id-img').src){ document.getElementById('zImg').src=document.getElementById('id-img').src; document.getElementById('zoom-overlay').style.display='flex'; } else { document.getElementById('zoom-overlay').style.display='none'; }}
         function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
         function rep() { window.location.href = "mailto:contact@vichyu.fr"; }
         function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", url:window.location.href}); }
 
         window.onload = () => {
+            // Rechargement des données
             if(localStorage.getItem('th') === 'true') { document.body.classList.add('dark'); document.getElementById('theme-icon').className = 'fa-solid fa-sun'; }
             document.getElementById('fn').value = localStorage.getItem('u_f') || "";
-            if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i');
-            if(localStorage.getItem('id_i')){ document.getElementById('id-img').src=localStorage.getItem('id_i'); document.getElementById('id-img').style.display='block'; }
-            let f = JSON.parse(localStorage.getItem('f')) || []; f.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
+            
+            // Rechargement des photos
+            const savedProfile = localStorage.getItem('p_i');
+            const savedID = localStorage.getItem('id_i');
+            if(savedProfile) document.getElementById('p-img').src = savedProfile;
+            if(savedID){ 
+                const idImg = document.getElementById('id-img');
+                idImg.src = savedID; 
+                idImg.style.display = 'block'; 
+            }
+
+            let f = JSON.parse(localStorage.getItem('f')) || []; 
+            f.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
             updateSavedDisplay();
         };
     </script>
