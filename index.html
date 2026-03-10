@@ -22,151 +22,42 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
-            margin: 0;
-            color: var(--text);
-            padding-bottom: 90px; /* Sécurité pour ne pas cacher le contenu derrière la nav bar */
+            margin: 0; padding-bottom: 100px;
         }
 
-        .header {
-            background: var(--primary);
-            padding: 40px 20px 60px;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            color: white;
-        }
-
+        .header { background: var(--primary); padding: 40px 20px 60px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; color: white; }
         .header h1 { margin: 0; font-size: 32px; font-weight: 800; font-style: italic; }
 
-        .search-bar {
-            background: white;
-            margin: 20px 0 -80px;
-            padding: 15px 20px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
+        .search-bar { background: white; margin: 20px 0 -80px; padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; }
 
         .container { padding: 100px 15px 20px; }
 
-        /* BOUTONS DU HAUT */
+        /* --- FILTRES HAUT --- */
         .categories { display: flex; gap: 6px; margin-bottom: 25px; }
-
         .category-btn {
-            flex: 1;
-            background: white;
-            border: none;
-            padding: 12px 2px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            color: var(--text);
-            transition: all 0.2s;
+            flex: 1; background: white; border: none; padding: 12px 2px; border-radius: 15px;
+            font-size: 11px; font-weight: 700; color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
+        /* Classe active forcée */
+        .category-btn.active { background-color: #5d5fef !important; color: white !important; }
 
-        .category-btn.active { 
-            background: var(--primary) !important; 
-            color: white !important; 
-        }
+        /* --- CARTES --- */
+        .card { background: white; border-radius: 22px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .card.hidden { display: none !important; }
+        .card-emoji { font-size: 30px; background: #f0f1ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
 
-        /* CARTES */
-        .card {
-            background: white;
-            border-radius: 22px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            cursor: pointer;
-        }
-
-        .card.hidden { display: none; }
-
-        .card-emoji {
-            font-size: 30px;
-            background: #f0f1ff;
-            width: 60px; height: 60px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 18px;
-        }
-
-        .card-info h3 { margin: 0; font-size: 18px; }
-        .card-info p { margin: 5px 0 0; color: var(--primary); font-weight: 600; font-size: 14px; }
-
-        /* BARRE DE NAVIGATION BASSE */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: white;
-            height: 75px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #eee;
-            padding-bottom: env(safe-area-inset-bottom);
-            z-index: 1000;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #b2bec3;
-            text-decoration: none;
-            font-size: 10px;
-            font-weight: 600;
-            width: 25%;
-        }
-
+        /* --- NAV BAS --- */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; text-decoration: none; font-size: 10px; font-weight: 600; }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
+        .nav-item.active { color: #5d5fef !important; }
 
-        .nav-item.active { 
-            color: var(--primary) !important; 
-        }
-
-        /* MODALE */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 2000;
-        }
-
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 500px;
-            padding: 30px 20px;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            animation: slideUp 0.3s ease-out;
-            position: relative;
-        }
-
+        /* --- MODALE --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 2000; }
+        .modal-content { background: white; width: 100%; padding: 30px 20px; border-top-left-radius: 30px; border-top-right-radius: 30px; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .btn-close {
-            width: 100%;
-            padding: 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -174,25 +65,25 @@
     <div class="header">
         <h1>Vichy'U 🎓</h1>
         <div class="search-bar">
-            <i class="fa-solid fa-magnifying-glass" style="color: #ccc;"></i>
-            <input type="text" id="searchInput" placeholder="Chercher un bon plan...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Chercher...">
         </div>
     </div>
 
     <div class="container">
         <div class="categories">
-            <button class="category-btn active" data-filter="tous">🚀 <span>Tous</span></button>
-            <button class="category-btn" data-filter="restos">🍔 <span>Restos</span></button>
-            <button class="category-btn" data-filter="loisirs">🍿 <span>Loisirs</span></button>
-            <button class="category-btn" data-filter="sport">🏊 <span>Sport</span></button>
+            <button class="category-btn active" onclick="filterDeals('tous', this)">🚀<span>Tous</span></button>
+            <button class="category-btn" onclick="filterDeals('restos', this)">🍔<span>Restos</span></button>
+            <button class="category-btn" onclick="filterDeals('loisirs', this)">🍿<span>Loisirs</span></button>
+            <button class="category-btn" onclick="filterDeals('sport', this)">🏊<span>Sport</span></button>
         </div>
 
         <div id="deals-list">
-            <div class="card" data-category="restos" data-title="Le Daily" data-promo="Formule Lardy : 8.50€" data-desc="Le RDV incontournable des étudiants du Pôle Lardy pour un déjeuner rapide et équilibré.">
+            <div class="card" data-cat="restos" onclick="openModal('🍕','Le Daily','8.50€','Le RDV des étudiants du Pôle Lardy.')">
                 <div class="card-emoji">🍕</div>
                 <div class="card-info"><h3>Le Daily</h3><p>Formule Lardy : 8.50€</p></div>
             </div>
-            <div class="card" data-category="sport" data-title="Vertical Limit" data-promo="Tarif réduit étudiant" data-desc="Salle d'escalade située à Bellerive. Idéal pour décompresser après les cours.">
+            <div class="card" data-cat="sport" onclick="openModal('🧗','Vertical Limit','Réduit','Salle d\'escalade à Bellerive.')">
                 <div class="card-emoji">🧗</div>
                 <div class="card-info"><h3>Vertical Limit</h3><p>Accès réduit</p></div>
             </div>
@@ -200,43 +91,62 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="changeNav(this)">
-            <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
-        </div>
-        <div class="nav-item" onclick="changeNav(this)">
-            <i class="fa-solid fa-map-location-dot"></i>
-            <span>Carte</span>
-        </div>
-        <div class="nav-item" onclick="changeNav(this)">
-            <i class="fa-solid fa-heart"></i>
-            <span>Favoris</span>
-        </div>
-        <div class="nav-item" onclick="changeNav(this)">
-            <i class="fa-solid fa-user"></i>
-            <span>Profil</span>
-        </div>
+        <div class="nav-item active" onclick="setActiveNav(this)"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
+        <div class="nav-item" onclick="setActiveNav(this)"><i class="fa-solid fa-map-location-dot"></i><span>Carte</span></div>
+        <div class="nav-item" onclick="setActiveNav(this)"><i class="fa-solid fa-heart"></i><span>Favoris</span></div>
+        <div class="nav-item" onclick="setActiveNav(this)"><i class="fa-solid fa-user"></i><span>Profil</span></div>
     </nav>
 
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <div id="modalEmoji" style="font-size: 50px; margin-bottom: 10px;"></div>
-            <h2 id="modalTitle" style="margin: 0 0 10px 0;"></h2>
-            <p id="modalPromo" style="color:var(--primary); font-weight:bold; font-size: 18px;"></p>
-            <p id="modalDesc" style="color: var(--light-text);"></p>
-            <button class="btn-close" onclick="closeModal()">Fermer</button>
+    <div id="infoModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div id="mEmoji" style="font-size:50px"></div>
+            <h2 id="mTitle"></h2>
+            <p id="mPromo" style="color:var(--primary);font-weight:bold"></p>
+            <p id="mDesc"></p>
+            <button onclick="closeModal()" style="width:100%;padding:15px;background:var(--primary);color:white;border:none;border-radius:15px;font-weight:bold">Fermer</button>
         </div>
     </div>
 
     <script>
-        // 1. GESTION DES BOUTONS DU HAUT (CATÉGORIES)
-        const catButtons = document.querySelectorAll('.category-btn');
-        const cards = document.querySelectorAll('.card');
+        // FILTRAGE
+        function filterDeals(category, btn) {
+            // Boutons
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // Cartes
+            document.querySelectorAll('.card').forEach(card => {
+                if (category === 'tous' || card.getAttribute('data-cat') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
 
-        catButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                catButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const filter = btn.getAttribute('data-filter');
-                cards.forEach(
+        // NAVIGATION BAS
+        function setActiveNav(el) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // MODALE
+        function openModal(emoji, title, promo, desc) {
+            document.getElementById('mEmoji').innerText = emoji;
+            document.getElementById('mTitle').innerText = title;
+            document.getElementById('mPromo').innerText = promo;
+            document.getElementById('mDesc').innerText = desc;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('infoModal').style.display = 'none'; }
+
+        // RECHERCHE
+        document.getElementById('searchInput').oninput = function() {
+            let val = this.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.classList.toggle('hidden', !title.includes(val));
+            });
+        };
+    </script>
+</body>
+</html>
