@@ -10,7 +10,7 @@
         :root { 
             --primary: #5d5fef; --bg: #f8f9fe; --card-bg: #ffffff; 
             --text: #2d3436; --text-light: #636e72; --border: #eee;
-            --heart-red: #ff4757; --verified: #00a8ff; 
+            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894;
         }
         body.dark { 
             --bg: #121212; --card-bg: #1e1e1e; --text: #f5f5f5; 
@@ -35,24 +35,22 @@
         #notif-daily { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 15px 20px; border-radius: 20px; width: 90%; max-width: 350px; z-index: 5000; box-shadow: 0 10px 20px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 12px; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         #notif-daily.show { top: 20px; }
 
-        /* --- BANNIÈRES --- */
-        .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 20px; scrollbar-width: none; padding: 5px; }
-        .ad-banner { flex: 0 0 85%; border-radius: 22px; padding: 18px; color: white; display: flex; align-items: center; gap: 15px; }
+        /* --- BUDGET SAVED WIDGET --- */
+        .budget-widget { background: var(--green); color: white; padding: 20px; border-radius: 25px; margin-bottom: 20px; text-align: center; box-shadow: 0 8px 15px rgba(0, 184, 148, 0.2); }
+        .budget-amount { font-size: 32px; font-weight: 900; display: block; margin: 5px 0; }
 
         /* --- CATEGORIES GRID --- */
         .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
-        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; text-align: center; }
+        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .cat-item i { font-size: 16px; }
 
         /* --- CARTES --- */
         .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; }
         .card-emoji { font-size: 26px; background: rgba(93, 95, 239, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 15px; }
         .card-info h3 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 5px; }
-        .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; }
         .verified-badge { color: var(--verified); font-size: 13px; }
 
-        /* --- MODAL & ZOOM --- */
+        /* --- MODAL --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
         
@@ -70,7 +68,7 @@
         #map { height: 70vh; width: 100%; border-radius: 25px; }
         .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; }
         .fav-btn.is-fav { color: var(--heart-red); }
-        .share-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 16px; width: 90%; margin: 20px auto; display: block; cursor: pointer; }
+        .share-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 16px; width: 90%; margin: 10px auto; display: block; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -79,91 +77,70 @@
         <div style="font-size: 24px;">🎁</div>
         <div>
             <b style="display:block; font-size:14px;">Bon plan du jour !</b>
-            <span style="font-size:12px;">-50% sur le 2ème ciné au CGR !</span>
+            <span style="font-size:12px;">Économise jusqu'à 5€ sur ton menu !</span>
         </div>
-        <i class="fa-solid fa-xmark" style="margin-left:auto; cursor:pointer;" onclick="this.parentElement.classList.remove('show')"></i>
     </div>
 
     <div class="header">
         <div class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></div>
-        <h1 id="page-title">Vichy'U 🎓</h1>
+        <h1>Vichy'U 🎓</h1>
         <div class="search-bar" id="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Rechercher un resto, un lieu..." onkeyup="searchDeals()">
+            <input type="text" id="searchInput" placeholder="Rechercher..." onkeyup="searchDeals()">
         </div>
     </div>
 
     <div class="container">
         <div id="main-content">
-            <div class="ad-slider">
-                <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
-                    <div style="font-size:30px">🔥</div><div><h4 style="margin:0">O'Tacos</h4><p style="margin:0;font-size:12px">Le 3ème offert !</p></div>
-                </div>
-                <div class="ad-banner" style="background: linear-gradient(135deg, #ff7675, #fab1a0);">
-                    <div style="font-size:30px">🍕</div><div><h4 style="margin:0">Le Daily</h4><p style="margin:0;font-size:12px">Menu Lardy 8.50€</p></div>
-                </div>
-            </div>
-
             <div class="categories-grid">
                 <div class="cat-item active" onclick="filterCat('tous', this)"><i class="fa-solid fa-rocket"></i>Tous</div>
                 <div class="cat-item" onclick="filterCat('restos', this)"><i class="fa-solid fa-burger"></i>Restos</div>
                 <div class="cat-item" onclick="filterCat('loisirs', this)"><i class="fa-solid fa-film"></i>Loisirs</div>
-                <div class="cat-item" onclick="filterCat('utiles', this)"><i class="fa-solid fa-bag-shopping"></i>Courses</div>
                 <div class="cat-item" onclick="filterCat('sport', this)"><i class="fa-solid fa-swimmer"></i>Sport</div>
-                <div class="cat-item" onclick="filterCat('beaute', this)"><i class="fa-solid fa-scissors"></i>Beauté</div>
-                <div class="cat-item" onclick="filterCat('tech', this)"><i class="fa-solid fa-laptop"></i>Tech</div>
-                <div class="cat-item" onclick="filterCat('fav', this)"><i class="fa-solid fa-heart"></i>Favs</div>
             </div>
 
             <div id="deals-list">
-                <div class="card" data-cat="restos" onclick="openDetails('Le Daily', '🍕', '8.50€ le menu complet.', 46.1218, 3.4278, true)">
+                <div class="card" data-cat="restos" data-save="2.50" onclick="openDetails('Le Daily', '🍕', '8.50€ le menu complet.', 46.1218, 3.4278, true, 2.50)">
                     <div class="card-emoji">🍕</div>
-                    <div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Menu Lardy étudiant</p></div>
+                    <div class="card-info"><h3>Le Daily <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise ~2.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true)">
+                <div class="card" data-cat="restos" data-save="4.00" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true, 4.00)">
                     <div class="card-emoji">🌮</div>
-                    <div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Offre 2+1 offert</p></div>
+                    <div class="card-info"><h3>O'Tacos <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise ~4.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
                 </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Cinéma', '🍿', 'Place de ciné à 7€.', 46.1221, 3.4215, true)">
+                <div class="card" data-cat="loisirs" data-save="3.00" onclick="openDetails('CGR Cinéma', '🍿', 'Place de ciné à 7€.', 46.1221, 3.4215, true, 3.00)">
                     <div class="card-emoji">🍿</div>
-                    <div class="card-info"><h3>CGR Cinéma <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Tarif étudiant 7€</p></div>
+                    <div class="card-info"><h3>CGR Cinéma <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Économise ~3.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
-                </div>
-                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '10% de remise immédiate.', 46.1248, 3.4235, true)">
-                    <div class="card-emoji">🛒</div>
-                    <div class="card-info"><h3>Monoprix <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>-10% en caisse</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f4" onclick="event.stopPropagation(); toggleFav('f4')"></i>
-                </div>
-                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée piscine 3.50€.', 46.1450, 3.4050, true)">
-                    <div class="card-emoji">🏊</div>
-                    <div class="card-info"><h3>Piscine <i class="fa-solid fa-circle-check verified-badge"></i></h3><p>Entrée réduite</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f5" onclick="event.stopPropagation(); toggleFav('f5')"></i>
-                </div>
-                <div class="card" data-cat="restos" onclick="openDetails('McDonalds', '🍔', 'Burger offert.', 46.1285, 3.4180, false)">
-                    <div class="card-emoji">🍔</div>
-                    <div class="card-info"><h3>McDonalds</h3><p>Offre burger étudiant</p></div>
-                    <i class="fa-solid fa-heart fav-btn" id="f6" onclick="event.stopPropagation(); toggleFav('f6')"></i>
                 </div>
             </div>
         </div>
 
         <div id="map-page"><div id="map"></div></div>
 
-        <div id="profile-page" style="text-align:center;">
-            <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:120px;height:120px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label>
-            <input type="file" id="p-up" hidden onchange="upImg(event,'p')">
-            <div style="display:flex;flex-direction:column;gap:10px;margin:20px 0;">
-                <input type="text" id="fn" placeholder="Prénom" oninput="sv()" style="padding:15px;border-radius:15px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)">
-                <input type="text" id="ln" placeholder="Nom" oninput="sv()" style="padding:15px;border-radius:15px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)">
+        <div id="profile-page">
+            <div class="budget-widget">
+                <span style="font-size: 14px; opacity: 0.9;">Argent total économisé</span>
+                <span class="budget-amount" id="total-saved">0.00 €</span>
+                <span style="font-size: 11px;">Continue comme ça ! 🚀</span>
             </div>
-            <div style="background:var(--card-bg);padding:20px;border-radius:25px;border:1px solid var(--border);">
-                <img id="id-img" onclick="zoomID(true)" style="width:100%;height:180px;object-fit:cover;border-radius:15px;display:none;margin-bottom:15px;cursor:zoom-in;">
-                <label for="id-up" style="color:var(--primary);font-weight:800;cursor:pointer;"><i class="fa-solid fa-id-card"></i> Ma carte étudiante</label>
+
+            <div style="text-align: center;">
+                <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:100px;height:100px;border-radius:50%;border:3px solid var(--primary);object-fit:cover;"></label>
+                <input type="file" id="p-up" hidden onchange="upImg(event,'p')">
+                <div style="display:flex;flex-direction:column;gap:10px;margin:15px 0;">
+                    <input type="text" id="fn" placeholder="Prénom" oninput="sv()" style="padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)">
+                </div>
+            </div>
+
+            <div style="background:var(--card-bg);padding:15px;border-radius:20px;border:1px solid var(--border);text-align:center;">
+                <img id="id-img" onclick="zoomID(true)" style="width:100%;height:150px;object-fit:cover;border-radius:12px;display:none;margin-bottom:10px;cursor:zoom-in;">
+                <label for="id-up" style="color:var(--primary);font-weight:800;cursor:pointer;font-size:14px;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label>
                 <input type="file" id="id-up" hidden onchange="upImg(event,'id')">
             </div>
-            <button class="share-btn" onclick="shareApp()"><i class="fa-solid fa-share-nodes"></i> PARTAGER L'APPLI</button>
+            <button class="share-btn" onclick="shareApp()"><i class="fa-solid fa-share-nodes"></i> PARTAGER</button>
         </div>
     </div>
 
@@ -171,10 +148,9 @@
         <div class="modal-content">
             <span style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;color:var(--text-light)" onclick="closeM()">×</span>
             <div id="mEmoji" style="font-size:60px;margin-bottom:10px"></div>
-            <h2 id="mTitle" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px"></h2>
+            <h2 id="mTitle" style="margin:0;"></h2>
             <p id="mDesc" style="color:var(--text-light);margin:20px 0"></p>
             <button id="mGo" style="background:var(--primary);color:white;border:none;padding:15px;border-radius:15px;font-weight:bold;width:100%;font-size:16px;cursor:pointer;">Y aller maintenant</button>
-            <p onclick="rep()" style="margin-top:20px;color:#ff4757;font-size:12px;font-weight:bold;cursor:pointer">Signaler un problème</p>
         </div>
     </div>
 
@@ -188,26 +164,21 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        let map, curT = "";
+        let map, curT = "", curSaveValue = 0;
 
-        // RECHERCHE
         function searchDeals() {
             let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
+            document.querySelectorAll('.card').forEach(card => {
                 let title = card.querySelector('h3').innerText.toLowerCase();
                 card.style.display = title.includes(input) ? "flex" : "none";
             });
         }
 
-        // ZOOM ID
         function zoomID(show) {
-            const overlay = document.getElementById('zoom-overlay');
-            const img = document.getElementById('id-img');
-            if(show && img.src) {
-                document.getElementById('zImg').src = img.src;
-                overlay.style.display = 'flex';
-            } else { overlay.style.display = 'none'; }
+            if(show && document.getElementById('id-img').src) {
+                document.getElementById('zImg').src = document.getElementById('id-img').src;
+                document.getElementById('zoom-overlay').style.display = 'flex';
+            } else { document.getElementById('zoom-overlay').style.display = 'none'; }
         }
 
         function toggleTheme() {
@@ -219,42 +190,45 @@
 
         function go(p) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('map-page').style.display = 'none';
-            document.getElementById('profile-page').style.display = 'none';
+            ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none');
             if(p==='home'){document.getElementById('n-h').classList.add('active');document.getElementById('main-content').style.display='block';}
             if(p==='map'){document.getElementById('n-m').classList.add('active');document.getElementById('map-page').style.display='block';setTimeout(initMap,200);}
-            if(p==='profile'){document.getElementById('n-p').classList.add('active');document.getElementById('profile-page').style.display='block';}
+            if(p==='profile'){document.getElementById('n-p').classList.add('active');document.getElementById('profile-page').style.display='block'; updateBudgetDisplay();}
         }
 
-        function filterCat(c, b) {
-            document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            let f = JSON.parse(localStorage.getItem('f')) || [];
-            document.querySelectorAll('.card').forEach(k => {
-                if(c === 'fav') k.classList.toggle('hidden', !f.includes(k.querySelector('.fav-btn').id));
-                else k.classList.toggle('hidden', c !== 'tous' && k.dataset.cat !== c);
-            });
-        }
-
-        function openDetails(t,e,d,lat,lng,v) {
-            curT = t; document.getElementById('mEmoji').innerText = e;
+        function openDetails(t, e, d, lat, lng, v, saveAmt) {
+            curT = t; curSaveValue = saveAmt;
+            document.getElementById('mEmoji').innerText = e;
             document.getElementById('mTitle').innerHTML = t + (v ? ' <i class="fa-solid fa-circle-check" style="color:#00a8ff"></i>' : '');
             document.getElementById('mDesc').innerText = d;
-            document.getElementById('mGo').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
+            document.getElementById('mGo').onclick = () => {
+                addToBudget(curSaveValue);
+                window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
+            };
             document.getElementById('detailModal').style.display = 'flex';
         }
 
         function closeM() { document.getElementById('detailModal').style.display = 'none'; }
 
+        // LOGIQUE DU COMPTEUR
+        function addToBudget(amt) {
+            let current = parseFloat(localStorage.getItem('saved_budget')) || 0;
+            current += parseFloat(amt);
+            localStorage.setItem('saved_budget', current.toFixed(2));
+            // Petite alerte visuelle
+            alert(`Bravo ! Tu viens d'économiser ${amt} € ! Retrouve ton total dans ton profil.`);
+            closeM();
+        }
+
+        function updateBudgetDisplay() {
+            let total = parseFloat(localStorage.getItem('saved_budget')) || 0;
+            document.getElementById('total-saved').innerText = total.toFixed(2) + " €";
+        }
+
         function initMap() {
             if (map) return;
             map = L.map('map').setView([46.123, 3.425], 14);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            const pts = [{t:"Le Daily",l:[46.1218,3.4278]},{t:"O'Tacos",l:[46.1250,3.4220]},{t:"CGR",l:[46.1221,3.4215]}];
-            pts.forEach(p => {
-                L.marker(p.l).addTo(map).bindPopup(`<b>${p.t}</b><br><button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${p.l[0]},${p.l[1]}')" style="background:#5d5fef;color:white;border:none;padding:5px;border-radius:5px;margin-top:5px;width:100%">Y aller</button>`);
-            });
         }
 
         function toggleFav(id) {
@@ -272,21 +246,17 @@
             }; r.readAsDataURL(f);
         }
 
-        function sv(){ localStorage.setItem('f_n',document.getElementById('fn').value); localStorage.setItem('l_n',document.getElementById('ln').value); }
-        function shareApp(){ if(navigator.share) navigator.share({title:"Vichy'U", text:"Les meilleurs plans de Vichy !", url:window.location.href}); }
-        function rep() { window.location.href = `mailto:contact@vichyu.fr?subject=Signalement ${curT}`; }
+        function sv(){ localStorage.setItem('f_n',document.getElementById('fn').value); }
+        function shareApp(){ if(navigator.share) navigator.share({title:"Vichy'U", text:"Regarde combien j'économise à Vichy !", url:window.location.href}); }
 
         window.onload = () => {
             if(localStorage.getItem('theme')==='dark') toggleTheme();
             document.getElementById('fn').value = localStorage.getItem('f_n') || "";
-            document.getElementById('ln').value = localStorage.getItem('l_n') || "";
             if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i');
             if(localStorage.getItem('id_i')){const i=document.getElementById('id-img');i.src=localStorage.getItem('id_i');i.style.display='block';}
-            let f = JSON.parse(localStorage.getItem('f')) || [];
-            f.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
-            
-            // Affichage de la notif après 1s
+            updateBudgetDisplay();
             setTimeout(() => { document.getElementById('notif-daily').classList.add('show'); }, 1000);
+            setTimeout(() => { document.getElementById('notif-daily').classList.remove('show'); }, 5000);
         };
     </script>
 </body>
