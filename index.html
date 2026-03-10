@@ -14,6 +14,7 @@
             --primary: #5d5fef;
             --bg: #f8f9fe;
             --text: #2d3436;
+            --light-text: #636e72;
         }
 
         * {
@@ -67,7 +68,6 @@
             padding: 100px 15px 20px;
         }
 
-        /* --- SECTION BOUTONS OPTIMISÉE --- */
         .categories {
             display: flex;
             gap: 6px;
@@ -81,7 +81,7 @@
             border: none;
             padding: 12px 2px;
             border-radius: 15px;
-            font-size: 11px; /* Légèrement réduit pour garantir l'affichage sur iPhone SE/12/13 mini */
+            font-size: 11px;
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             display: flex;
@@ -94,20 +94,31 @@
             color: var(--text);
         }
 
-        .category-btn span {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Couleur quand le bouton est actif */
         .category-btn.active {
             background: var(--primary);
             color: white;
             transform: scale(0.95);
+        }
+
+        /* --- STYLE DU TEXTE D'INTRODUCTION --- */
+        .intro-text {
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .intro-text p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--light-text);
+            line-height: 1.4;
+        }
+
+        .intro-text strong {
+            color: var(--primary);
         }
 
         .card {
@@ -163,6 +174,10 @@
             <button class="category-btn">🏊 <span>Sport</span></button>
         </div>
 
+        <div class="intro-text">
+            <p>Bienvenue sur <strong>Vichy'U</strong> ! L'application dédiée aux étudiants de Vichy pour retrouver les meilleurs <strong>bons plans</strong>, réductions et sorties de la ville en un clin d'œil. ⚡</p>
+        </div>
+
         <div id="deals-list">
             <div class="card">
                 <div class="card-emoji">🍕</div>
@@ -183,19 +198,15 @@
     </div>
 
     <script>
-        // SCRIPT POUR L'INTERACTION DES BOUTONS
         const buttons = document.querySelectorAll('.category-btn');
 
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Retire la classe 'active' de tous les boutons
                 buttons.forEach(b => b.classList.remove('active'));
-                // Ajoute la classe 'active' au bouton cliqué
                 btn.classList.add('active');
             });
         });
 
-        // Enregistrement du Service Worker pour le mode PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js');
