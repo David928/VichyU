@@ -15,6 +15,7 @@
             --bg: #f8f9fe;
             --text: #2d3436;
             --light-text: #636e72;
+            --accent: #ff7675; /* Couleur pour le badge promo */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -33,6 +34,36 @@
 
         .container { padding: 100px 15px 20px; }
 
+        /* --- BANNIERE PUB --- */
+        .ad-banner {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .ad-badge {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ad-content h4 { margin: 0; font-size: 18px; font-weight: 800; }
+        .ad-content p { margin: 5px 0 0; font-size: 13px; opacity: 0.9; }
+
         /* --- FILTRES HAUT --- */
         .categories { display: flex; gap: 6px; margin-bottom: 25px; }
         .category-btn {
@@ -40,8 +71,7 @@
             font-size: 11px; font-weight: 700; color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
-        /* Classe active forcée */
-        .category-btn.active { background-color: #5d5fef !important; color: white !important; }
+        .category-btn.active { background-color: var(--primary) !important; color: white !important; }
 
         /* --- CARTES --- */
         .card { background: white; border-radius: 22px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
@@ -52,7 +82,7 @@
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #b2bec3; text-decoration: none; font-size: 10px; font-weight: 600; }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
-        .nav-item.active { color: #5d5fef !important; }
+        .nav-item.active { color: var(--primary) !important; }
 
         /* --- MODALE --- */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 2000; }
@@ -66,11 +96,21 @@
         <h1>Vichy'U 🎓</h1>
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Chercher...">
+            <input type="text" id="searchInput" placeholder="Chercher un bon plan...">
         </div>
     </div>
 
     <div class="container">
+        
+        <div class="ad-banner" onclick="openModal('🎁','Offre Partenaire','-20% sur tout le menu','Offre exceptionnelle chez notre partenaire du mois ! Présente ce coupon lors de ton passage en caisse.')">
+            <div class="ad-badge">Sponsorisé</div>
+            <div style="font-size: 35px;">🔥</div>
+            <div class="ad-content">
+                <h4>O'Tacos Vichy</h4>
+                <p>Le 3ème tacos offert ce jeudi !</p>
+            </div>
+        </div>
+
         <div class="categories">
             <button class="category-btn active" onclick="filterDeals('tous', this)">🚀<span>Tous</span></button>
             <button class="category-btn" onclick="filterDeals('restos', this)">🍔<span>Restos</span></button>
@@ -101,19 +141,16 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <div id="mEmoji" style="font-size:50px"></div>
             <h2 id="mTitle"></h2>
-            <p id="mPromo" style="color:var(--primary);font-weight:bold"></p>
+            <p id="mPromo" style="color:var(--primary);font-weight:bold;font-size:20px"></p>
             <p id="mDesc"></p>
-            <button onclick="closeModal()" style="width:100%;padding:15px;background:var(--primary);color:white;border:none;border-radius:15px;font-weight:bold">Fermer</button>
+            <button onclick="closeModal()" style="width:100%;padding:15px;background:var(--primary);color:white;border:none;border-radius:15px;font-weight:bold">Génial !</button>
         </div>
     </div>
 
     <script>
-        // FILTRAGE
         function filterDeals(category, btn) {
-            // Boutons
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            // Cartes
             document.querySelectorAll('.card').forEach(card => {
                 if (category === 'tous' || card.getAttribute('data-cat') === category) {
                     card.classList.remove('hidden');
@@ -123,13 +160,11 @@
             });
         }
 
-        // NAVIGATION BAS
         function setActiveNav(el) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
         }
 
-        // MODALE
         function openModal(emoji, title, promo, desc) {
             document.getElementById('mEmoji').innerText = emoji;
             document.getElementById('mTitle').innerText = title;
@@ -139,7 +174,6 @@
         }
         function closeModal() { document.getElementById('infoModal').style.display = 'none'; }
 
-        // RECHERCHE
         document.getElementById('searchInput').oninput = function() {
             let val = this.value.toLowerCase();
             document.querySelectorAll('.card').forEach(card => {
