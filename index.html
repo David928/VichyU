@@ -80,17 +80,24 @@
 
         /* Animation d'entrée pour les bannières */
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
+            from { 
+                opacity: 0; 
+                transform: translateX(50px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
         }
 
         .ad-banner {
-            animation: slideIn 0.6s ease-out forwards;
+            /* On passe à 1.2 seconde avec un effet de ralentissement progressif */
+            animation: slideIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        /* Petit effet au clic/appui pour le retour tactile */
+        /* Effet au clic toujours présent */
         .ad-banner:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
             transition: 0.1s;
         }
     </style>
