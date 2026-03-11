@@ -105,43 +105,52 @@
             </div>
 
             <div id="deals-list">
-                <div class="card" data-cat="loisirs" onclick="openDetails('Le parcours ninja', '🥷', '8€ par ninja', 46.1149, 3.4373, true, 4)">
+                <div class="card" data-cat="loisirs" onclick="openDetails('Le parcours ninja', '🥷', '8€ par ninja', 46.1149, 3.4373, true, 4, 'Viens tester ton agilité sur notre nouveau parcours inspiré de Ninja Warrior ! Réduction exclusive pour les étudiants de Vichy.')">
                     <div class="card-emoji">🥷</div><div class="card-info"><h3>Le parcours ninja</h3><p>Économise 4€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true, 5.00)">
+
+                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, true, 5.00, 'Le rendez-vous incontournable pour les grosses faims. Valable sur les tailles M et L.')">
                     <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos</h3><p>Économise 5.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('Columbus Cafe', '☕', '-15% sur les boissons.', 46.1235, 3.4241, true, 0.80)">
+
+                <div class="card" data-cat="restos" onclick="openDetails('Columbus Cafe', '☕', '-15% sur les boissons.', 46.1235, 3.4241, true, 0.80, 'Besoin d\'un endroit calme pour réviser ? Profite de notre Wi-Fi et de nos muffins faits maison.')">
                     <div class="card-emoji">☕</div><div class="card-info"><h3>Columbus Cafe</h3><p>Économise 0.80€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
                 </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place de ciné à 7€.', 46.1221, 3.4215, true, 4.00)">
+
+                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Vichy', '🍿', 'La place de ciné à 7€.', 46.1221, 3.4215, true, 4.00, 'Tous les films à l\'affiche, toute l\'année, sur présentation de ton pass Vichy\'U.')">
                     <div class="card-emoji">🍿</div><div class="card-info"><h3>CGR Vichy</h3><p>Économise 4.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f4" onclick="event.stopPropagation(); toggleFav('f4')"></i>
                 </div>
-                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '10% de remise magasin.', 46.1242, 3.4230, true, 3.50)">
+
+                <div class="card" data-cat="utiles" onclick="openDetails('Monoprix', '🛒', '10% de remise magasin.', 46.1242, 3.4230, true, 3.50, 'Fais tes courses intelligemment avec ta réduction étudiante directe en caisse.')">
                     <div class="card-emoji">🛒</div><div class="card-info"><h3>Monoprix</h3><p>Économise 10%</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f5" onclick="event.stopPropagation(); toggleFav('f5')"></i>
                 </div>
-                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée à 3.20€.', 46.1450, 3.4120, true, 2.00)">
+
+                <div class="card" data-cat="sport" onclick="openDetails('Stade Aquatique', '🏊', 'Entrée à 3.20€.', 46.1450, 3.4120, true, 2.00, 'Piscine olympique et espace détente pour décompresser après les exams.')">
                     <div class="card-emoji">🏊</div><div class="card-info"><h3>Stade Aquatique</h3><p>Économise 2.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f6" onclick="event.stopPropagation(); toggleFav('f6')"></i>
                 </div>
-                <div class="card" data-cat="beaute" onclick="openDetails('Coiffeur Lardy', '✂️', '-20% sur la coupe.', 46.1220, 3.4280, true, 5.00)">
+
+                <div class="card" data-cat="beaute" onclick="openDetails('Coiffeur Lardy', '✂️', '-20% sur la coupe.', 46.1220, 3.4280, true, 5.00, 'Spécialiste des coupes modernes juste à côté du campus.')">
                     <div class="card-emoji">✂️</div><div class="card-info"><h3>Coiffeur Lardy</h3><p>Économise 5.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f7" onclick="event.stopPropagation(); toggleFav('f7')"></i>
                 </div>
-                <div class="card" data-cat="tech" onclick="openDetails('Répar\'Tout', '📱', '-50% protections.', 46.1240, 3.4210, true, 10.00)">
+
+                <div class="card" data-cat="tech" onclick="openDetails('Répar\'Tout', '📱', '-50% protections.', 46.1240, 3.4210, true, 10.00, 'Un écran cassé ? On répare ton smartphone en moins d\'une heure.')">
                     <div class="card-emoji">📱</div><div class="card-info"><h3>Répar'Tout</h3><p>Économise 10.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f8" onclick="event.stopPropagation(); toggleFav('f8')"></i>
                 </div>
-                <div class="card" data-cat="restos" onclick="openDetails('Sushi Shop', '🥢', 'Box 12 pièces à 10€.', 46.1260, 3.4245, true, 4.50)">
+
+                <div class="card" data-cat="restos" onclick="openDetails('Sushi Shop', '🥢', 'Box 12 pièces à 10€.', 46.1260, 3.4245, true, 4.50, 'Le meilleur des sushis à prix réduit pour tes soirées Netflix.')">
                     <div class="card-emoji">🥢</div><div class="card-info"><h3>Sushi Shop</h3><p>Économise 4.50€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f9" onclick="event.stopPropagation(); toggleFav('f9')"></i>
                 </div>
-                <div class="card" data-cat="loisirs" onclick="openDetails('Bowling Vichy', '🎳', 'Une partie offerte.', 46.1310, 3.4150, true, 6.00)">
+
+                <div class="card" data-cat="loisirs" onclick="openDetails('Bowling Vichy', '🎳', 'Une partie offerte.', 46.1310, 3.4150, true, 6.00, 'Valable du lundi au jeudi pour toute partie achetée.')">
                     <div class="card-emoji">🎳</div><div class="card-info"><h3>Bowling Vichy</h3><p>Économise 6.00€</p></div>
                     <i class="fa-solid fa-heart fav-btn" id="f10" onclick="event.stopPropagation(); toggleFav('f10')"></i>
                 </div>
@@ -191,7 +200,9 @@
             <span style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;" onclick="closeM()">×</span>
             <div id="mEmoji" style="font-size:60px;margin-bottom:10px"></div>
             <h2 id="mTitle"></h2>
-            <p id="mDesc" style="color:var(--text-light); margin:15px 0; white-space: pre-line;"></p>
+            <p id="mDesc" style="font-weight:bold; color:var(--primary); margin-bottom:10px;"></p>
+            <p id="mIntro" style="color:var(--text-light); font-size:14px; margin-bottom:20px; white-space: pre-line;"></p>
+            
             <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; font-size:16px; cursor:pointer;"></button>
             <p onclick="rep()" id="mRep" style="margin-top:20px; color:#ff4757; font-size:12px; font-weight:bold; cursor:pointer;">Signaler un problème / bon plan</p>
         </div>
@@ -219,7 +230,7 @@
                 const title = card.querySelector('h3').innerText;
                 const emoji = card.querySelector('.card-emoji').innerText;
                 const onclickStr = card.getAttribute('onclick');
-                const coords = onclickStr.match(/(\d+\.\d+),\s*(\d+\.\d+)/);
+                const coords = onclickStr.match(/(-?\d+\.\d+),\s*(-?\d+\.\d+)/);
                 if (coords) {
                     const m = L.marker([parseFloat(coords[1]), parseFloat(coords[2])]).addTo(map).bindPopup(`<b>${emoji} ${title}</b>`);
                     markers.push(m);
@@ -231,10 +242,7 @@
             if (!map) {
                 map = L.map('map').setView([46.123, 3.425], 14);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-                
-                // GÉOLOCALISATION
                 map.locate({setView: false, watch: true, enableHighAccuracy: true});
-                
                 map.on('locationfound', (e) => {
                     const radius = e.accuracy / 2;
                     if (userMarker) {
@@ -281,21 +289,17 @@
             if(p==='profile') { document.getElementById('profile-page').style.display='flex'; updateSaved(0); }
         }
 
-        function openDetails(t, e, d, lat, lng, v, s) {
+        // FONCTION MODIFIÉE POUR INCLURE L'INTRO
+        function openDetails(t, e, d, lat, lng, v, s, intro = "") {
             document.getElementById('mEmoji').innerText = e;
             document.getElementById('mTitle').innerText = t;
             document.getElementById('mDesc').innerText = d;
+            document.getElementById('mIntro').innerText = intro;
             document.getElementById('mGo').innerText = "Y aller maintenant";
             document.getElementById('mRep').style.display = 'block';
             document.getElementById('mGo').onclick = () => { 
                 if(s > 0) updateSaved(s);
-                const link = document.createElement('a');
-                link.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
                 closeM();
             };
             document.getElementById('detailModal').style.display = 'flex';
@@ -305,6 +309,7 @@
             document.getElementById('mEmoji').innerText = "📅";
             document.getElementById('mTitle').innerText = t;
             document.getElementById('mDesc').innerText = d;
+            document.getElementById('mIntro').innerText = "";
             document.getElementById('mGo').innerText = "Ajouter au calendrier";
             document.getElementById('mGo').onclick = () => { alert("Événement ajouté !"); closeM(); };
             document.getElementById('mRep').style.display = 'none';
@@ -370,7 +375,7 @@
             
             if(!sessionStorage.getItem('pop')) {
                 setTimeout(() => { 
-                    openDetails('OFFRE DE BIENVENUE 🔥', '🌮', 'O\'Tacos : Le 3ème offert !', 46.1250, 3.4220, true, 5.00); 
+                    openDetails('OFFRE DE BIENVENUE 🔥', '🌮', 'O\'Tacos : Le 3ème offert !', 46.1250, 3.4220, true, 5.00, 'Bienvenue sur Vichy\'U ! Profite de ton premier bon plan chez O\'Tacos Vichy.'); 
                     sessionStorage.setItem('pop', 'true'); 
                 }, 1000);
             }
