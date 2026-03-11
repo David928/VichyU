@@ -431,11 +431,12 @@
             document.querySelectorAll('.fav-btn').forEach(btn => { if(favs.includes(btn.id)) btn.classList.add('is-fav'); });
             updateSaved(0);
             
+            // On attend 2.5 secondes avant d'afficher l'offre de bienvenue
             if(!sessionStorage.getItem('pop')) {
                 setTimeout(() => { 
-                    openDetails('OFFRE DE BIENVENUE 🔥', '🌮', 'O\'Tacos : Le 3ème offert !', 46.1250, 3.4220, true, 5.00); 
+                    openDetails('OFFRE DE BIENVENUE 🔥', '🌮', 'O\'Tacos : Le 3ème offert !', 46.1250, 3.4220, 5.00, 'Bienvenue sur Vichy\'U ! Pour fêter ton arrivée, profite d\'un troisième tacos offert pour deux achetés.'); 
                     sessionStorage.setItem('pop', 'true'); 
-                }, 1000);
+                }, 2500); // 2500 ms = 2.5 secondes
             }
         };
     </script>
