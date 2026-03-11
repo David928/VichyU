@@ -26,7 +26,8 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 90px; color: var(--text); overflow-x: hidden; } 
 
-        .header { background: var(--primary); padding: 5px 20px 45px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; color: white; text-align: center; position: relative; } 
+        .header { background: var(--primary); padding: 5px 20px 45px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; text-align: center; position: relative; } 
+        /* FIX LOGO XXL */
         .header-logo { height: 160px; width: auto; max-width: 100%; margin: 0 auto; display: block; object-fit: contain; }
         
         .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; } 
@@ -62,7 +63,7 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; } 
         .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; } 
         
-        /* Profil Layout */
+        /* RESTAURATION BUDGET PROFIL */
         .budget-container { width: 100%; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; } 
         .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; text-align: center; } 
         .budget-amount { font-size: 24px; font-weight: 900; display: block; } 
@@ -109,7 +110,7 @@
                     <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos</h3><p>Économise 5€</p></div> 
                     <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i> 
                 </div> 
-                </div> 
+            </div> 
         </div> 
 
         <div id="map-page"><div id="map"></div></div> 
@@ -117,7 +118,7 @@
         <div id="profile-page"> 
             <div class="budget-container"> 
                 <div class="budget-widget">
-                    <span style="font-size: 11px; opacity: 0.9;">ÉCONOMIES TOTALES 💰</span>
+                    <span>ÉCONOMIES TOTALES 💰</span>
                     <span class="budget-amount" id="total-saved">0.00 €</span>
                 </div> 
                 <div class="budget-sub">
@@ -146,7 +147,7 @@
             <div id="mEmoji" style="font-size:60px;margin-bottom:10px"></div> 
             <h2 id="mTitle"></h2> 
             <p id="mOffer" style="color:var(--primary); font-weight:bold; margin: 0;"></p>
-            <p id="mDesc" style="color:var(--text-light); margin:15px 0; white-space: pre-line;"></p> 
+            <p id="mDesc" style="color:var(--text-light); margin:15px 0; white-space: pre-line; font-size: 14px;"></p> 
             <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; font-size:16px; cursor:pointer;"></button> 
         </div> 
     </div> 
@@ -189,9 +190,6 @@
             ['total-saved', 'month-saved', 'year-saved'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = val; }); 
         } 
 
-        function toggleTheme() { document.body.classList.toggle('dark'); localStorage.setItem('th', document.body.classList.contains('dark')); } 
-        function searchDeals() { let val = document.getElementById('searchInput').value.toLowerCase(); document.querySelectorAll('.card').forEach(c => { c.style.display = c.innerText.toLowerCase().includes(val) ? "flex" : "none"; }); } 
-        
         function go(p, el) { 
             const navItems = document.querySelectorAll('.nav-item'); navItems.forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); 
             ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none'); 
@@ -205,18 +203,17 @@
             document.getElementById('mEmoji').innerText = emoji; 
             document.getElementById('mTitle').innerText = title; 
             document.getElementById('mOffer').innerText = offer;
-            document.getElementById('mDesc').innerText = desc; 
+            document.getElementById('mDesc').innerText = desc || ""; 
             document.getElementById('mGo').innerText = "Y aller maintenant"; 
             document.getElementById('mGo').onclick = () => {  
-                updateSaved(saving); 
-                window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank'); 
+                if(saving > 0) updateSaved(saving); 
+                // OUVERTURE MAPS SANS PAGE BLANCHE
+                window.location.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
             }; 
             document.getElementById('detailModal').style.display = 'flex'; 
         } 
 
         function closeM() { document.getElementById('detailModal').style.display = 'none'; } 
-        function toggleFav(id) { let favs = JSON.parse(localStorage.getItem('f')) || []; if(favs.includes(id)) favs = favs.filter(x => x !== id); else favs.push(id); localStorage.setItem('f', JSON.stringify(favs)); } 
-        
         function upImg(e, type) { 
             const reader = new FileReader(); 
             reader.onload = (event) => { 
@@ -225,7 +222,6 @@
             }; 
             reader.readAsDataURL(e.target.files[0]); 
         } 
-
         function zoomID(s) { if(s && document.getElementById('id-img').src){ document.getElementById('zImg').src=document.getElementById('id-img').src; document.getElementById('zoom-overlay').style.display='flex'; } else { document.getElementById('zoom-overlay').style.display='none'; } } 
         function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); } 
         function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", url:window.location.href}); } 
