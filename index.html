@@ -16,62 +16,53 @@
         :root {  
             --primary: #4d52e1; --bg: #f8f9fe; --card-bg: #ffffff;  
             --text: #2d3436; --text-light: #636e72; --border: #eee; 
-            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894; 
+            --heart-red: #ff4757; --green: #00b894; 
         } 
         body.dark {  
-            --bg: #121212; --card-bg: #1e1e1e; --text: #f5f5f5;  
-            --text-light: #b2bec3; --border: #333;  
+            --bg: #121212; --card-bg: #1e1e1e; --text: #f5f5f5; --text-light: #b2bec3; --border: #333;  
         } 
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 90px; color: var(--text); overflow-x: hidden; } 
+        body { font-family: -apple-system, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 90px; color: var(--text); overflow-x: hidden; } 
 
         .header { background: var(--primary); padding: 5px 20px 45px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; text-align: center; position: relative; } 
-        /* FIX LOGO XXL */
-        .header-logo { height: 160px; width: auto; max-width: 100%; margin: 0 auto; display: block; object-fit: contain; }
+        .header-logo { height: 160px; width: auto; margin: 0 auto; display: block; object-fit: contain; }
         
-        .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; } 
+        .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; color: white; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; } 
 
         .search-bar { background: white; margin: 10px auto -35px; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; position: relative; z-index: 100; } 
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; background: transparent; color: #2d3436; } 
-        body.dark .search-bar { background: #2d2d2d; } 
-        body.dark .search-bar input { color: white; } 
+        body.dark .search-bar { background: #2d2d2d; } body.dark .search-bar input { color: white; }
 
         .container { padding: 45px 15px 10px; } 
-        .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 25px; scrollbar-width: none; padding: 10px 0; } 
-        .ad-banner { flex: 0 0 85%; border-radius: 25px; min-height: 120px; padding: 20px; color: white; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); } 
 
         .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; } 
         .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; } 
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); } 
 
-        .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; } 
+        .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); } 
         .card-emoji { font-size: 26px; background: rgba(77, 82, 225, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 15px; } 
         .card-info h3 { margin: 0; font-size: 15px; } 
-        .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; } 
-        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; transition: color 0.3s; } 
+        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; } 
         .fav-btn.is-fav { color: var(--heart-red); } 
 
+        .event-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; } 
+        .event-date { background: var(--primary); color: white; min-width: 55px; height: 55px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; } 
+        .event-date span { font-size: 10px; font-weight: 400; }
+
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; } 
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; flex: 1; cursor: pointer; } 
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; flex: 1; } 
         .nav-item.active { color: var(--primary); } 
 
         #map-page, #profile-page, #agenda-page { display: none; } 
-        #profile-page { flex-direction: column; align-items: center; } 
         #map { height: 75vh; width: 100%; border-radius: 25px; } 
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; } 
         .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; } 
-        
-        /* RESTAURATION BUDGET PROFIL */
-        .budget-container { width: 100%; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; } 
-        .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; text-align: center; } 
-        .budget-amount { font-size: 24px; font-weight: 900; display: block; } 
+
+        .budget-container { width: 100%; margin-bottom: 20px; } 
+        .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; text-align: center; margin-bottom: 10px; } 
         .budget-sub { background: var(--card-bg); border: 1px solid var(--border); padding: 10px; border-radius: 15px; display: flex; justify-content: space-around; font-size: 12px; } 
         .budget-sub b { display: block; color: var(--green); font-size: 14px; } 
-
-        #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; justify-content: center; align-items: center; } 
-        #zoom-overlay img { max-width: 90%; border-radius: 10px; } 
         .hidden { display: none !important; } 
     </style> 
 </head> 
@@ -80,36 +71,90 @@
     <div class="header"> 
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fa-solid fa-moon"></i></div> 
         <img src="logo.png" alt="Vichy'U" class="header-logo"> 
-        <div class="search-bar" id="search-container"> 
+        <div class="search-bar"> 
             <i class="fa-solid fa-magnifying-glass"></i> 
             <input type="text" id="searchInput" placeholder="Rechercher un bon plan..." oninput="searchDeals()"> 
         </div> 
     </div> 
 
     <div class="container"> 
-        <div id="main-content"> 
-            <div class="ad-slider"> 
-                <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);"> 
-                    <div style="font-size:45px">🔥</div><div><h4>O'Tacos</h4><p style="margin:0;opacity:0.9">Le 3ème offert aujourd'hui !</p></div> 
-                </div> 
-            </div> 
-
+        <div id="home-page"> 
             <div class="categories-grid"> 
                 <div class="cat-item active" onclick="filterCat('tous', this)"><i class="fa-solid fa-rocket"></i>Tous</div> 
                 <div class="cat-item" onclick="filterCat('restos', this)"><i class="fa-solid fa-burger"></i>Restos</div> 
                 <div class="cat-item" onclick="filterCat('loisirs', this)"><i class="fa-solid fa-film"></i>Loisirs</div> 
+                <div class="cat-item" onclick="filterCat('utiles', this)"><i class="fa-solid fa-bag-shopping"></i>Courses</div> 
+                <div class="cat-item" onclick="filterCat('sport', this)"><i class="fa-solid fa-swimmer"></i>Sport</div> 
+                <div class="cat-item" onclick="filterCat('beaute', this)"><i class="fa-solid fa-scissors"></i>Beauté</div> 
+                <div class="cat-item" onclick="filterCat('tech', this)"><i class="fa-solid fa-laptop"></i>Tech</div> 
                 <div class="cat-item" onclick="filterCat('fav', this)"><i class="fa-solid fa-heart"></i>Favs</div> 
             </div> 
 
             <div id="deals-list"> 
-                <div class="card" data-cat="loisirs" onclick="openDetails('Le parcours ninja', '🥷', 'Économise 4€', 46.1149, 3.4373, 4, 'Un parcours d\'obstacles épique pour tester ton agilité ! Profite de 8€ au lieu de 12€.')"> 
-                    <div class="card-emoji">🥷</div><div class="card-info"><h3>Le parcours ninja</h3><p>Économise 4€</p></div> 
-                    <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i> 
-                </div> 
-                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert', 46.1250, 3.4220, 5, 'Valable sur présentation de l\'application. Pour deux tacos achetés, le troisième est gratuit !')"> 
-                    <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos</h3><p>Économise 5€</p></div> 
-                    <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i> 
-                </div> 
+                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert', 46.1250, 3.4220, 5, 'Pour 2 tacos achetés, le 3ème est gratuit sur tout le menu !')">
+                    <div class="card-emoji">🌮</div><div class="card-info"><h3>O'Tacos</h3><p>Économise 5€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
+                </div>
+                <div class="card" data-cat="loisirs" onclick="openDetails('CGR Cinéma', '🍿', 'Place à 7€', 46.1221, 3.4215, 4, 'Tarif étudiant unique tous les jours sur présentation de ta carte.')">
+                    <div class="card-emoji">🍿</div><div class="card-info"><h3>CGR Cinéma</h3><p>Économise 4€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f2" onclick="event.stopPropagation(); toggleFav('f2')"></i>
+                </div>
+                <div class="card" data-cat="restos" onclick="openDetails('Columbus Café', '☕', '-15% sur l\'addition', 46.1235, 3.4241, 1.5, 'Profite d\'une pause gourmande moins chère toute l\'année.')">
+                    <div class="card-emoji">☕</div><div class="card-info"><h3>Columbus Café</h3><p>Économise 1.50€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f3" onclick="event.stopPropagation(); toggleFav('f3')"></i>
+                </div>
+                <div class="card" data-cat="sport" onclick="openDetails('Vichy Squash', '🎾', '-20% la séance', 46.1301, 3.4190, 3, 'Réserve ton court et dépense-toi à prix réduit.')">
+                    <div class="card-emoji">🎾</div><div class="card-info"><h3>Vichy Squash</h3><p>Économise 3€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f4" onclick="event.stopPropagation(); toggleFav('f4')"></i>
+                </div>
+                <div class="card" data-cat="utiles" onclick="openDetails('Carrefour City', '🛒', 'Panier anti-gaspi 4€', 46.1245, 3.4255, 6, 'Un panier de courses d\'une valeur de 10€ pour seulement 4€.')">
+                    <div class="card-emoji">🛒</div><div class="card-info"><h3>Carrefour City</h3><p>Économise 6€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f5" onclick="event.stopPropagation(); toggleFav('f5')"></i>
+                </div>
+                <div class="card" data-cat="restos" onclick="openDetails('Burger King', '🍔', 'Menu Étudiant 5€', 46.1310, 3.4300, 4, 'Le menu King Deal étudiant est disponible sur borne.')">
+                    <div class="card-emoji">🍔</div><div class="card-info"><h3>Burger King</h3><p>Économise 4€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f6" onclick="event.stopPropagation(); toggleFav('f6')"></i>
+                </div>
+                <div class="card" data-cat="beaute" onclick="openDetails('Coiffeur Bio', '✂️', '-5€ sur la coupe', 46.1210, 3.4280, 5, 'Réduction immédiate pour les moins de 25 ans.')">
+                    <div class="card-emoji">✂️</div><div class="card-info"><h3>Coiffeur Bio</h3><p>Économise 5€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f7" onclick="event.stopPropagation(); toggleFav('f7')"></i>
+                </div>
+                <div class="card" data-cat="loisirs" onclick="openDetails('Bowling Vichy', '🎳', 'Partie à 5€', 46.1420, 3.4150, 2.5, 'Valable le mardi et jeudi soir pour les étudiants.')">
+                    <div class="card-emoji">🎳</div><div class="card-info"><h3>Bowling Vichy</h3><p>Économise 2.50€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f8" onclick="event.stopPropagation(); toggleFav('f8')"></i>
+                </div>
+                <div class="card" data-cat="tech" onclick="openDetails('Repar\'Phone', '📱', 'Verre trempé offert', 46.1230, 3.4260, 10, 'Offert pour toute réparation d\'écran effectuée.')">
+                    <div class="card-emoji">📱</div><div class="card-info"><h3>Repar\'Phone</h3><p>Économise 10€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f9" onclick="event.stopPropagation(); toggleFav('f9')"></i>
+                </div>
+                <div class="card" data-cat="loisirs" onclick="openDetails('Laser Game', '🔫', '2 parties = 3ème offerte', 46.1510, 3.4350, 7, 'Idéal pour une sortie entre amis après les cours.')">
+                    <div class="card-emoji">🔫</div><div class="card-info"><h3>Laser Game</h3><p>Économise 7€</p></div>
+                    <i class="fa-solid fa-heart fav-btn" id="f10" onclick="event.stopPropagation(); toggleFav('f10')"></i>
+                </div>
+            </div> 
+        </div> 
+
+        <div id="agenda-page"> 
+            <h2 style="margin-left: 10px;">📅 Prochains Évènements</h2> 
+            <div class="event-card"> 
+                <div class="event-date">12<span>MARS</span></div> 
+                <div class="event-info"><h4>Soirée Intégration</h4><p>21h00 - Bar Le 15</p></div> 
+            </div> 
+            <div class="event-card"> 
+                <div class="event-date">15<span>MARS</span></div> 
+                <div class="event-info"><h4>Tournoi de Foot</h4><p>14h00 - Stade Municipal</p></div> 
+            </div> 
+            <div class="event-card"> 
+                <div class="event-date">20<span>MARS</span></div> 
+                <div class="event-info"><h4>Conférence IA</h4><p>18h00 - Amphi Pôle Lardy</p></div> 
+            </div> 
+            <div class="event-card"> 
+                <div class="event-date">22<span>MARS</span></div> 
+                <div class="event-info"><h4>Vichy Clean Walk</h4><p>10h00 - Parvis Mairie</p></div> 
+            </div> 
+            <div class="event-card"> 
+                <div class="event-date">28<span>MARS</span></div> 
+                <div class="event-info"><h4>Concert Rock</h4><p>20h30 - Centre Culturel</p></div> 
             </div> 
         </div> 
 
@@ -117,27 +162,16 @@
 
         <div id="profile-page"> 
             <div class="budget-container"> 
-                <div class="budget-widget">
-                    <span>ÉCONOMIES TOTALES 💰</span>
-                    <span class="budget-amount" id="total-saved">0.00 €</span>
-                </div> 
+                <div class="budget-widget"><span>ÉCONOMIES TOTALES 💰</span><h2 id="total-saved" style="margin:5px 0">0.00 €</h2></div> 
                 <div class="budget-sub">
                     <div style="text-align:center">MOIS <b id="month-saved">0.00 €</b></div>
                     <div style="text-align:center">ANNÉE <b id="year-saved">0.00 €</b></div>
-                </div> 
+                </div>
             </div> 
-
             <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label> 
             <input type="file" id="p-up" hidden accept="image/*" onchange="upImg(event,'p')"> 
-            
             <input type="text" id="fn" placeholder="Ton Prénom" oninput="sv()" style="width:100%; padding:15px; margin:20px 0; border-radius:15px; border:1px solid var(--border); text-align:center; font-weight:bold;"> 
-            
-            <div style="background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); width:100%; text-align:center;"> 
-                <img id="id-img" onclick="zoomID(true)" style="width:100%; height:160px; object-fit:cover; border-radius:12px; display:none; margin-bottom:10px; cursor:zoom-in;"> 
-                <label for="id-up" style="color:var(--primary); font-weight:bold; cursor:pointer;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label> 
-                <input type="file" id="id-up" hidden accept="image/*" onchange="upImg(event,'id')"> 
-            </div> 
-            <button style="background:var(--primary); color:white; border:none; padding:18px; border-radius:20px; font-weight:800; width:100%; margin-top:20px; cursor:pointer;" onclick="shareApp()">PARTAGER L'APPLI</button> 
+            <button style="background:var(--primary); color:white; border:none; padding:18px; border-radius:20px; font-weight:800; width:100%; cursor:pointer;" onclick="shareApp()">PARTAGER L'APPLI</button> 
         </div> 
     </div> 
 
@@ -146,92 +180,69 @@
             <span style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;" onclick="closeM()">×</span> 
             <div id="mEmoji" style="font-size:60px;margin-bottom:10px"></div> 
             <h2 id="mTitle"></h2> 
-            <p id="mOffer" style="color:var(--primary); font-weight:bold; margin: 0;"></p>
-            <p id="mDesc" style="color:var(--text-light); margin:15px 0; white-space: pre-line; font-size: 14px;"></p> 
-            <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; font-size:16px; cursor:pointer;"></button> 
+            <p id="mOffer" style="color:var(--primary); font-weight:bold;"></p>
+            <p id="mDesc" style="color:var(--text-light); margin:15px 0; font-size:14px;"></p> 
+            <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; cursor:pointer;">Y ALLER</button> 
         </div> 
     </div> 
-    <div id="zoom-overlay" onclick="zoomID(false)"><img id="zImg" src=""></div> 
 
     <nav class="bottom-nav"> 
         <div class="nav-item active" onclick="go('home', this)"><i class="fa-solid fa-house"></i>Accueil</div> 
+        <div class="nav-item" onclick="go('agenda', this)"><i class="fa-solid fa-calendar-days"></i>Agenda</div> 
         <div class="nav-item" onclick="go('map', this)"><i class="fa-solid fa-map-location-dot"></i>Carte</div> 
         <div class="nav-item" onclick="go('profile', this)"><i class="fa-solid fa-user"></i>Profil</div> 
     </nav> 
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
     <script> 
-        let map, userMarker, markers = []; 
-        let totalSaved = parseFloat(localStorage.getItem('saved_total')) || 0; 
-
-        function initMap() { 
-            if (!map) { 
-                map = L.map('map').setView([46.123, 3.425], 14); 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); 
-                map.locate({setView: false, watch: true}); 
-                map.on('locationfound', (e) => { 
-                    if (userMarker) userMarker.setLatLng(e.latlng); 
-                    else userMarker = L.circleMarker(e.latlng, {radius: 8, fillColor: "#4d52e1", color: "#fff", weight: 2, fillOpacity: 1}).addTo(map); 
-                }); 
-                document.querySelectorAll('.card').forEach(card => {
-                    const title = card.querySelector('h3').innerText;
-                    const emoji = card.querySelector('.card-emoji').innerText;
-                    const onclickStr = card.getAttribute('onclick');
-                    const coords = onclickStr.match(/(\d+\.\d+),\s*(\d+\.\d+)/);
-                    if(coords) L.marker([parseFloat(coords[1]), parseFloat(coords[2])]).addTo(map).bindPopup(emoji + " " + title);
-                });
-            } 
-        } 
-
-        function updateSaved(amount) { 
-            totalSaved += amount; 
-            localStorage.setItem('saved_total', totalSaved); 
-            const val = totalSaved.toFixed(2) + " €";
-            ['total-saved', 'month-saved', 'year-saved'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = val; }); 
-        } 
+        let map, userMarker, totalSaved = parseFloat(localStorage.getItem('saved_total')) || 0; 
 
         function go(p, el) { 
             const navItems = document.querySelectorAll('.nav-item'); navItems.forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); 
-            ['main-content', 'map-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none'); 
-            document.getElementById('search-container').style.display = (p === 'home') ? 'flex' : 'none'; 
-            if(p==='home') document.getElementById('main-content').style.display='block'; 
+            ['home-page', 'map-page', 'profile-page', 'agenda-page'].forEach(id => document.getElementById(id).style.display = 'none'); 
+            if(p==='home') document.getElementById('home-page').style.display='block'; 
+            if(p==='agenda') document.getElementById('agenda-page').style.display='block'; 
             if(p==='map') { document.getElementById('map-page').style.display='block'; setTimeout(initMap, 200); } 
             if(p==='profile') { document.getElementById('profile-page').style.display='flex'; updateSaved(0); } 
         } 
 
-        function openDetails(title, emoji, offer, lat, lng, saving, desc) { 
-            document.getElementById('mEmoji').innerText = emoji; 
-            document.getElementById('mTitle').innerText = title; 
-            document.getElementById('mOffer').innerText = offer;
-            document.getElementById('mDesc').innerText = desc || ""; 
-            document.getElementById('mGo').innerText = "Y aller maintenant"; 
-            document.getElementById('mGo').onclick = () => {  
-                if(saving > 0) updateSaved(saving); 
-                // OUVERTURE MAPS SANS PAGE BLANCHE
-                window.location.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-            }; 
+        function searchDeals() {
+            let val = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(val) ? "flex" : "none";
+            });
+        }
+
+        function filterCat(c, b) {
+            document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active')); b.classList.add('active');
+            let favs = JSON.parse(localStorage.getItem('f')) || [];
+            document.querySelectorAll('.card').forEach(k => {
+                if(c==='fav') k.classList.toggle('hidden', !favs.includes(k.querySelector('.fav-btn').id));
+                else k.classList.toggle('hidden', c!=='tous' && k.dataset.cat!==c);
+            });
+        }
+
+        function openDetails(t, e, o, lat, lng, s, d) { 
+            document.getElementById('mEmoji').innerText = e; document.getElementById('mTitle').innerText = t; 
+            document.getElementById('mOffer').innerText = o; document.getElementById('mDesc').innerText = d; 
+            document.getElementById('mGo').onclick = () => { updateSaved(s); window.location.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`; }; 
             document.getElementById('detailModal').style.display = 'flex'; 
         } 
 
+        function updateSaved(a) { totalSaved += a; localStorage.setItem('saved_total', totalSaved); let v = totalSaved.toFixed(2)+" €"; document.getElementById('total-saved').innerText = v; document.getElementById('month-saved').innerText = v; document.getElementById('year-saved').innerText = v; }
         function closeM() { document.getElementById('detailModal').style.display = 'none'; } 
-        function upImg(e, type) { 
-            const reader = new FileReader(); 
-            reader.onload = (event) => { 
-                if (type === 'p') { document.getElementById('p-img').src = event.target.result; localStorage.setItem('p_i', event.target.result); } 
-                else { document.getElementById('id-img').src = event.target.result; document.getElementById('id-img').style.display = 'block'; localStorage.setItem('id_i', event.target.result); } 
-            }; 
-            reader.readAsDataURL(e.target.files[0]); 
-        } 
-        function zoomID(s) { if(s && document.getElementById('id-img').src){ document.getElementById('zImg').src=document.getElementById('id-img').src; document.getElementById('zoom-overlay').style.display='flex'; } else { document.getElementById('zoom-overlay').style.display='none'; } } 
-        function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); } 
-        function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", url:window.location.href}); } 
+        function toggleFav(id) { let btn = document.getElementById(id); btn.classList.toggle('is-fav'); let favs = JSON.parse(localStorage.getItem('f')) || []; if(btn.classList.contains('is-fav')) favs.push(id); else favs = favs.filter(x => x!==id); localStorage.setItem('f', JSON.stringify(favs)); }
+        function toggleTheme() { document.body.classList.toggle('dark'); }
+        function initMap() { if(!map) { map = L.map('map').setView([46.123, 3.425], 14); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); } }
+        function upImg(e,t) { const r = new FileReader(); r.onload = (ev) => { document.getElementById(t+'-img').src = ev.target.result; localStorage.setItem(t+'_i', ev.target.result); }; r.readAsDataURL(e.target.files[0]); }
+        function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
+        function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U", url:window.location.href}); }
 
         window.onload = () => { 
-            if(localStorage.getItem('th') === 'true') document.body.classList.add('dark'); 
             document.getElementById('fn').value = localStorage.getItem('u_f') || ""; 
-            if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i'); 
-            if(localStorage.getItem('id_i')) { document.getElementById('id-img').src = localStorage.getItem('id_i'); document.getElementById('id-img').style.display = 'block'; } 
+            if(localStorage.getItem('p_i')) document.getElementById('p-img').src = localStorage.getItem('p_i');
             updateSaved(0); 
+            let favs = JSON.parse(localStorage.getItem('f')) || []; favs.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
         }; 
     </script> 
 </body> 
