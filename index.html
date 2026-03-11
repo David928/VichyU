@@ -291,15 +291,21 @@
         function openDetails(t, e, off, lat, lng, s, d) {
             document.getElementById('mEmoji').innerText = e;
             document.getElementById('mTitle').innerText = t;
-            document.getElementById('mOffer').innerText = off; // On remplit l'offre
-            document.getElementById('mDesc').innerText = d;    // On remplit la description
+            document.getElementById('mOffer').innerText = off;
+            document.getElementById('mDesc').innerText = d;
             document.getElementById('mGo').innerText = "Y aller maintenant";
             document.getElementById('mRep').style.display = 'block';
+            
             document.getElementById('mGo').onclick = () => { 
                 if(s > 0) updateSaved(s);
-                window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
-                closeM();
+                
+                // On crée le lien universel (marche mieux pour le retour d'app)
+                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+                
+                // Au lieu de window.open, on utilise location.href pour éviter la page blanche au retour
+                window.location.href = mapUrl;
             };
+            
             document.getElementById('detailModal').style.display = 'flex';
         }
 
