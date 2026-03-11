@@ -94,10 +94,24 @@
     <div class="container">
         <div id="main-content">
             <div class="ad-slider">
-                <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
-                    <div style="font-size:45px">🔥</div><div><h4>O'Tacos</h4><p style="margin:0;opacity:0.9">Le 3ème offert aujourd'hui !</p></div>
-                </div>
-            </div>
+    <div class="ad-banner" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe); cursor: pointer;" 
+         onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, 5.00, 'Sur présentation de l\'application. Pour l\'achat de deux tacos (M, L ou XL), le troisième de taille identique est offert !')">
+        <div style="font-size:45px">🔥</div>
+        <div>
+            <h4>O'Tacos</h4>
+            <p style="margin:0;opacity:0.9">Le 3ème offert aujourd'hui !</p>
+        </div>
+    </div>
+
+    <div class="ad-banner" style="background: linear-gradient(135deg, #ff4757, #ff6b81); cursor: pointer;" 
+         onclick="openDetails('CGR Vichy', '🍿', 'La place de ciné à 7€.', 46.1221, 3.4215, 4.00, 'Tarif préférentiel pour tous les étudiants de Vichy. Valable tous les jours, sur tous les films (hors majoration 3D).')">
+        <div style="font-size:45px">🎬</div>
+        <div>
+            <h4>CGR Cinéma</h4>
+            <p style="margin:0;opacity:0.9">Ta place à 7€ seulement !</p>
+        </div>
+    </div>
+</div>
 
             <div class="categories-grid">
                 <div class="cat-item active" onclick="filterCat('tous', this)"><i class="fa-solid fa-rocket"></i>Tous</div>
