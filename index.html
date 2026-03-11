@@ -10,7 +10,7 @@
         :root { 
             --primary: #5d5fef; --bg: #f8f9fe; --card-bg: #ffffff; 
             --text: #2d3436; --text-light: #636e72; --border: #eee;
-            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894; --star: #fdcb6e;
+            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894;
         }
         body.dark { 
             --bg: #121212; --card-bg: #1e1e1e; --text: #f5f5f5; 
@@ -20,47 +20,51 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 90px; color: var(--text); overflow-x: hidden; }
 
+        /* Header */
         .header { background: var(--primary); padding: 30px 20px 50px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; color: white; text-align: center; position: relative; }
         .header h1 { margin: 0; font-size: 26px; font-weight: 800; font-style: italic; }
         .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; }
 
+        /* Barre de recherche */
         .search-bar { background: white; margin: 15px auto -30px; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; position: relative; z-index: 100; }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; background: transparent; color: #2d3436; }
-        .clear-btn { color: var(--text-light); cursor: pointer; padding: 5px; }
-        
+        .clear-search { color: var(--text-light); cursor: pointer; padding: 5px; }
+
         .container { padding: 45px 15px 10px; }
 
+        /* Bannières */
         .banners { display: flex; gap: 12px; overflow-x: auto; padding: 10px 5px 25px; scrollbar-width: none; }
         .banners::-webkit-scrollbar { display: none; }
-        .banner { min-width: 200px; height: 100px; border-radius: 20px; padding: 15px; color: white; display: flex; flex-direction: column; justify-content: flex-end; font-weight: bold; position: relative; overflow: hidden; }
+        .banner { min-width: 250px; height: 120px; border-radius: 25px; padding: 20px; color: white; display: flex; flex-direction: column; justify-content: flex-end; font-weight: bold; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .b1 { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
         .b2 { background: linear-gradient(135deg, #ff7675, #fab1a0); }
 
+        /* Catégories */
         .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
-        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
+        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 12px 5px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; cursor: pointer; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
 
+        /* Cards */
         .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; }
-        .card-emoji { font-size: 26px; background: rgba(93, 95, 239, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 15px; }
-        .card-info h3 { margin: 0; font-size: 15px; }
-        .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; }
-        .rating-badge { font-size: 11px; color: var(--star); font-weight: bold; margin-top: 2px; }
-
+        .card-emoji { font-size: 26px; background: rgba(93, 95, 239, 0.1); width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; border-radius: 18px; }
+        .card-info h3 { margin: 0; font-size: 16px; display: flex; align-items: center; gap: 5px; }
+        .card-info p { margin: 4px 0; color: var(--text-light); font-size: 13px; }
         .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; transition: color 0.3s; }
         .fav-btn.is-fav { color: var(--heart-red); }
 
-        /* Modales */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
-        .star-rating { margin: 15px 0 5px; font-size: 25px; color: #ddd; }
-        .star-rating i.active { color: var(--star); }
+        /* Modale */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 30px; padding: 30px; text-align: center; position: relative; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; flex: 1; cursor: pointer; }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 80px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; padding-bottom: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 11px; font-weight: 600; flex: 1; cursor: pointer; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); }
 
+        /* Pages */
         #map-page, #profile-page, #agenda-page { display: none; }
-        #map { height: 75vh; width: 100%; border-radius: 25px; }
+        #map { height: 75vh; width: 100%; border-radius: 25px; margin-top: 10px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -68,10 +72,10 @@
 
     <div id="welcomePopup" class="modal" style="display: flex;">
         <div class="modal-content">
-            <div style="font-size: 50px;">🔥</div>
-            <h2>Bon plan du jour !</h2>
-            <p><strong>-50%</strong> sur le Parcours Ninja avant 18h !</p>
-            <button onclick="document.getElementById('welcomePopup').style.display='none'" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; cursor:pointer;">J'en profite</button>
+            <div style="font-size: 50px; margin-bottom: 10px;">🎁</div>
+            <h2>Bienvenue !</h2>
+            <p>Découvre tous les bons plans étudiants de Vichy.</p>
+            <button onclick="document.getElementById('welcomePopup').style.display='none'" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; margin-top:10px;">C'est parti !</button>
         </div>
     </div>
 
@@ -81,15 +85,15 @@
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="searchInput" placeholder="Rechercher..." oninput="searchDeals()">
-            <i class="fa-solid fa-circle-xmark clear-btn" onclick="clearSearch()"></i>
+            <i class="fa-solid fa-circle-xmark clear-search" onclick="clearSearch()"></i>
         </div>
     </div>
 
     <div class="container">
         <div id="home-page">
             <div class="banners">
-                <div class="banner b1"><span>Événements de la semaine</span></div>
-                <div class="banner b2"><span>Nouveaux codes promos</span></div>
+                <div class="banner b1"><span>Soirée étudiante au CGR - Jeudi soir</span></div>
+                <div class="banner b2"><span>Nouveaux menus O'Tacos arrivés</span></div>
             </div>
 
             <div class="categories-grid">
@@ -100,12 +104,11 @@
             </div>
 
             <div id="deals-list">
-                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220, 'f1', 'Le rendez-vous des grosses faims.')">
+                <div class="card" data-cat="restos" onclick="openDetails('O\'Tacos', '🌮', '3ème Tacos offert.', 46.1250, 3.4220)">
                     <div class="card-emoji">🌮</div>
                     <div class="card-info">
                         <h3>O'Tacos</h3>
                         <p>Économise 5.00€</p>
-                        <div class="rating-badge" id="rate-f1"><i class="fa-solid fa-star"></i> <span>4.2</span></div>
                     </div>
                     <i class="fa-solid fa-heart fav-btn" id="f1" onclick="event.stopPropagation(); toggleFav('f1')"></i>
                 </div>
@@ -113,26 +116,17 @@
         </div>
 
         <div id="map-page"><div id="map"></div></div>
-        <div id="agenda-page" style="padding:20px;"><h2>Mon Agenda</h2><p>Tes soirées à Vichy ici.</p></div>
-        <div id="profile-page" style="padding:20px;"><h2>Mon Profil</h2><p>Tes points : 250 pts</p></div>
+        <div id="agenda-page" style="padding:20px; text-align:center;"><h2>Mon Agenda</h2><p>Tes événements arrivent ici.</p></div>
+        <div id="profile-page" style="padding:20px; text-align:center;"><h2>Mon Profil</h2><p>Points fidélité : 0</p></div>
     </div>
 
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <span style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;" onclick="closeM()">×</span>
-            <div id="mEmoji" style="font-size:60px"></div>
-            <h2 id="mTitle"></h2>
-            <p id="mDesc" style="font-weight:bold; color:var(--primary);"></p>
-            <p id="mIntro" style="color:var(--text-light); font-size:14px;"></p>
-            
-            <div class="star-rating" id="modalStars">
-                <i class="fa-solid fa-star" onclick="submitRate(1)"></i>
-                <i class="fa-solid fa-star" onclick="submitRate(2)"></i>
-                <i class="fa-solid fa-star" onclick="submitRate(3)"></i>
-                <i class="fa-solid fa-star" onclick="submitRate(4)"></i>
-                <i class="fa-solid fa-star" onclick="submitRate(5)"></i>
-            </div>
-            <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; cursor:pointer;">Y aller</button>
+            <div id="mEmoji" style="font-size:60px; margin-bottom:10px;"></div>
+            <h2 id="mTitle" style="margin:5px 0;"></h2>
+            <p id="mDesc" style="font-weight:bold; color:var(--primary); margin-bottom:20px;"></p>
+            <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; font-size:16px;">Y aller</button>
         </div>
     </div>
 
@@ -145,20 +139,16 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        let currentDealId = null;
         let map;
 
         function clearSearch() { document.getElementById('searchInput').value = ''; searchDeals(); }
 
-        function openDetails(t, e, d, lat, lng, id, intro) {
-            currentDealId = id;
+        function openDetails(t, e, d, lat, lng) {
             document.getElementById('mEmoji').innerText = e;
             document.getElementById('mTitle').innerText = t;
             document.getElementById('mDesc').innerText = d;
-            document.getElementById('mIntro').innerText = intro || "";
-            let rates = JSON.parse(localStorage.getItem('user_ratings')) || {};
-            updateStarsUI(rates[id] || 0);
             document.getElementById('mGo').onclick = () => { 
+                // LIEN GOOGLE MAPS CORRIGÉ SANS PAGE BLANCHE
                 window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
             };
             document.getElementById('detailModal').style.display = 'flex';
@@ -166,33 +156,40 @@
 
         function closeM() { document.getElementById('detailModal').style.display = 'none'; }
 
-        function submitRate(n) {
-            let rates = JSON.parse(localStorage.getItem('user_ratings')) || {};
-            rates[currentDealId] = n;
-            localStorage.setItem('user_ratings', JSON.stringify(rates));
-            updateStarsUI(n);
-            refreshRatings();
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('th', document.body.classList.contains('dark'));
+            document.getElementById('theme-icon').className = document.body.classList.contains('dark') ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
 
-        function updateStarsUI(n) {
-            document.querySelectorAll('#modalStars i').forEach((s, i) => s.classList.toggle('active', i < n));
+        function filterCat(c, b) {
+            document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            let favs = JSON.parse(localStorage.getItem('f')) || [];
+            document.querySelectorAll('.card').forEach(k => {
+                const id = k.querySelector('.fav-btn').id;
+                if(c === 'fav') k.classList.toggle('hidden', !favs.includes(id));
+                else k.classList.toggle('hidden', c !== 'tous' && k.dataset.cat !== c);
+            });
         }
 
-        function refreshRatings() {
-            let rates = JSON.parse(localStorage.getItem('user_ratings')) || {};
-            for (let id in rates) {
-                let span = document.querySelector(`#rate-${id} span`);
-                if(span) span.innerText = rates[id].toFixed(1);
-            }
+        function toggleFav(id) {
+            let favs = JSON.parse(localStorage.getItem('f')) || [];
+            if(favs.includes(id)) favs = favs.filter(x => x !== id);
+            else favs.push(id);
+            localStorage.setItem('f', JSON.stringify(favs));
+            document.getElementById(id).classList.toggle('is-fav');
+        }
+
+        function searchDeals() {
+            let v = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(v) ? 'flex' : 'none');
         }
 
         function go(p, el) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
-            ['home-page', 'map-page', 'agenda-page', 'profile-page'].forEach(id => {
-                let e = document.getElementById(id);
-                if(e) e.style.display = 'none';
-            });
+            ['home-page', 'map-page', 'agenda-page', 'profile-page'].forEach(id => document.getElementById(id).style.display = 'none');
             document.getElementById(p + '-page').style.display = 'block';
             if(p === 'map' && !map) {
                 setTimeout(() => {
@@ -202,19 +199,13 @@
             }
         }
 
-        function searchDeals() {
-            let v = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(v) ? 'flex' : 'none');
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark');
-            localStorage.setItem('th', document.body.classList.contains('dark'));
-        }
-
         window.onload = () => {
-            if(localStorage.getItem('th') === 'true') document.body.classList.add('dark');
-            refreshRatings();
+            if(localStorage.getItem('th') === 'true') {
+                document.body.classList.add('dark');
+                document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+            }
+            let favs = JSON.parse(localStorage.getItem('f')) || [];
+            favs.forEach(id => { if(document.getElementById(id)) document.getElementById(id).classList.add('is-fav'); });
         };
     </script>
 </body>
