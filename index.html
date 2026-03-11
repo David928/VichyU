@@ -222,13 +222,31 @@
             if (!map) return;
             markers.forEach(m => map.removeLayer(m));
             markers = [];
+            
             document.querySelectorAll('.card').forEach(card => {
                 const title = card.querySelector('h3').innerText;
                 const emoji = card.querySelector('.card-emoji').innerText;
                 const onclickStr = card.getAttribute('onclick');
+                
+                // On récupère les coordonnées lat et lng dans le onclick
                 const coords = onclickStr.match(/(\d+\.\d+),\s*(\d+\.\d+)/);
+                
                 if (coords) {
-                    const m = L.marker([parseFloat(coords[1]), parseFloat(coords[2])]).addTo(map).bindPopup(`<b>${emoji} ${title}</b>`);
+                    const lat = parseFloat(coords[1]);
+                    const lng = parseFloat(coords[2]);
+                    
+                    // On crée le contenu de la bulle avec un lien cliquable
+                    const popupContent = `
+                        <div style="text-align:center;">
+                            <b style="font-size:14px;">${emoji} ${title}</b><br>
+                            <button onclick="window.location.href='https://www.google.com/maps/search/?api=1&query=${lat},${lng}'" 
+                                    style="background:#5d5fef; color:white; border:none; padding:5px 10px; border-radius:10px; margin-top:8px; cursor:pointer; font-weight:bold; font-size:12px;">
+                                Y aller
+                            </button>
+                        </div>
+                    `;
+                    
+                    const m = L.marker([lat, lng]).addTo(map).bindPopup(popupContent);
                     markers.push(m);
                 }
             });
