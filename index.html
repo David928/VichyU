@@ -251,7 +251,10 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        let map, userMarker, userCircle;
+        // MODIFIE ICI : true = affiche la popup, false = désactive la popup
+        const ENABLE_WELCOME_POPUP = true; 
+        
+        let map, userMarker, userCircle; // ... la suite de ton code existant
         let markers = [];
         let totalSaved = parseFloat(localStorage.getItem('saved_total')) || 0;
 
