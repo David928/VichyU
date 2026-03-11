@@ -230,6 +230,16 @@
                 <label for="id-up" style="color:var(--primary); font-weight:bold; cursor:pointer;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label>
                 <input type="file" id="id-up" hidden accept="image/*" onchange="upImg(event,'id')">
             </div>
+            <div onclick="document.getElementById('install-help').style.display='flex'" style="margin-top:15px; background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:12px;">
+    <div style="background:#e3f2fd; color:#2196f3; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+        <i class="fa-solid fa-download"></i>
+    </div>
+    <div style="flex:1">
+        <h4 style="margin:0; font-size:14px;">Installer l'application</h4>
+        <p style="margin:0; font-size:12px; opacity:0.7">Ajoute Vichy'U sur ton écran d'accueil</p>
+    </div>
+        <i class="fa-solid fa-chevron-right" style="opacity:0.3"></i>
+    </div>
             <button style="background:var(--primary); color:white; border:none; padding:18px; border-radius:20px; font-weight:800; width:100%; margin-top:20px; cursor:pointer;" onclick="shareApp()">PARTAGER L'APPLI</button>
         </div>
     </div>
@@ -253,7 +263,30 @@
         <div class="nav-item" onclick="go('map', this)"><i class="fa-solid fa-map-location-dot"></i>Carte</div>
         <div class="nav-item" onclick="go('profile', this)"><i class="fa-solid fa-user"></i>Profil</div>
     </nav>
+    
+    <div id="install-help" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(5px);">
+    <div style="background:var(--bg); border-radius:30px; padding:25px; max-width:400px; width:100%; position:relative; border:1px solid var(--border);">
+        <i class="fa-solid fa-xmark" onclick="document.getElementById('install-help').style.display='none'" style="position:absolute; top:20px; right:20px; font-size:20px; opacity:0.5;"></i>
+        
+        <h3 style="margin-top:0; text-align:center;">Installer Vichy'U 🚀</h3>
+        
+        <div style="margin-top:20px;">
+            <p><strong>Sur iPhone (Safari) :</strong></p>
+            <p style="font-size:14px; opacity:0.8;">Appuie sur le bouton de partage <i class="fa-solid fa-arrow-up-from-bracket"></i> en bas de ton écran, puis choisis <strong>"Sur l'écran d'accueil"</strong>.</p>
+        </div>
+        
+        <hr style="border:0; border-top:1px solid var(--border); margin:15px 0;">
+        
+        <div>
+            <p><strong>Sur Android (Chrome) :</strong></p>
+            <p style="font-size:14px; opacity:0.8;">Appuie sur les 3 petits points <i class="fa-solid fa-ellipsis-vertical"></i> en haut à droite, puis choisis <strong>"Installer l'application"</strong>.</p>
+        </div>
 
+        <button onclick="document.getElementById('install-help').style.display='none'" style="width:100%; margin-top:20px; padding:12px; border:none; border-radius:15px; background:var(--primary); color:white; font-weight:bold;">J'ai compris !</button>
+    </div>
+</div>
+
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // MODIFIE ICI : true = affiche la popup, false = désactive la popup
