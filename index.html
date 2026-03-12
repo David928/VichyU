@@ -41,16 +41,41 @@
             position: relative; /* Pour pas que l'icône recherche se cache */
         }
 
-        .header img {
-            max-width: 100%; /* S'adapte à la largeur de sa colonne */
-            height: auto;
-            max-height: 40px; /* Force le logo à être plus fin */
-            object-fit: contain;
-        }
-        
-        .header { background: #4d52e1; padding: 5px 20px 45px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; text-align: center; position: relative; }
-        .header-logo { height: 160px; width: auto; max-width: 100%; margin: 0 auto; display: block; object-fit: contain; }
-        .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; }
+       .header { 
+    background: #4d52e1; 
+    padding: 20px 20px 45px; 
+    border-bottom-left-radius: 40px; 
+    border-bottom-right-radius: 40px; 
+    text-align: center; 
+    position: relative; 
+}
+
+/* On donne au logo sa taille d'origine (160px comme avant) */
+.header img, .header-logo { 
+    height: 160px; 
+    width: auto; 
+    max-width: 100%; 
+    margin: 0 auto; 
+    display: block; 
+    object-fit: contain; 
+}
+
+/* Le bouton soleil bien placé en haut à droite */
+.theme-toggle { 
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    font-size: 20px; 
+    cursor: pointer; 
+    background: rgba(255,255,255,0.2); 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 1001; 
+}
 
         .search-bar { background: white; margin: 15px auto -30px; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; position: relative; z-index: 100; }
         .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; background: transparent; color: #2d3436; }
