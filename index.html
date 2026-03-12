@@ -28,27 +28,32 @@
 
        .header { 
     background: #4d52e1; 
-    padding: 20px 20px 45px; /* Grand espace en bas pour l'arrondi et la recherche */
+    /* On réduit le padding : 20px en haut, 20px en bas (au lieu de 45px) */
+    padding: 20px 20px 30px; 
     border-bottom-left-radius: 40px; 
     border-bottom-right-radius: 40px; 
-    text-align: center; /* Centre horizontalement tout ce qu'il y a dedans */
-    position: relative; 
-    display: flex; /* Utilise Flexbox pour un centrage parfait */
-    flex-direction: column; /* Aligne les éléments à la verticale (logo au-dessus de la recherche) */
-    align-items: center; /* Centre les éléments horizontalement (flexbox) */
-    justify-content: center; /* Centre les éléments verticalement (flexbox) */
-    min-height: 250px; /* Donne une hauteur minimale généreuse au header bleu */
+    text-align: center; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Le logo "XXL" centré */
-.header img, .header-logo { 
-    height: 160px; /* Taille XXL pour ton logo, comme au début */
-    width: auto; /* Garde les proportions */
-    max-width: 90%; /* Pour pas qu'il ne déborde sur les côtés sur petit écran */
-    margin: 0 auto 20px auto; /* Centre avec margin et met 20px d'espace en bas */
-    display: block; /* S'assure qu'il se comporte comme un bloc pour centrer */
-    object-fit: contain; /* Évite de déformer l'image */
+.header-logo { 
+    height: 140px; /* Légèrement réduit (de 160 à 140) pour gagner de la place sans perdre l'effet XXL */
+    width: auto;
+    margin-bottom: 10px;
+    display: block;
 }
+
+/* C'est ce bloc qui va faire remonter ton moteur de recherche */
+.search-container {
+    margin: -25px auto 20px; /* Le -25px fait remonter la barre sur le bleu */
+    position: relative;
+    z-index: 10;
+    width: 90%; /* Ajuste selon ton design */
+}
+
 
 
 /* Le bouton soleil bien placé en haut à droite */
