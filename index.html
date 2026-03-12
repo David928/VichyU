@@ -43,22 +43,28 @@
 
        .header { 
     background: #4d52e1; 
-    padding: 20px 20px 45px; 
+    padding: 20px 20px 45px; /* Grand espace en bas pour l'arrondi et la recherche */
     border-bottom-left-radius: 40px; 
     border-bottom-right-radius: 40px; 
-    text-align: center; 
+    text-align: center; /* Centre horizontalement tout ce qu'il y a dedans */
     position: relative; 
+    display: flex; /* Utilise Flexbox pour un centrage parfait */
+    flex-direction: column; /* Aligne les éléments à la verticale (logo au-dessus de la recherche) */
+    align-items: center; /* Centre les éléments horizontalement (flexbox) */
+    justify-content: center; /* Centre les éléments verticalement (flexbox) */
+    min-height: 250px; /* Donne une hauteur minimale généreuse au header bleu */
 }
 
-/* On donne au logo sa taille d'origine (160px comme avant) */
+/* Le logo "XXL" centré */
 .header img, .header-logo { 
-    height: 160px; 
-    width: auto; 
-    max-width: 100%; 
-    margin: 0 auto; 
-    display: block; 
-    object-fit: contain; 
+    height: 160px; /* Taille XXL pour ton logo, comme au début */
+    width: auto; /* Garde les proportions */
+    max-width: 90%; /* Pour pas qu'il ne déborde sur les côtés sur petit écran */
+    margin: 0 auto 20px auto; /* Centre avec margin et met 20px d'espace en bas */
+    display: block; /* S'assure qu'il se comporte comme un bloc pour centrer */
+    object-fit: contain; /* Évite de déformer l'image */
 }
+
 
 /* Le bouton soleil bien placé en haut à droite */
 .theme-toggle { 
