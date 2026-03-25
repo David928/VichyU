@@ -865,7 +865,8 @@ function renderDeals(deals) {
             <div class="card-emoji">${d.emoji}</div>
             <div class="card-info">
                 <h3>${d.title}
-                    ${d.partner && d.plan ? '<span class="badge-premium">💎 PREMIUM</span>' : ''}
+                    ${d.partner && d.plan === 'premium' ? '<span class="badge-premium">💎 PREMIUM</span>' : ''}
+                    ${d.partner && d.plan === 'visible' ? '<span class="badge-yellow">⭐ VISIBLE</span>' : ''}
                     ${isNew(d.addedDate) ? '<span class="badge-new">NOUVEAU</span>' : ''}
                 </h3>
                 <p>${d.savingsDisplay} ${expiryBadge(d.expiryDate)}</p>
