@@ -312,6 +312,10 @@
         .badge-new { background:#ff4757;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;vertical-align:middle; }
         .badge-premium { background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:white;font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;vertical-align:middle; }
 
+        /* ─── ONBOARDING ─── */
+        .ob-dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:all 0.3s; }
+        .ob-dot.active { width:24px; border-radius:4px; background:var(--primary); }
+
         /* ─── CODE DASHBOARD ─── */
         .dash-code-input { display: flex; gap: 8px; margin-bottom: 20px; }
         .dash-code-input input { flex: 1; border: 2px solid var(--border); border-radius: 12px; padding: 10px 14px; font-size: 16px; background: var(--bg); color: var(--text); outline: none; letter-spacing: 3px; font-weight: 700; text-align: center; }
@@ -642,6 +646,71 @@
                 <textarea class="review-textarea" id="review-text" rows="2" placeholder="Ton commentaire (optionnel)..."></textarea>
                 <button class="submit-review-btn" onclick="submitReview()">Publier mon avis</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding-overlay" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:9000; overflow:hidden;">
+    <div style="height:100%; display:flex; flex-direction:column; padding:32px 24px 40px;">
+
+        <!-- Indicateurs d'étapes -->
+        <div style="display:flex; gap:6px; justify-content:center; margin-bottom:32px;">
+            <div class="ob-dot" id="ob-dot-0"></div>
+            <div class="ob-dot" id="ob-dot-1"></div>
+            <div class="ob-dot" id="ob-dot-2"></div>
+            <div class="ob-dot" id="ob-dot-3"></div>
+        </div>
+
+        <!-- Étapes -->
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+
+            <!-- Étape 0 : Bienvenue -->
+            <div class="ob-step" id="ob-step-0" style="text-align:center;">
+                <div style="font-size:72px; margin-bottom:24px;">🎓</div>
+                <h1 style="font-size:28px; font-weight:900; margin:0 0 12px; color:var(--text);">Bienvenue sur Vichy'U</h1>
+                <p style="font-size:16px; color:var(--text-light); line-height:1.6; margin:0;">Les meilleurs bons plans étudiants de Vichy, réunis en un seul endroit.</p>
+            </div>
+
+            <!-- Étape 1 : Prénom -->
+            <div class="ob-step" id="ob-step-1" style="text-align:center; display:none;">
+                <div style="font-size:72px; margin-bottom:24px;">👋</div>
+                <h1 style="font-size:26px; font-weight:900; margin:0 0 10px; color:var(--text);">Comment tu t'appelles ?</h1>
+                <p style="font-size:14px; color:var(--text-light); margin:0 0 28px; line-height:1.5;">Ton prénom apparaîtra dans le classement des étudiants qui économisent le plus.</p>
+                <input type="text" id="ob-prenom" placeholder="Ton prénom" maxlength="20"
+                    style="width:100%; padding:16px; font-size:20px; font-weight:700; text-align:center; border:2px solid var(--primary); border-radius:16px; background:var(--card-bg); color:var(--text); outline:none; box-sizing:border-box;">
+            </div>
+
+            <!-- Étape 2 : Localisation -->
+            <div class="ob-step" id="ob-step-2" style="text-align:center; display:none;">
+                <div style="font-size:72px; margin-bottom:24px;">📍</div>
+                <h1 style="font-size:26px; font-weight:900; margin:0 0 10px; color:var(--text);">Active ta localisation</h1>
+                <p style="font-size:14px; color:var(--text-light); margin:0 0 28px; line-height:1.5;">Pour voir les deals près de toi et la distance jusqu'à chaque bon plan.</p>
+                <button onclick="obRequestLocation()" style="width:100%; padding:16px; background:linear-gradient(135deg,#5d5fef,#a29bfe); color:white; border:none; border-radius:16px; font-size:16px; font-weight:800; cursor:pointer;">
+                    📍 Activer la localisation
+                </button>
+                <p id="ob-loc-status" style="font-size:13px; color:var(--text-light); margin-top:12px;"></p>
+            </div>
+
+            <!-- Étape 3 : Installer l'app -->
+            <div class="ob-step" id="ob-step-3" style="text-align:center; display:none;">
+                <div style="font-size:72px; margin-bottom:24px;">📲</div>
+                <h1 style="font-size:26px; font-weight:900; margin:0 0 10px; color:var(--text);">Installe l'app !</h1>
+                <p style="font-size:14px; color:var(--text-light); margin:0; line-height:1.5;">
+                    Sur iPhone : appuie sur <strong>Partager</strong> <span style="font-size:16px;">⬆️</span> puis <strong>"Sur l'écran d'accueil"</strong>.<br><br>
+                    Sur Android : appuie sur le menu <strong>⋮</strong> puis <strong>"Ajouter à l'écran d'accueil"</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Boutons navigation -->
+        <div style="display:flex; gap:12px; margin-top:32px;">
+            <button id="ob-skip" onclick="obSkip()" style="flex:1; padding:16px; background:var(--border); color:var(--text-light); border:none; border-radius:16px; font-size:15px; font-weight:700; cursor:pointer;">
+                Passer
+            </button>
+            <button id="ob-next" onclick="obNext()" style="flex:2; padding:16px; background:linear-gradient(135deg,#5d5fef,#a29bfe); color:white; border:none; border-radius:16px; font-size:15px; font-weight:800; cursor:pointer;">
+                Suivant →
+            </button>
         </div>
     </div>
 </div>
@@ -1244,6 +1313,69 @@ async function openDashboard() {
 }
 
 function closeDashboard() { document.getElementById('dashboard-overlay').style.display = 'none'; }
+
+// ═══════════════════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════════════════
+let obCurrentStep = 0;
+const OB_TOTAL = 4;
+
+function obShow() {
+    if (localStorage.getItem('onboarding_done')) return;
+    document.getElementById('onboarding-overlay').style.display = 'block';
+    obGoTo(0);
+}
+
+function obGoTo(step) {
+    for (let i = 0; i < OB_TOTAL; i++) {
+        document.getElementById(`ob-step-${i}`).style.display = i === step ? 'block' : 'none';
+        const dot = document.getElementById(`ob-dot-${i}`);
+        dot.classList.toggle('active', i === step);
+    }
+    obCurrentStep = step;
+    const nextBtn = document.getElementById('ob-next');
+    nextBtn.textContent = step === OB_TOTAL - 1 ? "C'est parti ! 🚀" : 'Suivant →';
+}
+
+function obNext() {
+    if (obCurrentStep === 1) {
+        const prenom = document.getElementById('ob-prenom').value.trim();
+        if (prenom) {
+            localStorage.setItem('u_f', prenom);
+            document.getElementById('fn').value = prenom;
+        }
+    }
+    if (obCurrentStep < OB_TOTAL - 1) {
+        obGoTo(obCurrentStep + 1);
+    } else {
+        obFinish();
+    }
+}
+
+function obSkip() {
+    if (obCurrentStep === 1) {
+        const prenom = document.getElementById('ob-prenom').value.trim();
+        if (prenom) {
+            localStorage.setItem('u_f', prenom);
+            document.getElementById('fn').value = prenom;
+        }
+    }
+    obFinish();
+}
+
+function obFinish() {
+    localStorage.setItem('onboarding_done', '1');
+    document.getElementById('onboarding-overlay').style.display = 'none';
+}
+
+function obRequestLocation() {
+    const status = document.getElementById('ob-loc-status');
+    if (!navigator.geolocation) { status.textContent = 'Géolocalisation non supportée.'; return; }
+    navigator.geolocation.getCurrentPosition(
+        () => { status.innerHTML = '✅ Localisation activée !'; setTimeout(() => obGoTo(3), 800); },
+        () => { status.textContent = 'Refusé — tu pourras l\'activer plus tard.'; setTimeout(() => obGoTo(3), 1200); }
+    );
+}
 
 // ═══════════════════════════════════════════════════════
 // PAGE PARTENAIRE — Contact
@@ -1918,7 +2050,7 @@ document.addEventListener('DOMContentLoaded', () => {
         g.innerHTML=`<span style="font-size:22px;font-weight:800;">Bonjour ${prenom.trim()} 👋</span><span style="font-size:14px;font-weight:400;opacity:0.85;">${tagline}</span>`;
     }
 
-    setTimeout(hideSplash, 3500);
+    setTimeout(() => { hideSplash(); if (!localStorage.getItem('onboarding_done')) obShow(); }, 3500);
     loadData();
     setTimeout(initGeolocation, 1000);
 
