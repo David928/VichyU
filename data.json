@@ -54,8 +54,7 @@
       "addedDate": "2025-03-01",
       "desc": "Un parcours d'obstacles épique pour tester ton agilité ! Profite de 8€ au lieu de 12€ sur présentation de la carte étudiant.",
       "plan": "premium",
-      "partner": true,
-      "dashCode": "NINJA001"
+      "partner": true
     },
     {
       "id": "otacos",
@@ -71,8 +70,7 @@
       "expiryDate": "2026-06-30",
       "partner": true,
       "plan": "visible",
-      "desc": "Sur présentation de l'application. Pour l'achat de deux tacos (M, L ou XL), le troisième de taille identique est offert !",
-      "dashCode": "OTACOS01"
+      "desc": "Sur présentation de l'application. Pour l'achat de deux tacos (M, L ou XL), le troisième de taille identique est offert !"
     },
     {
       "id": "cinema",
@@ -86,7 +84,6 @@
       "cat": "loisirs",
       "addedDate": "2025-03-01",
       "desc": "Tarif préférentiel pour tous les étudiants de Vichy. Valable tous les jours, sur tous les films (hors majoration 3D).",
-      "dashCode": "CINEMA01",
       "partner": true,
       "plan": "premium"
     },
@@ -116,8 +113,7 @@
       "addedDate": "2026-03-15",
       "desc": "Vertical Limit, l'unique salle d'escalade Clip'n Climb de l'Allier en Auvergne.",
       "partner": true,
-      "plan": "premium",
-      "dashCode": "VERTC001"
+      "plan": "premium"
     },
     {
       "id": "arcabloc",
