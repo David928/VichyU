@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vichy'U</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Vichy'U">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4954ec">
+    <meta name="description" content="Les bons plans pour les étudiants de Vichy">
+    <meta property="og:title" content="Vichy'U">
+    <meta property="og:description" content="Les bons plans pour les étudiants de Vichy">
+    <meta property="og:image" content="icon.png">
+    <meta property="og:url" content="https://vichy-u.vercel.app">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #5d5fef; --bg: #f8f9fe; --card-bg: #ffffff; 
+            --text: #2d3436; --text-light: #636e72; --border: #eee;
+            --heart-red: #ff4757; --verified: #00a8ff; --green: #00b894;
+            --flash: #ff6b35; --gold: #f9ca24;
+        }
+        body.dark { 
+            --bg: #121212; --card-bg: #1e1e1e; --text: #f5f5f5; 
+            --text-light: #b2bec3; --border: #333; 
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); margin: 0; padding: 0; padding-bottom: 90px; color: var(--text); overflow-x: hidden; width: 100%; max-width: 100vw; }
+
+        /* ─── HEADER ─── */
+        .header { background: #4d52e1; padding: 10px 10px 30px; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; text-align: center; position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
+        .header-logo { height: 120px; width: auto; margin-bottom: 10px; display: block; }
+        .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 20px; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001; }
+        .search-bar { background: white; margin: 15px auto -30px; padding: 12px 15px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; position: relative; z-index: 100; }
+        .search-bar input { border: none; width: 100%; margin-left: 10px; font-size: 16px; outline: none; background: transparent; color: #2d3436; }
+        .clear-search { color: #ccc; cursor: pointer; padding: 5px; visibility: hidden; }
+        body.dark .search-bar { background: #2d2d2d; }
+        body.dark .search-bar input { color: white; }
+        .container { padding: 45px 15px 10px; }
+
+        /* ─── BANNIÈRES ─── */
+        .ad-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 25px; scrollbar-width: none; padding: 10px 0; }
+        .ad-banner { flex: 0 0 85%; border-radius: 25px; min-height: 80px; padding: 12px 18px; color: white; display: flex; align-items: center; gap: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); animation: slideIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .ad-banner h4 { font-size: 18px; margin: 0; }
+        .ad-banner:active { transform: scale(0.98); transition: 0.1s; }
+
+        /* ─── OFFRES FLASH ─── */
+        .flash-section { margin-bottom: 20px; }
+        .flash-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .flash-header h3 { margin: 0; font-size: 14px; font-weight: 800; color: var(--flash); }
+        .flash-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--flash); animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.5); opacity:0.6; } }
+        
+        .flash-card { background: linear-gradient(135deg, #ff6b35, #f9ca24); border-radius: 20px; padding: 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; position: relative; overflow: hidden; }
+        .flash-card::before { content: '⚡ FLASH'; position: absolute; top: 10px; right: 12px; font-size: 9px; font-weight: 900; color: rgba(255,255,255,0.9); letter-spacing: 1px; }
+        .flash-emoji { font-size: 30px; background: rgba(255,255,255,0.25); width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; border-radius: 15px; }
+        .flash-info h4 { margin: 0; font-size: 15px; font-weight: 800; color: white; }
+        .flash-info p { margin: 3px 0 0; font-size: 12px; color: rgba(255,255,255,0.85); }
+        .flash-countdown { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px 10px; margin-top: 6px; display: inline-block; font-size: 13px; font-weight: 800; color: white; font-variant-numeric: tabular-nums; }
+
+        /* ─── CATÉGORIES ─── */
+        .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+        .cat-item { background: var(--card-bg); border: 1px solid var(--border); padding: 10px 2px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; cursor: pointer; }
+        .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* ─── CARDS ─── */
+        .card { background: var(--card-bg); border-radius: 22px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; border: 1px solid var(--border); cursor: pointer; }
+        .card-emoji { font-size: 26px; background: rgba(93, 95, 239, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 15px; flex-shrink: 0; }
+        .card-info { flex: 1; min-width: 0; }
+        .card-info h3 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+        .card-info p { margin: 3px 0; color: var(--text-light); font-size: 12px; }
+        .fav-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; color: #ddd; transition: color 0.3s; cursor: pointer; z-index: 5; }
+        .fav-btn.is-fav { color: var(--heart-red); }
+        .partner-spotlight .fav-btn { color: rgba(255,255,255,0.45); }
+        .partner-spotlight .fav-btn.is-fav { color: var(--heart-red); }
+
+        /* ─── PARTNER CARD améliorée ─── */
+        .partner-card { 
+            border: 2px solid #a29bfe;
+            box-shadow: 0 4px 20px rgba(108,92,231,0.18), inset 0 0 0 1px rgba(108,92,231,0.08);
+            background: var(--card-bg);
+        }
+        .partner-card .card-emoji { background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(162,155,254,0.1)); }
+        .partner-spotlight { 
+            background: linear-gradient(135deg, #4a0e8f, #6c5ce7, #a29bfe);
+            border-radius: 22px; padding: 18px 15px; margin-bottom: 15px;
+            position: relative; overflow: hidden;
+        }
+        .partner-spotlight::after {
+            content: ''; position: absolute; top: -30px; right: -30px;
+            width: 120px; height: 120px; border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+        }
+        .partner-spotlight-inner { display: flex; align-items: center; gap: 15px; }
+        .partner-spotlight-emoji { font-size: 32px; background: rgba(255,255,255,0.2); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; flex-shrink: 0; }
+        .partner-spotlight-info h3 { margin: 0; font-size: 16px; font-weight: 800; color: white; }
+        .partner-spotlight-info p { margin: 4px 0 0; font-size: 12px; color: rgba(255,255,255,0.85); }
+        .partner-spotlight-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 10px; margin-top: 6px; font-size: 10px; font-weight: 800; color: white; letter-spacing: 0.5px; }
+
+        /* ─── ÉTOILES / AVIS ─── */
+        .stars-row { display: flex; align-items: center; gap: 4px; margin-top: 4px; }
+        .stars-row .star { font-size: 12px; cursor: pointer; transition: transform 0.15s; }
+        .stars-row .star:hover { transform: scale(1.3); }
+        .rating-count { font-size: 11px; color: var(--text-light); margin-left: 2px; }
+
+        /* ─── ÉVÉNEMENTS ─── */
+        .event-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .event-date { background: var(--primary); color: white; min-width: 55px; height: 55px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; line-height: 1; }
+        .event-date span { font-size: 10px; text-transform: uppercase; font-weight: 400; }
+        .event-info h4 { margin: 0; font-size: 14px; }
+
+        /* ─── NAV ─── */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); height: 75px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 10px; flex: 1; cursor: pointer; gap: 2px; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 20px; }
+
+        /* ─── PAGES ─── */
+        #map-page, #profile-page, #agenda-page, #partner-page { display: none; }
+        #profile-page { flex-direction: column; align-items: center; }
+        #map { height: 75vh; width: 100%; border-radius: 25px; }
+
+        /* ─── PAGE PARTENAIRES ─── */
+        .partner-page-hero {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            border-radius: 28px; padding: 28px 20px; margin-bottom: 20px;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .partner-page-hero::before {
+            content: ''; position: absolute; top: -40px; left: -40px;
+            width: 200px; height: 200px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(108,92,231,0.4) 0%, transparent 70%);
+        }
+        .partner-page-hero::after {
+            content: ''; position: absolute; bottom: -30px; right: -30px;
+            width: 150px; height: 150px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(162,155,254,0.3) 0%, transparent 70%);
+        }
+        .partner-page-hero h2 { margin: 0 0 8px; font-size: 24px; font-weight: 900; color: white; position: relative; z-index: 1; }
+        .partner-page-hero p { margin: 0; font-size: 13px; color: rgba(255,255,255,0.75); position: relative; z-index: 1; line-height: 1.5; }
+        .partner-page-hero .hero-stat { 
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.12); border-radius: 20px;
+            padding: 6px 14px; margin-top: 14px; font-size: 12px; font-weight: 700; color: white;
+            position: relative; z-index: 1;
+        }
+
+        .plan-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .plan-card { border-radius: 22px; padding: 20px; border: 2px solid var(--border); background: var(--card-bg); position: relative; overflow: hidden; }
+        .plan-card.popular { border-color: #f9ca24; }
+        .plan-card.premium { border-color: #a29bfe; background: linear-gradient(135deg, rgba(108,92,231,0.05), rgba(162,155,254,0.05)); }
+        .plan-badge { position: absolute; top: 14px; right: 14px; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+        .plan-badge.pop { background: #f9ca24; color: #2d3436; }
+        .plan-badge.prem { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; }
+        .plan-name { font-size: 11px; font-weight: 800; color: var(--text-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+        .plan-price { font-size: 36px; font-weight: 900; color: var(--text); line-height: 1; margin-bottom: 4px; }
+        .plan-price span { font-size: 14px; font-weight: 500; color: var(--text-light); }
+        .plan-tagline { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+        .plan-features { list-style: none; padding: 0; margin: 0 0 16px; display: flex; flex-direction: column; gap: 7px; }
+        .plan-features li { font-size: 13px; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
+        .plan-features li::before { content: '✓'; font-weight: 900; color: var(--green); flex-shrink: 0; }
+        .plan-features li.highlight::before { content: '⭐'; }
+        .plan-cta { width: 100%; padding: 14px; border-radius: 14px; font-weight: 800; font-size: 14px; border: none; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+        .plan-cta:active { transform: scale(0.97); }
+        .plan-cta.free { background: var(--border); color: var(--text); }
+        .plan-cta.visible { background: linear-gradient(135deg, #f9ca24, #f0932b); color: white; box-shadow: 0 6px 20px rgba(249,202,36,0.35); }
+        .plan-cta.prem { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; box-shadow: 0 6px 20px rgba(108,92,231,0.35); }
+
+        .partner-engagements { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .engagement-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 14px 10px; text-align: center; }
+        .engagement-item .icon { font-size: 22px; margin-bottom: 6px; }
+        .engagement-item h4 { margin: 0 0 4px; font-size: 11px; font-weight: 800; }
+        .engagement-item p { margin: 0; font-size: 10px; color: var(--text-light); line-height: 1.3; }
+
+        /* ─── DASHBOARD PARTENAIRE ─── */
+        #dashboard-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 5000; overflow-y: auto; padding: 20px; }
+        .dashboard-content { background: var(--card-bg); border-radius: 28px; padding: 24px; max-width: 420px; margin: 0 auto; }
+        .dashboard-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .dashboard-header h2 { margin: 0; font-size: 18px; font-weight: 900; }
+        .dash-close { font-size: 24px; cursor: pointer; opacity: 0.5; }
+        .dash-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .dash-stat { background: var(--bg); border-radius: 16px; padding: 14px; text-align: center; }
+        .dash-stat .val { font-size: 26px; font-weight: 900; color: var(--primary); display: block; }
+        .dash-stat .lbl { font-size: 11px; color: var(--text-light); font-weight: 600; }
+        .dash-chart { background: var(--bg); border-radius: 16px; padding: 14px; margin-bottom: 16px; }
+        .dash-chart h4 { margin: 0 0 10px; font-size: 12px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .dash-bars { display: flex; align-items: flex-end; gap: 6px; height: 60px; }
+        .dash-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .dash-bar { width: 100%; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, #6c5ce7, #a29bfe); transition: height 1s cubic-bezier(0.34,1.56,0.64,1); }
+        .dash-bar-lbl { font-size: 9px; color: var(--text-light); font-weight: 600; }
+        .dash-reviews { background: var(--bg); border-radius: 16px; padding: 14px; }
+        .dash-reviews h4 { margin: 0 0 10px; font-size: 12px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .dash-review-item { padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .dash-review-item:last-child { border-bottom: none; }
+        .dash-review-stars { color: #f9ca24; font-size: 11px; }
+        .dash-review-text { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+        .dash-review-date { font-size: 10px; color: var(--text-light); opacity: 0.6; margin-top: 2px; }
+
+        /* ─── MODAL AVIS ─── */
+        .review-section { margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px; }
+        .review-section h4 { margin: 0 0 10px; font-size: 13px; font-weight: 800; }
+        .review-list { max-height: 180px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .review-item { background: var(--bg); border-radius: 12px; padding: 10px; }
+        .review-item-header { display: flex; align-items: center; justify-content: space-between; }
+        .review-item-stars { color: #f9ca24; font-size: 12px; }
+        .review-item-date { font-size: 10px; color: var(--text-light); }
+        .review-item-text { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+        .star-input { display: flex; gap: 6px; margin-bottom: 10px; justify-content: center; }
+        .star-input span { font-size: 28px; cursor: pointer; transition: transform 0.15s; }
+        .star-input span:hover { transform: scale(1.2); }
+        .review-textarea { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 10px; font-size: 13px; color: var(--text); background: var(--bg); resize: none; outline: none; font-family: inherit; }
+        .submit-review-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; margin-top: 8px; }
+        .avg-stars-display { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+        .avg-stars-big { font-size: 22px; font-weight: 900; color: var(--text); }
+        .avg-stars-stars { color: #f9ca24; font-size: 14px; }
+        .avg-stars-count { font-size: 12px; color: var(--text-light); }
+
+        /* ─── MODAL ─── */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: flex-end; padding: 0; }
+        .modal-content { background: var(--card-bg); width: 100%; max-width: 500px; border-radius: 30px 30px 0 0; padding: 30px 24px 40px; text-align: center; position: relative; max-height: 92vh; overflow-y: auto; animation: slideUp 0.35s cubic-bezier(0.22,1,0.36,1); }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+
+        #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; justify-content: center; align-items: center; }
+        #zoom-overlay img { max-width: 90%; border-radius: 10px; }
+        .hidden { display: none !important; }
+
+        /* ─── PROFIL ─── */
+        .budget-container { width: 100%; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .budget-widget { background: var(--green); color: white; padding: 15px; border-radius: 20px; text-align: center; }
+        .budget-amount { font-size: 24px; font-weight: 900; display: block; }
+        .budget-sub { background: var(--card-bg); border: 1px solid var(--border); padding: 10px; border-radius: 15px; display: flex; justify-content: space-around; font-size: 12px; }
+        .budget-sub b { display: block; color: var(--green); font-size: 14px; }
+
+        /* ─── PTR ─── */
+        #ptr-indicator { position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateY(-60px); background: var(--primary); color: white; padding: 8px 20px; border-radius: 0 0 20px 20px; font-size: 13px; font-weight: 700; z-index: 998; transition: transform 0.2s ease; display: flex; align-items: center; gap: 8px; pointer-events: none; }
+        #ptr-indicator.visible { transform: translateX(-50%) translateY(0); }
+        #ptr-indicator.loading i { animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* ─── TOAST ─── */
+        #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: #2d3436; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 9999; pointer-events: none; }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ─── SPLASH ─── */
+        #splash { position: fixed; inset: 0; z-index: 99999; background: #4954ec; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+        #splash img { width: 180px; height: auto; opacity: 0; transform: scale(0.8); animation: splashLogo 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards; }
+        #splash-tagline { color: white; font-size: 16px; font-weight: 500; letter-spacing: 0.3px; opacity: 0; text-align: center; animation: splashTagline 0.6s ease 0.85s forwards; }
+        #splash-tagline span { display: inline-block; opacity: 0; transform: translateY(10px); }
+        #splash-tagline span:nth-child(1) { animation: wordPop 0.4s ease 0.9s forwards; }
+        #splash-tagline span:nth-child(2) { animation: wordPop 0.4s ease 1.05s forwards; }
+        #splash-tagline span:nth-child(3) { animation: wordPop 0.4s ease 1.2s forwards; }
+        #splash-tagline span:nth-child(4) { animation: wordPop 0.4s ease 1.35s forwards; }
+        #splash-tagline span:nth-child(5) { animation: wordPop 0.4s ease 1.5s forwards; }
+        #splash-tagline span:nth-child(6) { animation: wordPop 0.4s ease 1.65s forwards; }
+        #splash.hide { animation: splashOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes splashLogo { to { opacity: 1; transform: scale(1); } }
+        @keyframes splashTagline { to { opacity: 1; } }
+        @keyframes wordPop { to { opacity: 1; transform: translateY(0); } }
+        @keyframes splashOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.05); pointer-events: none; } }
+
+        /* ─── GAMIFICATION ─── */
+        #level-widget { width:100%; background:var(--card-bg); border-radius:20px; border:1px solid var(--border); padding:18px; margin-bottom:15px; }
+
+        /* ─── RÉCOMPENSES ─── */
+        #rewards-page { display:none; flex-direction:column; }
+        .rewards-hero { background: linear-gradient(135deg, #2d1b69, #5d5fef, #a29bfe); border-radius:28px; padding:24px 20px; margin-bottom:20px; text-align:center; position:relative; overflow:hidden; }
+        .rewards-hero::before { content:''; position:absolute; top:-40px; left:-40px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
+        .rewards-hero h2 { margin:0 0 6px; font-size:22px; font-weight:900; color:white; position:relative; z-index:1; }
+        .rewards-hero p { margin:0; font-size:13px; color:rgba(255,255,255,0.8); position:relative; z-index:1; }
+        .level-card { background: var(--card-bg); border-radius:22px; border:1px solid var(--border); padding:20px; margin-bottom:16px; }
+        .level-progress-bar { background:var(--border); border-radius:50px; height:12px; overflow:hidden; margin:12px 0 8px; }
+        .level-progress-fill { height:100%; border-radius:50px; transition:width 1.2s cubic-bezier(0.34,1.56,0.64,1); }
+        .levels-timeline { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+        .level-step { background:var(--card-bg); border:1px solid var(--border); border-radius:18px; padding:14px 16px; display:flex; align-items:center; gap:14px; }
+        .level-step.current { border-color:var(--primary); background:rgba(93,95,239,0.05); }
+        .level-step.done { opacity:0.6; }
+        .level-step-emoji { font-size:28px; width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:14px; flex-shrink:0; }
+        .level-step-info h4 { margin:0 0 2px; font-size:14px; font-weight:800; }
+        .level-step-info p { margin:0; font-size:11px; color:var(--text-light); }
+        .level-step-badge { margin-left:auto; font-size:10px; font-weight:800; padding:3px 10px; border-radius:20px; flex-shrink:0; }
+        .badge-done { background:#00b894; color:white; }
+        .badge-current { background:var(--primary); color:white; }
+        .badge-locked { background:var(--border); color:var(--text-light); }
+        .badges-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+        .badge-card { background:var(--card-bg); border:1px solid var(--border); border-radius:18px; padding:16px; text-align:center; position:relative; overflow:hidden; }
+        .badge-card.unlocked { border-color:#f9ca24; box-shadow:0 4px 15px rgba(249,202,36,0.2); }
+        .badge-card.locked { opacity:0.45; filter:grayscale(0.8); }
+        .badge-card-emoji { font-size:36px; margin-bottom:8px; display:block; }
+        .badge-card h4 { margin:0 0 4px; font-size:12px; font-weight:800; }
+        .badge-card p { margin:0; font-size:10px; color:var(--text-light); }
+        .badge-unlocked-stamp { position:absolute; top:8px; right:8px; background:#f9ca24; border-radius:50%; width:18px; height:18px; display:flex; align-items:center; justify-content:center; font-size:10px; }
+        .leaderboard-item { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:12px 16px; display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+        .leaderboard-rank { font-size:18px; font-weight:900; width:28px; text-align:center; flex-shrink:0; }
+        .leaderboard-name { flex:1; font-size:14px; font-weight:700; }
+        .leaderboard-amount { font-size:13px; font-weight:800; color:var(--green); }
+        .notif-banner { position:fixed; top:0; left:50%; transform:translateX(-50%) translateY(-100px); background:linear-gradient(135deg,#6c5ce7,#a29bfe); color:white; padding:14px 22px; border-radius:0 0 20px 20px; font-size:14px; font-weight:800; z-index:9997; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); display:flex; align-items:center; gap:10px; white-space:nowrap; box-shadow:0 8px 25px rgba(108,92,231,0.4); }
+        .notif-banner.show { transform:translateX(-50%) translateY(0); }
+
+        /* ─── EXPIRY BADGES ─── */
+        .badge-red { background:#ff4757;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;vertical-align:middle; }
+        .badge-yellow { background:#fdcb6e;color:#2d3436;font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;vertical-align:middle; }
+        .badge-grey { background:#dfe6e9;color:#636e72;font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;vertical-align:middle; }
+        .badge-new { background:#ff4757;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;vertical-align:middle; }
+        .badge-premium { background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:white;font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;vertical-align:middle; }
+
+        /* ─── CODE DASHBOARD ─── */
+        .dash-code-input { display: flex; gap: 8px; margin-bottom: 20px; }
+        .dash-code-input input { flex: 1; border: 2px solid var(--border); border-radius: 12px; padding: 10px 14px; font-size: 16px; background: var(--bg); color: var(--text); outline: none; letter-spacing: 3px; font-weight: 700; text-align: center; }
+        .dash-code-input button { background: var(--primary); color: white; border: none; border-radius: 12px; padding: 10px 16px; font-weight: 800; cursor: pointer; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<!-- Splash -->
+<div id="splash">
+    <img src="logo.png" alt="Vichy'U">
+    <div id="splash-tagline">
+        <span>Les</span> <span>bons</span> <span>plans</span>
+        <span>pour</span> <span>les</span> <span>étudiants</span><br>
+        <span style="animation: wordPop 0.4s ease 1.8s forwards; opacity:0; transform:translateY(10px); display:inline-block;">de</span>
+        <span style="animation: wordPop 0.4s ease 1.95s forwards; opacity:0; transform:translateY(10px); display:inline-block; font-weight:800;">Vichy</span>
+    </div>
+    <div id="splash-greeting" style="display:none; color:white; font-size:20px; font-weight:800; opacity:0; animation: wordPop 0.5s ease 0.8s forwards;"></div>
+</div>
+
+<!-- PTR -->
+<div id="ptr-indicator"><i class="fa-solid fa-arrow-rotate-right"></i><span id="ptr-text">Relâche pour actualiser</span></div>
+
+<div class="header">
+    <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fa-solid fa-moon"></i></div>
+    <img src="logo.png" alt="Vichy'U" class="header-logo">
+    <div class="search-bar" id="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher un bon plan..." oninput="searchDeals()">
+        <i class="fa-solid fa-circle-xmark clear-search" id="clearBtn" onclick="clearSearch()"></i>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- PAGE ACCUEIL -->
+    <div id="main-content">
+        <div class="ad-slider" id="ad-slider"></div>
+
+        <!-- OFFRES FLASH -->
+        <div class="flash-section" id="flash-section" style="display:none;">
+            <div class="flash-header">
+                <div class="flash-pulse"></div>
+                <h3>⚡ OFFRES FLASH</h3>
+            </div>
+            <div id="flash-list"></div>
+        </div>
+
+        <div class="categories-grid">
+            <div class="cat-item active" onclick="filterCat('tous', this)"><i class="fa-solid fa-rocket"></i>Tous</div>
+            <div class="cat-item" onclick="filterCat('restos', this)"><i class="fa-solid fa-burger"></i>Restos</div>
+            <div class="cat-item" onclick="filterCat('loisirs', this)"><i class="fa-solid fa-film"></i>Loisirs</div>
+            <div class="cat-item" onclick="filterCat('culture', this)"><i class="fa-solid fa-masks-theater"></i>Culture</div>
+            <div class="cat-item" onclick="filterCat('sport', this)"><i class="fa-solid fa-swimmer"></i>Sport</div>
+            <div class="cat-item" onclick="filterCat('tech', this)"><i class="fa-solid fa-laptop"></i>Tech</div>
+            <div class="cat-item" onclick="filterCat('nouveautes', this)"><i class="fa-solid fa-star"></i>Nouveaux</div>
+            <div class="cat-item" onclick="filterCat('fav', this)"><i class="fa-solid fa-heart"></i>Favs</div>
+        </div>
+
+        <div onclick="proposerBonPlan()" style="margin: 10px 20px 20px; padding: 16px 20px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; box-shadow: 0 8px 15px rgba(108, 92, 231, 0.3); transition: transform 0.15s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
+            <i class="fa-solid fa-circle-plus" style="color: white; font-size: 20px;"></i>
+            <span style="color: white; font-weight: bold; font-size: 15px;">Proposer un bon plan</span>
+        </div>
+
+        <div id="deals-list"></div>
+    </div>
+
+    <!-- PAGE AGENDA -->
+    <div id="agenda-page">
+        <h2 style="margin-top:0">📅 Agenda Étudiant</h2>
+        <div id="events-list"></div>
+        <div onclick="signalerEvenement()" style="margin-top:10px; padding:16px 20px; background:linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius:20px; display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer; box-shadow:0 8px 15px rgba(108,92,231,0.3);" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
+            <i class="fa-solid fa-circle-plus" style="color:white; font-size:20px;"></i>
+            <span style="color:white; font-weight:800; font-size:15px;">Signaler un événement</span>
+        </div>
+    </div>
+
+    <!-- PAGE CARTE -->
+    <div id="map-page"><div id="map"></div></div>
+
+    <!-- PAGE PARTENAIRES -->
+    <div id="partner-page">
+        <div class="partner-page-hero">
+            <h2>💎 Devenez Partenaire</h2>
+            <p>Vichy'U, c'est l'application des bons plans étudiants de Vichy. Mettez votre établissement en avant directement devant ce public local, régulier et à fort potentiel.</p>
+            <div class="hero-stat">👥 Étudiants locaux · 📍 100% Vichy · 🚀 Sans engagement</div>
+        </div>
+
+        <div class="partner-engagements">
+            <div class="engagement-item">
+                <div class="icon">🤝</div>
+                <h4>Sans engagement</h4>
+                <p>Résiliable à tout moment</p>
+            </div>
+            <div class="engagement-item">
+                <div class="icon">🎯</div>
+                <h4>100% local</h4>
+                <p>Votre clientèle cible</p>
+            </div>
+            <div class="engagement-item">
+                <div class="icon">⚡</div>
+                <h4>Zéro effort</h4>
+                <p>Je m'occupe de tout</p>
+            </div>
+        </div>
+
+        <!-- OFFRE FLASH -->
+        <div style="background:linear-gradient(135deg,#ff6b35,#f9ca24);border-radius:22px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.1);"></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <span style="font-size:24px;">&#x26A1;</span>
+                <div>
+                    <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,0.85);letter-spacing:1px;text-transform:uppercase;">Nouveaut&#233;</div>
+                    <div style="font-size:18px;font-weight:900;color:white;">Offre Flash</div>
+                </div>
+                <div style="margin-left:auto;background:rgba(255,255,255,0.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:white;">9&#x20AC; / flash</div>
+            </div>
+            <p style="margin:0 0 14px;font-size:13px;color:rgba(255,255,255,0.9);line-height:1.5;">Lance une promotion limit&#233;e dans le temps directement en haut de l&#8217;app, avec un <strong style="color:white;">compte &#224; rebours en direct</strong>. Sans abonnement, disponible pour tous.</p>
+            <ul style="list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:6px;">
+                <li style="font-size:12px;color:white;display:flex;align-items:center;gap:8px;"><span style="background:rgba(255,255,255,0.3);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">&#x2713;</span>Visible en priorit&#233; absolue d&#232;s l&#8217;ouverture</li>
+                <li style="font-size:12px;color:white;display:flex;align-items:center;gap:8px;"><span style="background:rgba(255,255,255,0.3);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">&#x2713;</span>Compte &#224; rebours en temps r&#233;el (cr&#233;e l&#8217;urgence)</li>
+                <li style="font-size:12px;color:white;display:flex;align-items:center;gap:8px;"><span style="background:rgba(255,255,255,0.3);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">&#x2713;</span>Dur&#233;e au choix &#8212; quelques heures &#224; 48h</li>
+                <li style="font-size:12px;color:white;display:flex;align-items:center;gap:8px;"><span style="background:rgba(255,255,255,0.3);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">&#x2713;</span>Sans abonnement &#8212; ponctuel et sans engagement</li>
+            </ul>
+            <button onclick="contactPartner('Flash')" style="width:100%;padding:13px;background:white;color:#ff6b35;border:none;border-radius:14px;font-weight:900;font-size:14px;cursor:pointer;">Lancer une offre flash &#x26A1;</button>
+        </div>
+
+        <div class="plan-cards">
+            <!-- ESSENTIEL -->
+            <div class="plan-card">
+                <div class="plan-name">Essentiel</div>
+                <div class="plan-price">Gratuit</div>
+                <div class="plan-tagline">Pour commencer</div>
+                <ul class="plan-features">
+                    <li>Listing dans la liste des bons plans</li>
+                    <li>Fiche détail avec description</li>
+                    <li>Lien vers Google Maps</li>
+                    <li>Visible par tous les étudiants</li>
+                </ul>
+                <button class="plan-cta free" onclick="contactPartner('Essentiel')">Commencer gratuitement</button>
+            </div>
+
+            <!-- VISIBLE -->
+            <div class="plan-card popular">
+                <div class="plan-badge pop">⭐ POPULAIRE</div>
+                <div class="plan-name">Visible</div>
+                <div class="plan-price">19€ <span>/ mois</span></div>
+                <div class="plan-tagline">Pour se démarquer</div>
+                <ul class="plan-features">
+                    <li>Tout de la formule Essentiel</li>
+                    <li class="highlight">Badge 💎 PREMIUM sur la fiche</li>
+                    <li class="highlight">Section "Nos Partenaires" en haut</li>
+                    <li class="highlight">Priorité dans les résultats</li>
+                    <li class="highlight">Compteur d'étudiants en temps réel</li>
+                    <li class="highlight">Bannière animée sur l'accueil</li>
+                    <li class="highlight">1 offre flash offerte par mois</li>
+                </ul>
+                <button class="plan-cta visible" onclick="contactPartner('Visible')">Choisir cette formule →</button>
+            </div>
+
+            <!-- PREMIUM -->
+            <div class="plan-card premium">
+                <div class="plan-badge prem">💎 PREMIUM</div>
+                <div class="plan-name">Premium</div>
+                <div class="plan-price">49€ <span>/ mois</span></div>
+                <div class="plan-tagline">Visibilité maximale</div>
+                <ul class="plan-features">
+                    <li>Tout de la formule Visible</li>
+                    <li class="highlight">Carte violette spotlight en haut de liste</li>
+                    <li class="highlight">Popup au démarrage en rotation équitable</li>
+                    <li class="highlight">Stats mensuelles personnalisées</li>
+                </ul>
+                <button class="plan-cta prem" onclick="contactPartner('Premium')">Réserver l\'exclusivité →</button>
+            </div>
+        </div>
+
+        <!-- Accès dashboard -->
+        <div style="background:var(--card-bg); border:1px solid var(--border); border-radius:20px; padding:18px; margin-bottom:20px;">
+            <h3 style="margin:0 0 6px; font-size:15px; font-weight:800;">📊 Accès partenaire</h3>
+            <p style="margin:0 0 14px; font-size:13px; color:var(--text-light);">Tu es déjà partenaire ? Consulte tes statistiques avec ton code.</p>
+            <div class="dash-code-input">
+                <input type="text" id="dash-code" placeholder="TON CODE" maxlength="8">
+                <button onclick="openDashboard()">Voir →</button>
+            </div>
+        </div>
+
+        <div style="background:linear-gradient(135deg,#6c5ce7,#a29bfe); border-radius:20px; padding:20px; text-align:center; margin-bottom:20px;">
+            <p style="margin:0 0 4px; font-size:13px; color:rgba(255,255,255,0.85);">Une question ? Contacte-moi directement</p>
+            <p style="margin:0 0 14px; font-size:16px; font-weight:800; color:white;">David · <span style="cursor:pointer;text-decoration:underline;" onclick="window.location.href='mai'+'lto:conta'+'ct@vichy'+'u.fr'">conta<!-- -->ct&#64;vichyu.fr</span></p>
+            <button onclick="window.location.href='mailto:contact@vichyu.fr?subject=Partenariat Vichy\'U'" style="background:white; color:#6c5ce7; border:none; padding:12px 24px; border-radius:14px; font-weight:800; font-size:14px; cursor:pointer;">Envoyer un message</button>
+        </div>
+    </div>
+
+    <!-- PAGE RÉCOMPENSES -->
+    <div id="rewards-page">
+        <div class="rewards-hero">
+            <h2>🏆 Tes Récompenses</h2>
+            <p>Utilise des bons plans pour gagner des points, débloquer des badges et grimper dans le classement !</p>
+        </div>
+
+        <!-- NIVEAU ACTUEL -->
+        <div class="level-card">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+                <span id="rw-level-badge" style="font-size:36px;">🌱</span>
+                <div style="flex:1;">
+                    <p style="margin:0;font-size:11px;color:var(--text-light);font-weight:700;">TON NIVEAU ACTUEL</p>
+                    <p id="rw-level-name" style="margin:0;font-size:18px;font-weight:900;"></p>
+                </div>
+                <div style="text-align:right;">
+                    <p style="margin:0;font-size:11px;color:var(--text-light);">ÉCONOMIES</p>
+                    <p id="rw-total" style="margin:0;font-size:16px;font-weight:900;color:var(--green);"></p>
+                </div>
+            </div>
+            <div class="level-progress-bar">
+                <div id="rw-level-bar" class="level-progress-fill" style="width:0%;"></div>
+            </div>
+            <p id="rw-level-hint" style="margin:0;font-size:12px;color:var(--text-light);text-align:center;"></p>
+        </div>
+
+        <!-- TIMELINE DES NIVEAUX -->
+        <h3 style="margin:0 0 12px;font-size:15px;font-weight:800;">📈 Tous les niveaux</h3>
+        <div class="levels-timeline" id="levels-timeline"></div>
+
+        <!-- BADGES -->
+        <h3 style="margin:0 0 12px;font-size:15px;font-weight:800;">🎖️ Badges</h3>
+        <div class="badges-grid" id="badges-grid"></div>
+
+        <!-- CLASSEMENT -->
+        <h3 style="margin:0 0 12px;font-size:15px;font-weight:800;">🏅 Classement Vichy'U</h3>
+        <div id="leaderboard-list"></div>
+        <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:8px;">Basé sur les économies totales des utilisateurs de l'app</p>
+    </div>
+
+    <!-- PAGE PROFIL -->
+    <div id="profile-page">
+        <div class="budget-container">
+            <div class="budget-widget">
+                <span style="font-size: 11px; opacity: 0.9;">ÉCONOMIES DU MOIS 💰</span>
+                <span class="budget-amount" id="month-saved">0.00 €</span>
+            </div>
+            <div class="budget-sub">
+                <div style="text-align:center">CETTE ANNÉE <b id="year-saved">0.00 €</b></div>
+                <div style="text-align:center">TOTAL <b id="total-saved">0.00 €</b></div>
+            </div>
+        </div>
+
+        <label for="p-up"><img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:110px;height:110px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;"></label>
+        <input type="file" id="p-up" hidden accept="image/*" onchange="upImg(event,'p')">
+        <input type="text" id="fn" placeholder="Ton prénom" oninput="sv()" style="width:100%; border:none; background:transparent; text-align:center; font-size:24px; font-weight:800; color:var(--text); outline:none; margin-bottom:5px;">
+
+        <div style="background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); width:100%; text-align:center;">
+            <img id="id-img" onclick="zoomID(true)" style="width:100%; height:160px; object-fit:cover; border-radius:12px; display:none; margin-bottom:10px; cursor:zoom-in;">
+            <label for="id-up" style="color:var(--primary); font-weight:bold; cursor:pointer;"><i class="fa-solid fa-camera"></i> Ma carte étudiante</label>
+            <input type="file" id="id-up" hidden accept="image/*" onchange="upImg(event,'id')">
+        </div>
+
+        <div onclick="document.getElementById('install-help').style.display='flex'" style="margin-top:15px; background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:12px;">
+            <div style="background:#e3f2fd; color:#2196f3; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-download"></i></div>
+            <div style="flex:1"><h4 style="margin:0; font-size:14px;">Installer l'application</h4><p style="margin:0; font-size:12px; opacity:0.7">Ajoute Vichy'U sur ton écran d'accueil</p></div>
+            <i class="fa-solid fa-chevron-right" style="opacity:0.3"></i>
+        </div>
+        <button style="background:var(--primary); color:white; border:none; padding:18px; border-radius:20px; font-weight:800; width:100%; margin-top:20px; cursor:pointer;" onclick="shareApp()">PARTAGER L'APPLI</button>
+
+        <!-- BOUTON PARTENAIRES -->
+        <div onclick="go('partner', null)" style="margin-top:15px; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); padding:18px 20px; border-radius:20px; display:flex; align-items:center; gap:14px; cursor:pointer;">
+            <div style="background:rgba(108,92,231,0.3); width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px;">💎</div>
+            <div style="flex:1;">
+                <h4 style="margin:0; font-size:14px; font-weight:800; color:white;">Devenir Partenaire</h4>
+                <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.6);">Mets ton établissement en avant</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,0.4);"></i>
+        </div>
+
+        <div style="width:100%; margin-top:15px; background:var(--card-bg); border-radius:20px; border:1px solid var(--border); overflow:hidden;">
+            <div style="background:linear-gradient(135deg, #4954ec, #a29bfe); padding:20px; text-align:center;">
+                <img src="logo.png" style="height:60px; width:auto; margin-bottom:8px; display:block; margin:0 auto 8px;">
+                <p style="color:white; margin:0; font-size:13px; opacity:0.9;">Les bons plans pour les étudiants de Vichy</p>
+            </div>
+            <div style="padding:15px; display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="background:rgba(93,95,239,0.1); width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="fa-solid fa-user" style="color:var(--primary); font-size:14px;"></i>
+                    </div>
+                    <div><p style="margin:0; font-size:11px; color:var(--text-light);">CRÉÉ PAR</p><p style="margin:0; font-size:14px; font-weight:700;">David</p></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='mailto:contact@vichyu.fr'">
+                    <div style="background:rgba(93,95,239,0.1); width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                        <i class="fa-solid fa-envelope" style="color:var(--primary); font-size:14px;"></i>
+                    </div>
+                    <div><p style="margin:0; font-size:11px; color:var(--text-light);">CONTACT</p><p style="margin:0; font-size:14px; font-weight:700;">contact&#64;vichyu.fr</p></div>
+                </div>
+                <div style="height:1px; background:var(--border);"></div>
+                <p style="margin:0; font-size:11px; color:var(--text-light); text-align:center;">Version 2.0 · Vichy'U © 2026</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DÉTAIL -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-handle"></div>
+        <span style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;opacity:0.4;" onclick="closeM()">×</span>
+        <div id="mEmoji" style="font-size:60px;margin-bottom:10px"></div>
+        <h2 id="mTitle" style="margin:0 0 6px;"></h2>
+        <p id="mOffer" style="color:var(--primary); font-weight:bold; margin: 0; font-size: 18px;"></p>
+        <p id="mDesc" style="color:var(--text-light); margin:15px 0; white-space: pre-line; font-size: 14px;"></p>
+        <button id="mGo" style="background:var(--primary); color:white; border:none; padding:15px; border-radius:15px; font-weight:bold; width:100%; font-size:16px; cursor:pointer;"></button>
+        <button id="mShare" onclick="shareCurrentDeal()" style="background:var(--card-bg); color:var(--text); border:1px solid var(--border); padding:13px; border-radius:15px; font-weight:600; width:100%; font-size:15px; cursor:pointer; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i class="fa-solid fa-share-nodes" style="color:var(--primary)"></i> Partager ce bon plan
+        </button>
+        <p onclick="rep()" id="mRep" style="margin-top:15px; color:#ff4757; font-size:12px; font-weight:bold; cursor:pointer;">Signaler un problème</p>
+
+        <!-- SECTION AVIS -->
+        <div class="review-section" id="review-section">
+            <div class="avg-stars-display" id="avg-stars-display"></div>
+            <h4>⭐ Avis des étudiants</h4>
+            <div class="review-list" id="review-list"></div>
+            <div id="review-form">
+                <p style="font-size:12px; color:var(--text-light); margin:0 0 8px;">Laisse ton avis :</p>
+                <div class="star-input" id="star-input">
+                    <span onclick="setRating(1)">☆</span>
+                    <span onclick="setRating(2)">☆</span>
+                    <span onclick="setRating(3)">☆</span>
+                    <span onclick="setRating(4)">☆</span>
+                    <span onclick="setRating(5)">☆</span>
+                </div>
+                <textarea class="review-textarea" id="review-text" rows="2" placeholder="Ton commentaire (optionnel)..."></textarea>
+                <button class="submit-review-btn" onclick="submitReview()">Publier mon avis</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD PARTENAIRE -->
+<div id="dashboard-overlay">
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <h2>📊 Dashboard Partenaire</h2>
+            <span class="dash-close" onclick="closeDashboard()">×</span>
+        </div>
+        <div id="dash-partner-name" style="font-size:13px; color:var(--text-light); margin-bottom:16px;"></div>
+
+        <div class="dash-stats-grid">
+            <div class="dash-stat"><span class="val" id="dash-views">—</span><span class="lbl">👁 Vues fiches</span></div>
+            <div class="dash-stat"><span class="val" id="dash-clicks">—</span><span class="lbl">📍 Y aller</span></div>
+            <div class="dash-stat"><span class="val" id="dash-rating">—</span><span class="lbl">⭐ Note moy.</span></div>
+            <div class="dash-stat"><span class="val" id="dash-reviews-count">—</span><span class="lbl">💬 Avis reçus</span></div>
+        </div>
+
+        <div class="dash-chart">
+            <h4>Clics — 7 derniers jours</h4>
+            <div class="dash-bars" id="dash-bars"></div>
+            <div style="display:flex; gap:6px; margin-top:4px;" id="dash-bars-labels"></div>
+        </div>
+
+        <div class="dash-reviews">
+            <h4>Derniers avis</h4>
+            <div id="dash-reviews-list"></div>
+        </div>
+    </div>
+</div>
+
+<div id="zoom-overlay" onclick="zoomID(false)"><img id="zImg" src=""></div>
+<div id="toast"></div>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="go('home', this)"><i class="fa-solid fa-house"></i>Accueil</div>
+    <div class="nav-item" onclick="go('agenda', this)"><i class="fa-solid fa-calendar-days"></i>Agenda</div>
+    <div class="nav-item" onclick="go('map', this)"><i class="fa-solid fa-map-location-dot"></i>Carte</div>
+    <div class="nav-item" onclick="go('rewards', this)"><i class="fa-solid fa-trophy"></i>Récompenses</div>
+    <div class="nav-item" onclick="go('profile', this)"><i class="fa-solid fa-user"></i>Profil</div>
+</nav>
+
+<!-- INSTALL HELP -->
+<div id="install-help" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(5px);">
+    <div style="background:var(--bg); border-radius:30px; padding:25px; max-width:400px; width:100%; position:relative; border:1px solid var(--border);">
+        <i class="fa-solid fa-xmark" onclick="document.getElementById('install-help').style.display='none'" style="position:absolute; top:20px; right:20px; font-size:20px; opacity:0.5;"></i>
+        <h3 style="margin-top:0; text-align:center;">Installer Vichy'U 🚀</h3>
+        <div style="margin-top:20px;">
+            <p><strong>Sur iPhone (Safari) :</strong></p>
+            <p style="font-size:14px; opacity:0.8;">Appuie sur le bouton de partage <i class="fa-solid fa-arrow-up-from-bracket"></i> en bas de ton écran, puis choisis <strong>"Sur l'écran d'accueil"</strong>.</p>
+        </div>
+        <hr style="border:0; border-top:1px solid var(--border); margin:15px 0;">
+        <div>
+            <p><strong>Sur Android (Chrome) :</strong></p>
+            <p style="font-size:14px; opacity:0.8;">Appuie sur les 3 petits points <i class="fa-solid fa-ellipsis-vertical"></i> en haut à droite, puis choisis <strong>"Installer l'application"</strong>.</p>
+        </div>
+        <button onclick="document.getElementById('install-help').style.display='none'" style="width:100%; margin-top:20px; padding:12px; border:none; border-radius:15px; background:var(--primary); color:white; font-weight:bold;">J'ai compris !</button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script>
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+const ENABLE_WELCOME_POPUP = true;
+const SUPABASE_URL = 'https://hmannlokkrxkmrfdowzg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtYW5ubG9ra3J4a21yZmRvd3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NDA2MjgsImV4cCI6MjA4OTQxNjYyOH0.XnVF_EjnAv1ZeRTJu5ccY2HsQ75zMg2amQjO_GXDFrw';
+
+// Codes dashboard chargés dynamiquement depuis data.json (champ dashCode sur chaque deal)
+
+let map, userMarker, userCircle, markers = [];
+let appData = { deals: [], events: [], banners: [] };
+let currentDeal = null;
+let currentDealId = null;
+let currentRating = 0;
+let flashTimers = [];
+
+// ═══════════════════════════════════════════════════════
+// CHARGEMENT DATA
+// ═══════════════════════════════════════════════════════
+async function loadData() {
+    // 1. Fetch
+    let raw;
+    try {
+        const res = await fetch('data.json?v=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        raw = await res.text();
+    } catch(e) {
+        console.error('[loadData] Fetch échoué :', e);
+        document.getElementById('deals-list').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:20px;">❌ Impossible de charger les bons plans (réseau).</p>';
+        return;
+    }
+
+    // 2. Parse JSON
+    try {
+        appData = JSON.parse(raw);
+    } catch(e) {
+        console.error('[loadData] JSON invalide :', e, '\nContenu brut :', raw.slice(0, 300));
+        document.getElementById('deals-list').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:20px;">❌ Le fichier data.json contient une erreur de syntaxe. Vérifie-le sur jsonlint.com</p>';
+        return;
+    }
+
+    // 3. Render — chaque section indépendante pour qu'une erreur n'en bloque pas une autre
+    try { renderDeals(Array.isArray(appData.deals) ? appData.deals : []); } catch(e) { console.error('[renderDeals]', e); }
+    try { renderBanners(Array.isArray(appData.banners) ? appData.banners : []); } catch(e) { console.error('[renderBanners]', e); }
+    try { renderEvents(Array.isArray(appData.events) ? appData.events : []); } catch(e) { console.error('[renderEvents]', e); }
+    try { renderFlash(Array.isArray(appData.flash) ? appData.flash : []); } catch(e) { console.error('[renderFlash]', e); }
+    try { restoreFavs(); } catch(e) { console.error('[restoreFavs]', e); }
+}
+
+// ═══════════════════════════════════════════════════════
+// OFFRES FLASH
+// ═══════════════════════════════════════════════════════
+function renderFlash(flashes) {
+    // Nettoyer les anciens timers
+    flashTimers.forEach(clearInterval);
+    flashTimers = [];
+
+    const section = document.getElementById('flash-section');
+    const list = document.getElementById('flash-list');
+
+    // Filtrer les flash encore actives
+    const now = new Date();
+    const active = flashes.filter(f => f.endTime && new Date(f.endTime) > now);
+
+    if (active.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+
+    list.innerHTML = active.map(f => `
+        <div class="flash-card" onclick="openDetails('${escQ(f.title)}','${f.emoji}','${escQ(f.offer)}',${f.lat},${f.lng},${f.savings},'${escQ(f.desc)}','','${f.id}')">
+            <div class="flash-emoji">${f.emoji}</div>
+            <div class="flash-info">
+                <h4>${f.title}</h4>
+                <p>${f.offer}</p>
+                <div class="flash-countdown" id="flash-cd-${f.id}">⏱ Chargement...</div>
+            </div>
+        </div>
+    `).join('');
+
+    // Compte à rebours
+    active.forEach(f => {
+        const end = new Date(f.endTime);
+        const update = () => {
+            const remaining = end - new Date();
+            if (remaining <= 0) { loadData(); return; }
+            const h = Math.floor(remaining / 3600000);
+            const m = Math.floor((remaining % 3600000) / 60000);
+            const s = Math.floor((remaining % 60000) / 1000);
+            const el = document.getElementById(`flash-cd-${f.id}`);
+            if (el) el.innerText = `⏱ ${h > 0 ? h+'h ' : ''}${String(m).padStart(2,'0')}min ${String(s).padStart(2,'0')}s`;
+        };
+        update();
+        flashTimers.push(setInterval(update, 1000));
+    });
+}
+
+// ═══════════════════════════════════════════════════════
+// UTILITAIRES DATE
+// ═══════════════════════════════════════════════════════
+function isNew(addedDate) {
+    if (!addedDate) return false;
+    return (new Date() - new Date(addedDate)) / (1000 * 60 * 60 * 24) <= 14;
+}
+
+function expiryStatus(expiryDate) {
+    if (!expiryDate) return null;
+    const expiry = new Date(expiryDate);
+    expiry.setHours(23, 59, 59);
+    const diffDays = Math.ceil((expiry - new Date()) / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return 'expired';
+    return diffDays;
+}
+
+function expiryBadge(expiryDate) {
+    const status = expiryStatus(expiryDate);
+    if (status === null || status === 'expired') return '';
+    if (status === 0) return `<span class="badge-red">⏰ Expire aujourd'hui</span>`;
+    if (status <= 3) return `<span class="badge-red">⏰ J-${status}</span>`;
+    if (status <= 7) return `<span class="badge-yellow">⏰ J-${status}</span>`;
+    return `<span class="badge-grey">⏰ J-${status}</span>`;
+}
+
+function expiryMessage(expiryDate) {
+    const status = expiryStatus(expiryDate);
+    if (status === null || status === 'expired') return null;
+    if (status === 0) return "⚠️ Offre valable uniquement aujourd'hui !";
+    if (status === 1) return "⚠️ Offre valable jusqu'à demain !";
+    if (status <= 3) return `⚠️ Offre valable encore ${status} jours !`;
+    const d = new Date(expiryDate);
+    return `📅 Offre valable jusqu'au ${d.toLocaleDateString('fr-FR', { day:'numeric', month:'long' })}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDU DEALS
+// ═══════════════════════════════════════════════════════
+function renderDeals(deals) {
+    const favs = JSON.parse(localStorage.getItem('f')) || [];
+    const list = document.getElementById('deals-list');
+    // Un deal "expiré" avec partner=true repasse en gratuit (visible mais sans style partenaire)
+    const allDeals = deals.map(d => {
+        if (d.partner && expiryStatus(d.expiryDate) === 'expired') {
+            return { ...d, partner: false, plan: null }; // rétrogradé en gratuit
+        }
+        return d;
+    });
+    const active = allDeals; // on garde tout, expiré ou non
+    const partners = active.filter(d => d.partner);
+    const regular = active.filter(d => !d.partner);
+
+    // Les étoiles sur les cards sont chargées depuis Supabase de façon asynchrone
+    const starsHTML = (dealId) => {
+        return `<span id="stars-${dealId}" style="font-size:11px;color:var(--text-light);">⏳</span>`;
+    };
+
+    const cardHTML = (d) => `
+        <div class="card ${d.partner ? 'partner-card' : ''}" data-cat="${d.cat}" data-id="${d.id}" data-new="${isNew(d.addedDate)}"
+             onclick="openDetails('${escQ(d.title)}','${d.emoji}','${escQ(d.offer)}',${d.lat},${d.lng},${d.savings},'${escQ(d.desc)}','${d.expiryDate || ''}','${d.id}')">
+            <div class="card-emoji">${d.emoji}</div>
+            <div class="card-info">
+                <h3>${d.title}
+                    ${d.partner && d.plan ? '<span class="badge-premium">💎 PREMIUM</span>' : ''}
+                    ${isNew(d.addedDate) ? '<span class="badge-new">NOUVEAU</span>' : ''}
+                </h3>
+                <p>${d.savingsDisplay} ${expiryBadge(d.expiryDate)}</p>
+                <div class="stars-row">${starsHTML(d.id)}</div>
+            </div>
+            <i class="fa-solid fa-heart fav-btn ${favs.includes(d.id) ? 'is-fav' : ''}"
+               id="${d.id}"
+               onclick="event.stopPropagation(); toggleFav('${d.id}')"></i>
+        </div>
+    `;
+
+    let html = '';
+
+    if (partners.length > 0) {
+        html += `<div style="margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <div style="flex:1; height:1px; background:linear-gradient(90deg,#6c5ce7,transparent);"></div>
+                <span style="font-size:10px; font-weight:800; color:#6c5ce7; letter-spacing:1px;">💎 NOS PARTENAIRES</span>
+                <div style="flex:1; height:1px; background:linear-gradient(90deg,transparent,#6c5ce7);"></div>
+            </div>`;
+
+        // Premium = spotlight violet, Visible = card bordurée
+        console.log('PARTNERS:', partners.map(p => p.id + '/' + p.plan));
+        // Mélange aléatoire des partenaires premium (Fisher-Yates)
+        const premiums = partners.filter(p => p.plan === 'premium');
+        const visibles = partners.filter(p => p.plan !== 'premium');
+        for (let i = premiums.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [premiums[i], premiums[j]] = [premiums[j], premiums[i]];
+        }
+        // Anti-répétition : évite que le même soit toujours en premier
+        const lastPremium = sessionStorage.getItem('last_premium');
+        if (premiums.length > 1 && premiums[0].id === lastPremium) {
+            [premiums[0], premiums[1]] = [premiums[1], premiums[0]];
+        }
+        if (premiums.length > 0) sessionStorage.setItem('last_premium', premiums[0].id);
+        const sortedPartners = [...premiums, ...visibles];
+
+        sortedPartners.forEach(p => {
+            if (p.plan === 'premium') {
+                html += `<div class="partner-spotlight card" style="position:relative;" data-cat="${p.cat}" data-id="${p.id}" data-new="${isNew(p.addedDate)}" onclick="openDetails('${escQ(p.title)}','${p.emoji}','${escQ(p.offer)}',${p.lat},${p.lng},${p.savings},'${escQ(p.desc)}','${p.expiryDate || ''}','${p.id}')">
+                    <div class="partner-spotlight-inner">
+                        <div class="partner-spotlight-emoji">${p.emoji}</div>
+                        <div class="partner-spotlight-info">
+                            <h3>${p.title}</h3>
+                            <p>${p.offer}</p>
+                            <div class="partner-spotlight-badge">💎 PARTENAIRE PREMIUM</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-heart fav-btn"
+                       id="${p.id}"
+                       style="position:absolute; top:15px; right:15px;"
+                       onclick="event.stopPropagation(); toggleFav('${p.id}')"></i>
+                </div>`;
+            } else {
+                html += cardHTML(p);
+            }
+        });
+        html += `</div><div style="height:1px; background:var(--border); margin:5px 0 15px;"></div>`;
+    }
+
+    html += regular.map(cardHTML).join('');
+    list.innerHTML = html;
+
+    // Charger les étoiles depuis Supabase pour tous les deals visibles
+    const allDealsIds = [...partners, ...regular].map(d => d.id);
+    allDealsIds.forEach(async (dealId) => {
+        const el = document.getElementById(`stars-${dealId}`);
+        if (!el) return;
+        const reviews = await getReviews(dealId);
+        if (!Array.isArray(reviews) || reviews.length === 0) {
+            el.innerText = "Pas encore d'avis";
+        } else {
+            const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+            const stars = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+            el.innerHTML = `<span style="color:#f9ca24;font-size:12px;">${stars}</span> <span style="color:var(--text-light);">(${reviews.length})</span>`;
+        }
+    });
+}
+
+function renderBanners(banners) {
+    if (!banners || banners.length === 0) return;
+    const slider = document.getElementById('ad-slider');
+    const shuffled = [...banners];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    const lastFirst = sessionStorage.getItem('last_banner');
+    if (shuffled.length > 1 && shuffled[0].id === lastFirst) [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+    sessionStorage.setItem('last_banner', shuffled[0].id);
+    slider.innerHTML = shuffled.map((b, i) => `
+        <div class="ad-banner" style="background:${b.gradient}; cursor:pointer; animation-delay:${i * 0.15}s;"
+             onclick="openDetails('${escQ(b.title)}','${b.emoji}','${escQ(b.offer)}',${b.lat},${b.lng},${b.savings},'${escQ(b.desc)}','','${b.id}')">
+            <div style="font-size:45px">${b.icon}</div>
+            <div><h4>${b.title}</h4><p style="margin:0;opacity:0.9">${b.subtitle}</p></div>
+        </div>
+    `).join('');
+}
+
+function renderEvents(events) {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const months = { Jan:0, Fév:1, Mar:2, Avr:3, Mai:4, Juin:5, Juil:6, Aoû:7, Sep:8, Oct:9, Nov:10, Déc:11 };
+    const upcoming = events.filter(e => {
+        const m = months[e.month];
+        if (m === undefined) return true;
+        return new Date(new Date().getFullYear(), m, parseInt(e.day)) >= now;
+    });
+    const list = document.getElementById('events-list');
+    if (upcoming.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:var(--text-light); padding:30px;">Aucun événement à venir pour le moment 📭</p>';
+        return;
+    }
+    list.innerHTML = upcoming.map(e => `
+        <div class="event-card" onclick="openEvent('${escQ(e.title)}','📍 ${escQ(e.place)}','${escQ(e.desc)}','${e.day}','${e.month}','${e.time}')">
+            <div class="event-date">${e.day}<span>${e.month}</span></div>
+            <div class="event-info"><h4>${e.title}</h4><p>${e.time} - ${e.place}</p></div>
+        </div>
+    `).join('');
+}
+
+function escQ(str) { return str ? str.replace(/'/g, "\\'") : ''; }
+
+// ═══════════════════════════════════════════════════════
+// SYSTÈME D'AVIS (localStorage)
+// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// AVIS — SUPABASE
+// ═══════════════════════════════════════════════════════
+async function getReviews(dealId) {
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/reviews?deal_id=eq.${dealId}&order=created_at.desc&limit=20`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        return await res.json();
+    } catch(e) { return []; }
+}
+
+async function renderReviews(dealId) {
+    const list = document.getElementById('review-list');
+    const avgDisplay = document.getElementById('avg-stars-display');
+    list.innerHTML = '<p style="font-size:12px;color:var(--text-light);text-align:center;padding:8px 0;">⏳ Chargement...</p>';
+
+    const reviews = await getReviews(dealId);
+
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+        list.innerHTML = '<p style="font-size:12px;color:var(--text-light);text-align:center;padding:8px 0;">Aucun avis pour le moment. Sois le premier !</p>';
+        avgDisplay.innerHTML = '';
+        return;
+    }
+
+    const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+    const stars = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    avgDisplay.innerHTML = `
+        <span class="avg-stars-big">${avg.toFixed(1)}</span>
+        <span class="avg-stars-stars">${stars}</span>
+        <span class="avg-stars-count">${reviews.length} avis</span>
+    `;
+
+    list.innerHTML = reviews.map(r => `
+        <div class="review-item">
+            <div class="review-item-header">
+                <span class="review-item-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+                <span class="review-item-date">${new Date(r.created_at).toLocaleDateString('fr-FR')}</span>
+            </div>
+            ${r.comment ? `<div class="review-item-text">${r.comment}</div>` : ''}
+        </div>
+    `).join('');
+}
+
+function setRating(n) {
+    currentRating = n;
+    const stars = document.querySelectorAll('#star-input span');
+    stars.forEach((s, i) => { s.innerText = i < n ? '★' : '☆'; s.style.color = i < n ? '#f9ca24' : ''; });
+}
+
+async function submitReview() {
+    if (!currentDealId) return;
+    if (currentRating === 0) { showToast('Sélectionne un nombre d\'étoiles ⭐'); return; }
+
+    // Anti-spam : 1 avis par deal par 24h (localStorage)
+    const key = `reviewed_${currentDealId}`;
+    const last = localStorage.getItem(key);
+    if (last && Date.now() - parseInt(last) < 86400000) {
+        showToast('Tu as déjà laissé un avis aujourd\'hui 😊');
+        return;
+    }
+
+    const comment = document.getElementById('review-text').value.trim().slice(0, 200);
+
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/reviews`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ deal_id: currentDealId, rating: currentRating, comment })
+        });
+        if (!res.ok) { const err = await res.text(); console.error('[review]', err); showToast('Erreur, réessaie 😕'); return; }
+    } catch(e) { showToast('Erreur réseau 😕'); return; }
+
+    localStorage.setItem(key, Date.now());
+    showToast('Avis publié, merci ! 🙏');
+    document.getElementById('review-text').value = '';
+    setRating(0);
+    await renderReviews(currentDealId);
+    renderDeals(appData.deals);
+    restoreFavs();
+}
+
+// ═══════════════════════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════════════════════
+async function getClickCount(dealId) {
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/deals?id=eq.${dealId}&select=clicks`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        return data.length > 0 ? data[0].clicks : 0;
+    } catch(e) { return 0; }
+}
+
+async function getViewCount(dealId) {
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/deals?id=eq.${dealId}&select=views`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        return data.length > 0 ? (data[0].views || 0) : 0;
+    } catch(e) { return 0; }
+}
+
+async function incrementView(dealId) {
+    const key = `viewed_${dealId}`;
+    const lastView = localStorage.getItem(key);
+    if (lastView && Date.now() - parseInt(lastView) < 3600000) return; // anti-spam 1h
+    localStorage.setItem(key, Date.now());
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/deals?id=eq.${dealId}&select=views`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        const current = data.length > 0 ? (data[0].views || 0) : 0;
+        await fetch(`${SUPABASE_URL}/rest/v1/deals`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
+            body: JSON.stringify({ id: dealId, views: current + 1 })
+        });
+    } catch(e) {}
+}
+
+async function incrementClick(dealId) {
+    const key = `clicked_${dealId}`;
+    const lastClick = localStorage.getItem(key);
+    if (lastClick && Date.now() - parseInt(lastClick) < 86400000) return;
+    localStorage.setItem(key, Date.now());
+    try {
+        // Compteur total
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/deals?id=eq.${dealId}&select=clicks`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        const current = data.length > 0 ? data[0].clicks : 0;
+        await fetch(`${SUPABASE_URL}/rest/v1/deals`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
+            body: JSON.stringify({ id: dealId, clicks: current + 1 })
+        });
+        // Log pour le graphique 7 jours
+        await fetch(`${SUPABASE_URL}/rest/v1/clicks_log`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ deal_id: dealId })
+        });
+    } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════
+// DASHBOARD PARTENAIRE
+// ═══════════════════════════════════════════════════════
+async function openDashboard() {
+    const code = document.getElementById('dash-code').value.trim().toUpperCase();
+    const deal = appData.deals.find(d => d.dashCode === code);
+    if (!deal) { showToast('Code incorrect ❌'); return; }
+
+    document.getElementById('dashboard-overlay').style.display = 'block';
+    const planLabel = deal.plan === 'premium' ? 'Premium 💎' : deal.plan === 'visible' ? 'Visible ⭐' : 'Essentiel';
+    document.getElementById('dash-partner-name').innerHTML = `${deal.emoji} <strong>${deal.title}</strong> · Formule ${planLabel}`;
+
+    // Stats vues + clics
+    const [totalViews, totalClicks] = await Promise.all([getViewCount(deal.id), getClickCount(deal.id)]);
+    document.getElementById('dash-views').innerText = totalViews;
+    document.getElementById('dash-clicks').innerText = totalClicks;
+
+    // Avis
+    const reviews = await getReviews(deal.id);
+    document.getElementById('dash-reviews-count').innerText = Array.isArray(reviews) ? reviews.length : 0;
+    if (Array.isArray(reviews) && reviews.length > 0) {
+        const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+        document.getElementById('dash-rating').innerText = avg.toFixed(1) + ' ★';
+    } else {
+        document.getElementById('dash-rating').innerText = '—';
+    }
+
+    // Graphique clics réels — 7 derniers jours
+    const barsEl = document.getElementById('dash-bars');
+    const labelsEl = document.getElementById('dash-bars-labels');
+    barsEl.innerHTML = '<div style="color:var(--text-light);font-size:11px;padding:10px;">⏳ Chargement...</div>';
+    try {
+        // Récupérer les clics des 7 derniers jours depuis clicks_log
+        const since = new Date();
+        since.setDate(since.getDate() - 6);
+        since.setHours(0,0,0,0);
+        const logsRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/clicks_log?deal_id=eq.${deal.id}&created_at=gte.${since.toISOString()}&select=created_at`,
+            { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+        );
+        const logs = await logsRes.json();
+
+        // Construire tableau des 7 derniers jours
+        const dayNames = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+        const vals = Array(7).fill(0);
+        const labels = [];
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            labels.push(dayNames[d.getDay()]);
+        }
+        if (Array.isArray(logs)) {
+            logs.forEach(log => {
+                const logDate = new Date(log.created_at);
+                const diffDays = Math.floor((new Date() - logDate) / 86400000);
+                if (diffDays <= 6) vals[6 - diffDays]++;
+            });
+        }
+        const maxVal = Math.max(...vals, 1);
+        barsEl.innerHTML = vals.map(v => `
+            <div class="dash-bar-wrap">
+                <div class="dash-bar" style="height:${Math.round((v/maxVal)*55)+5}px;"></div>
+                <span class="dash-bar-lbl">${v}</span>
+            </div>
+        `).join('');
+        labelsEl.innerHTML = labels.map(d => `<div style="flex:1;text-align:center;font-size:9px;color:var(--text-light);font-weight:600;">${d}</div>`).join('');
+    } catch(e) {
+        barsEl.innerHTML = '<div style="color:var(--text-light);font-size:11px;padding:10px;">Données indisponibles</div>';
+    }
+
+    // Derniers avis
+    const reviewsEl = document.getElementById('dash-reviews-list');
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+        reviewsEl.innerHTML = '<p style="font-size:12px;color:var(--text-light);text-align:center;padding:8px 0;">Pas encore d\'avis</p>';
+    } else {
+        reviewsEl.innerHTML = reviews.slice(0, 5).map(r => `
+            <div class="dash-review-item">
+                <div class="dash-review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+                ${r.comment ? `<div class="dash-review-text">${r.comment}</div>` : ''}
+                <div class="dash-review-date">${new Date(r.created_at).toLocaleDateString('fr-FR')}</div>
+            </div>
+        `).join('');
+    }
+}
+
+function closeDashboard() { document.getElementById('dashboard-overlay').style.display = 'none'; }
+
+// ═══════════════════════════════════════════════════════
+// PAGE PARTENAIRE — Contact
+// ═══════════════════════════════════════════════════════
+function contactPartner(plan) {
+    const email = 'contact@vichyu.fr';
+    let sujet, corps;
+    if (plan === 'Flash') {
+        sujet = "Offre Flash — Vichy'U";
+        corps = "Bonjour David,\n\nJe souhaite lancer une offre flash sur Vichy'U (9€).\n\n- Établissement :\n- Offre proposée :\n- Durée souhaitée (ex: 24h, ce soir de 18h à 22h...) :\n\nMerci !";
+    } else {
+        sujet = `Partenariat Vichy'U — Formule ${plan}`;
+        corps = `Bonjour David,\n\nJe souhaite devenir partenaire sur Vichy'U avec la formule ${plan}.\n\n- Établissement :\n- Offre proposée :\n\nMerci !`;
+    }
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// CARTE
+// ═══════════════════════════════════════════════════════
+function displayMarkers() {
+    if (!map) return;
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+    document.querySelectorAll('.card').forEach(card => {
+        const title = card.querySelector('h3') ? card.querySelector('h3').innerText : '';
+        const emoji = card.querySelector('.card-emoji') ? card.querySelector('.card-emoji').innerText : '';
+        const onclickStr = card.getAttribute('onclick') || '';
+        const coords = onclickStr.match(/(\d+\.\d+),(\d+\.\d+)/);
+        if (coords) {
+            const lat = parseFloat(coords[1]), lng = parseFloat(coords[2]);
+            const m = L.marker([lat, lng]).addTo(map).bindPopup(`
+                <div style="text-align:center;">
+                    <b style="font-size:14px;">${emoji} ${title}</b><br>
+                    <button onclick="window.location.href='https://www.google.com/maps/search/?api=1&query=${lat},${lng}'"
+                            style="background:#5d5fef;color:white;border:none;padding:5px 10px;border-radius:10px;margin-top:8px;cursor:pointer;font-weight:bold;font-size:12px;">
+                        Y aller
+                    </button>
+                </div>`);
+            markers.push(m);
+        }
+    });
+}
+
+function initMap() {
+    if (!map) {
+        map = L.map('map').setView([46.123, 3.425], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        map.locate({setView: false, watch: true, enableHighAccuracy: true});
+        map.on('locationfound', (e) => {
+            const radius = e.accuracy / 2;
+            if (userMarker) { userMarker.setLatLng(e.latlng); userCircle.setLatLng(e.latlng).setRadius(radius); }
+            else {
+                userMarker = L.circleMarker(e.latlng, {radius:8,fillColor:"#007bff",color:"#fff",weight:2,opacity:1,fillOpacity:1}).addTo(map);
+                userCircle = L.circle(e.latlng, radius).addTo(map);
+            }
+        });
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// THÈME
+// ═══════════════════════════════════════════════════════
+function toggleTheme() {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem('th', isDark);
+    document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+}
+
+// ═══════════════════════════════════════════════════════
+// RECHERCHE
+// ═══════════════════════════════════════════════════════
+function searchDeals() {
+    const val = document.getElementById('searchInput').value.toLowerCase();
+    document.getElementById('clearBtn').style.visibility = val ? 'visible' : 'hidden';
+    document.querySelectorAll('.card').forEach(c => {
+        c.style.display = c.innerText.toLowerCase().includes(val) ? 'flex' : 'none';
+    });
+}
+function clearSearch() { document.getElementById('searchInput').value = ''; searchDeals(); }
+
+// ═══════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════
+let currentPage = 'home';
+
+function go(p, el) {
+    if (p === currentPage) return;
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    if (el) el.classList.add('active');
+    ['main-content', 'map-page', 'profile-page', 'agenda-page', 'partner-page', 'rewards-page'].forEach(id => {
+        const el2 = document.getElementById(id);
+        if (el2) el2.style.display = 'none';
+    });
+    document.getElementById('search-container').style.display = (p === 'home') ? 'flex' : 'none';
+    if (p === 'home')    document.getElementById('main-content').style.display = 'block';
+    if (p === 'agenda')  document.getElementById('agenda-page').style.display = 'block';
+    if (p === 'partner') document.getElementById('partner-page').style.display = 'block';
+    if (p === 'map')   { document.getElementById('map-page').style.display = 'block'; setTimeout(() => { initMap(); displayMarkers(); }, 200); }
+    if (p === 'profile') { document.getElementById('profile-page').style.display = 'flex'; refreshSavingsUI(); }
+    if (p === 'rewards') { document.getElementById('rewards-page').style.display = 'flex'; document.getElementById('rewards-page').style.flexDirection = 'column'; refreshRewardsUI(); }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    currentPage = p;
+}
+
+// ═══════════════════════════════════════════════════════
+// MODAL DÉTAIL
+// ═══════════════════════════════════════════════════════
+function openDetails(t, e, off, lat, lng, s, d, expiry, dealId) {
+    currentDeal = { title: t, emoji: e, offer: off };
+    currentDealId = dealId;
+    currentRating = 0;
+    setRating(0);
+
+    document.getElementById('mEmoji').innerText = e;
+    document.getElementById('mTitle').innerText = t;
+    document.getElementById('mOffer').innerText = off;
+    document.getElementById('mDesc').innerText = d;
+    document.getElementById('mGo').innerText = 'Y aller maintenant';
+    document.getElementById('mRep').style.display = 'block';
+    document.getElementById('mOffer').style.display = 'block';
+    document.getElementById('mShare').style.display = 'flex';
+    document.getElementById('review-text').value = '';
+
+    // Compteur Supabase
+    let counterEl = document.getElementById('mCounter');
+    if (!counterEl) {
+        counterEl = document.createElement('p');
+        counterEl.id = 'mCounter';
+        counterEl.style.cssText = 'margin:8px 0 0; font-size:12px; color:var(--text-light); text-align:center;';
+        document.getElementById('mOffer').after(counterEl);
+    }
+    counterEl.innerText = '';
+    if (dealId) {
+        getClickCount(dealId).then(count => {
+            if (count > 0) counterEl.innerText = count === 1 ? `👥 1 étudiant a profité de cette offre` : `👥 ${count} étudiants ont profité de cette offre`;
+        });
+    }
+
+    // Expiry
+    const msg = expiryMessage(expiry);
+    let expiryEl = document.getElementById('mExpiry');
+    if (!expiryEl) {
+        expiryEl = document.createElement('p');
+        expiryEl.id = 'mExpiry';
+        expiryEl.style.cssText = 'margin:8px 0 0; font-size:13px; font-weight:700; border-radius:10px; padding:8px 12px;';
+        document.getElementById('mDesc').after(expiryEl);
+    }
+    if (msg) {
+        const urgent = expiryStatus(expiry) <= 3;
+        expiryEl.style.background = urgent ? '#fff0f0' : '#fff8e1';
+        expiryEl.style.color = urgent ? '#ff4757' : '#e17055';
+        expiryEl.innerText = msg;
+        expiryEl.style.display = 'block';
+    } else {
+        expiryEl.style.display = 'none';
+    }
+
+    document.getElementById('mGo').onclick = () => {
+        if (s > 0) { addSaving(s); launchSavingEffect(s); }
+        if (dealId) incrementClick(dealId);
+        // Attendre la fin de l'animation avant d'ouvrir Maps
+        setTimeout(() => {
+            window.location.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+        }, s > 0 ? 900 : 0);
+    };
+
+    // Compteur de vues
+    if (dealId) incrementView(dealId);
+
+    // Avis
+    renderReviews(dealId); // async, se charge en arrière-plan
+
+    document.getElementById('detailModal').style.display = 'flex';
+}
+
+function openEvent(t, lieu, desc, day, month, heure) {
+    document.getElementById('mEmoji').innerText = '📅';
+    document.getElementById('mTitle').innerText = t;
+    document.getElementById('mOffer').innerText = `${day} ${month} à ${heure} — ${lieu}`;
+    document.getElementById('mOffer').style.display = 'block';
+    document.getElementById('mDesc').innerText = desc;
+    document.getElementById('mGo').innerText = 'Ajouter au calendrier';
+    document.getElementById('mGo').onclick = () => { showToast('Événement noté ! 📅'); closeM(); };
+    document.getElementById('mRep').style.display = 'none';
+    document.getElementById('mShare').style.display = 'none';
+    document.getElementById('review-section').style.display = 'none';
+    document.getElementById('detailModal').style.display = 'flex';
+}
+
+function closeM() {
+    document.getElementById('detailModal').style.display = 'none';
+    document.getElementById('review-section').style.display = 'block';
+}
+
+function shareCurrentDeal() {
+    if (!currentDeal) return;
+    const text = `${currentDeal.emoji} ${currentDeal.title} — ${currentDeal.offer}\n\nDisponible sur Vichy'U, l'app des bons plans étudiants 👇`;
+    const url = window.location.href;
+    if (navigator.share) navigator.share({ title: currentDeal.title, text, url }).catch(() => {});
+    else navigator.clipboard.writeText(text + '\n' + url).then(() => showToast('Lien copié ! 📋')).catch(() => showToast('Partage non disponible'));
+}
+
+// ═══════════════════════════════════════════════════════
+// FAVORIS
+// ═══════════════════════════════════════════════════════
+function toggleFav(id) {
+    let favs = JSON.parse(localStorage.getItem('f')) || [];
+    const btn = document.getElementById(id);
+    if (favs.includes(id)) {
+        favs = favs.filter(x => x !== id);
+        if (btn) btn.classList.remove('is-fav');
+        showToast('Retiré des favoris');
+    } else {
+        favs.push(id);
+        if (btn) btn.classList.add('is-fav');
+        showToast('Ajouté aux favoris ❤️');
+    }
+    localStorage.setItem('f', JSON.stringify(favs));
+    const activeCat = document.querySelector('.cat-item.active');
+    if (activeCat && activeCat.innerText.trim().includes('Favs')) {
+        document.querySelectorAll('.card').forEach(k => {
+            const fb = k.querySelector('.fav-btn');
+            const cardId = fb ? fb.id : (k.dataset.id || '');
+            k.classList.toggle('hidden', !favs.includes(cardId));
+        });
+    }
+}
+
+function restoreFavs() {
+    const favs = JSON.parse(localStorage.getItem('f')) || [];
+    document.querySelectorAll('.fav-btn').forEach(btn => {
+        btn.classList.toggle('is-fav', favs.includes(btn.id));
+    });
+}
+
+function filterCat(c, b) {
+    document.querySelectorAll('.cat-item').forEach(x => x.classList.remove('active'));
+    if (b) b.classList.add('active');
+    const favs = JSON.parse(localStorage.getItem('f')) || [];
+    document.querySelectorAll('.card').forEach(k => {
+        const fb = k.querySelector('.fav-btn');
+        const cat = k.dataset.cat || '';
+        const isNew_ = k.dataset.new === 'true';
+        const id = fb ? fb.id : (k.dataset.id || '');
+        if (c === 'fav')        k.classList.toggle('hidden', !favs.includes(id));
+        else if (c === 'nouveautes') k.classList.toggle('hidden', !isNew_);
+        else                    k.classList.toggle('hidden', c !== 'tous' && cat !== c);
+    });
+}
+
+
+
+// ═══════════════════════════════════════════════════════
+// ÉCONOMIES & GAMIFICATION
+// ═══════════════════════════════════════════════════════
+function getSavings() { try { return JSON.parse(localStorage.getItem('savings_log')) || []; } catch(e) { return []; } }
+function addSaving(amount) {
+    if (amount <= 0) return;
+    const log = getSavings();
+    log.push({ amount, date: new Date().toISOString() });
+    localStorage.setItem('savings_log', JSON.stringify(log));
+    refreshSavingsUI();
+    // Sync classement Supabase
+    const total = log.reduce((s, e) => s + e.amount, 0);
+    const prenom = localStorage.getItem('u_f') || '';
+    if (prenom) syncLeaderboard(prenom, total);
+}
+function refreshSavingsUI() {
+    const log = getSavings();
+    const now = new Date();
+    let month = 0, year = 0, total = 0;
+    log.forEach(e => { const d = new Date(e.date); total += e.amount; if (d.getFullYear()===now.getFullYear()) year += e.amount; if (d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth()) month += e.amount; });
+    const fmt = v => v.toFixed(2) + ' €';
+    if (document.getElementById('month-saved')) document.getElementById('month-saved').innerText = fmt(month);
+    if (document.getElementById('year-saved')) document.getElementById('year-saved').innerText = fmt(year);
+    if (document.getElementById('total-saved')) document.getElementById('total-saved').innerText = fmt(total);
+    if (document.getElementById('level-widget')) updateLevelUI();
+}
+
+// ═══════════════════════════════════════════════════════
+// GAMIFICATION — NIVEAUX, BADGES, CLASSEMENT
+// ═══════════════════════════════════════════════════════
+const LEVELS = [
+    { name: 'Nouveau Arrivant',       badge: '🌱', min: 0,    color: '#b2bec3' },
+    { name: 'Explorateur',            badge: '🔍', min: 10,   color: '#00b894' },
+    { name: 'Chasseur de Bons Plans', badge: '🎯', min: 30,   color: '#fdcb6e' },
+    { name: 'Économiste Confirmé',    badge: '💰', min: 75,   color: '#f0932b' },
+    { name: 'Expert Vichyssois',      badge: '🏆', min: 150,  color: '#6c5ce7' },
+    { name: 'Légende de Vichy',       badge: '👑', min: 300,  color: '#f9ca24' }
+];
+
+const BADGES = [
+    { id: 'first',    emoji: '🎉', name: 'Première Offre',    desc: 'Utilise ton 1er bon plan',          condition: log => log.length >= 1 },
+    { id: 'five',     emoji: '🔥', name: 'En feu !',          desc: '5 bons plans utilisés',              condition: log => log.length >= 5 },
+    { id: 'ten',      emoji: '💪', name: 'Habitué',           desc: '10 bons plans utilisés',             condition: log => log.length >= 10 },
+    { id: 'saver10',  emoji: '💶', name: 'Économe',           desc: '10€ économisés au total',            condition: (log, total) => total >= 10 },
+    { id: 'saver50',  emoji: '💰', name: 'Bon Gestionnaire',  desc: '50€ économisés au total',            condition: (log, total) => total >= 50 },
+    { id: 'saver100', emoji: '🤑', name: 'Pro des Économies', desc: '100€ économisés au total',           condition: (log, total) => total >= 100 },
+    { id: 'sharer',   emoji: '📢', name: 'Ambassadeur',       desc: "Tu as partagé l'app",               condition: () => !!localStorage.getItem('has_shared') },
+    { id: 'fav5',     emoji: '❤️', name: 'Collectionneur',   desc: '5 offres en favoris',                condition: () => (JSON.parse(localStorage.getItem('f'))||[]).length >= 5 },
+];
+
+function getLevel(total) {
+    for (let i = LEVELS.length - 1; i >= 0; i--) {
+        if (total >= LEVELS[i].min) return i;
+    }
+    return 0;
+}
+
+function getUnlockedBadges(log, total) {
+    return BADGES.filter(b => { try { return b.condition(log, total); } catch(e) { return false; } });
+}
+
+function updateLevelUI() {
+    const log = getSavings();
+    const total = log.reduce((s, e) => s + e.amount, 0);
+    const li = getLevel(total);
+    const level = LEVELS[li];
+    const prev = parseInt(localStorage.getItem('prev_level') || '0');
+
+    // Widget profil (petit)
+    if (document.getElementById('level-badge')) {
+        document.getElementById('level-badge').innerText = level.badge;
+        document.getElementById('level-name').innerText = level.name;
+        document.getElementById('level-bar').style.background = `linear-gradient(90deg, ${level.color}, ${level.color}aa)`;
+        if (li < LEVELS.length - 1) {
+            const next = LEVELS[li+1];
+            const progress = Math.min(((total-level.min)/(next.min-level.min))*100, 100);
+            document.getElementById('level-bar').style.width = progress + '%';
+            document.getElementById('level-next').innerText = `à ${next.min}€`;
+            document.getElementById('level-hint').innerText = `Plus que ${(next.min-total).toFixed(2)}€ pour devenir ${next.name} ${next.badge}`;
+        } else {
+            document.getElementById('level-bar').style.width = '100%';
+            document.getElementById('level-next').innerText = 'MAX 👑';
+            document.getElementById('level-hint').innerText = 'Tu as atteint le niveau maximum !';
+        }
+    }
+
+    // Nouveau niveau ?
+    if (li > prev) {
+        localStorage.setItem('prev_level', li);
+        setTimeout(() => {
+            launchConfetti(level);
+            showNotifBanner(`🎉 Niveau ${level.badge} ${level.name} débloqué !`);
+        }, 300);
+    } else {
+        localStorage.setItem('prev_level', li);
+    }
+
+    // Nouveaux badges ?
+    const unlocked = getUnlockedBadges(log, total);
+    const prevBadges = JSON.parse(localStorage.getItem('prev_badges') || '[]');
+    unlocked.forEach(b => {
+        if (!prevBadges.includes(b.id)) {
+            setTimeout(() => showNotifBanner(`🎖️ Badge "${b.name}" débloqué ${b.emoji} !`), 800);
+        }
+    });
+    localStorage.setItem('prev_badges', JSON.stringify(unlocked.map(b => b.id)));
+}
+
+async function refreshRewardsUI() {
+    const log = getSavings();
+    const total = log.reduce((s, e) => s + e.amount, 0);
+    const li = getLevel(total);
+    const level = LEVELS[li];
+
+    // Hero niveau
+    document.getElementById('rw-level-badge').innerText = level.badge;
+    document.getElementById('rw-level-name').innerText = level.name;
+    document.getElementById('rw-total').innerText = total.toFixed(2) + ' €';
+    const bar = document.getElementById('rw-level-bar');
+    bar.style.background = `linear-gradient(90deg, ${level.color}, ${level.color}bb)`;
+    if (li < LEVELS.length - 1) {
+        const next = LEVELS[li+1];
+        const progress = Math.min(((total-level.min)/(next.min-level.min))*100, 100);
+        bar.style.width = progress + '%';
+        document.getElementById('rw-level-hint').innerText = `${progress.toFixed(0)}% vers ${next.name} ${next.badge} — encore ${(next.min-total).toFixed(2)}€`;
+    } else {
+        bar.style.width = '100%';
+        document.getElementById('rw-level-hint').innerText = '🎉 Niveau maximum atteint !';
+    }
+
+    // Timeline niveaux
+    const timeline = document.getElementById('levels-timeline');
+    timeline.innerHTML = LEVELS.map((lv, i) => {
+        const isDone = i < li;
+        const isCurrent = i === li;
+        const cls = isDone ? 'done' : isCurrent ? 'current' : '';
+        const badgeCls = isDone ? 'badge-done' : isCurrent ? 'badge-current' : 'badge-locked';
+        const badgeTxt = isDone ? '✓ Atteint' : isCurrent ? 'En cours' : `à ${lv.min}€`;
+        return `<div class="level-step ${cls}">
+            <div class="level-step-emoji">${lv.badge}</div>
+            <div class="level-step-info">
+                <h4>${lv.name}</h4>
+                <p>Dès ${lv.min}€ économisés</p>
+            </div>
+            <span class="level-step-badge ${badgeCls}">${badgeTxt}</span>
+        </div>`;
+    }).join('');
+
+    // Badges
+    const unlocked = getUnlockedBadges(log, total).map(b => b.id);
+    const badgesGrid = document.getElementById('badges-grid');
+    badgesGrid.innerHTML = BADGES.map(b => {
+        const isUnlocked = unlocked.includes(b.id);
+        return `<div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}">
+            ${isUnlocked ? '<div class="badge-unlocked-stamp">✓</div>' : ''}
+            <span class="badge-card-emoji">${b.emoji}</span>
+            <h4>${b.name}</h4>
+            <p>${b.desc}</p>
+        </div>`;
+    }).join('');
+
+    // Classement réel depuis Supabase
+    const prenom = localStorage.getItem('u_f') || '';
+    const lbEl = document.getElementById('leaderboard-list');
+    lbEl.innerHTML = '<p style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">⏳ Chargement...</p>';
+    await loadLeaderboard(total, prenom);
+}
+
+// ═══════════════════════════════════════════════════════
+// CLASSEMENT SUPABASE
+// ═══════════════════════════════════════════════════════
+async function syncLeaderboard(prenom, total) {
+    if (!prenom || prenom.trim() === '') return; // pas de prénom = pas dans le classement
+    const userId = getUserId();
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'resolution=merge-duplicates'
+            },
+            body: JSON.stringify({ user_id: userId, prenom: prenom.trim(), total: parseFloat(total.toFixed(2)) })
+        });
+        if (!res.ok) {
+            const err = await res.text();
+            console.error('[leaderboard sync]', res.status, err);
+        }
+    } catch(e) { console.error('[leaderboard sync]', e); }
+}
+
+async function loadLeaderboard(myTotal, myPrenom) {
+    const medals = ['🥇','🥈','🥉'];
+    const lbEl = document.getElementById('leaderboard-list');
+    const myId = getUserId();
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?select=prenom,total,user_id&order=total.desc&limit=10`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) {
+            lbEl.innerHTML = '<p style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">Sois le premier à apparaître ! 🏆</p>';
+            return;
+        }
+        // Vérifier si l'utilisateur courant est dans le top 10
+        const myRank = data.findIndex(u => u.user_id === myId);
+        lbEl.innerHTML = data.map((u, i) => {
+            const isMe = u.user_id === myId;
+            return `<div class="leaderboard-item" style="${isMe ? 'border-color:var(--primary);background:rgba(93,95,239,0.05);' : ''}">
+                <span class="leaderboard-rank">${medals[i] || (i+1)}</span>
+                <span class="leaderboard-name" style="${isMe ? 'color:var(--primary);font-weight:900;' : ''}">${u.prenom}${isMe ? ' (toi)' : ''}</span>
+                <span class="leaderboard-amount">${parseFloat(u.total).toFixed(2)} €</span>
+            </div>`;
+        }).join('');
+        // Si l'utilisateur n'est pas dans le top 10, afficher sa position en bas
+        if (myRank === -1 && myPrenom) {
+            const rankRes = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?select=count&total=gte.${myTotal}`, {
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+            });
+            const rankCount = parseInt(rankRes.headers.get('content-range')?.split('/')[1] || '?');
+            lbEl.innerHTML += `<div class="leaderboard-item" style="border-color:var(--primary);background:rgba(93,95,239,0.05);opacity:0.8;margin-top:4px;">
+                <span class="leaderboard-rank">#${rankCount}</span>
+                <span class="leaderboard-name" style="color:var(--primary);font-weight:900;">${myPrenom} (toi)</span>
+                <span class="leaderboard-amount">${myTotal.toFixed(2)} €</span>
+            </div>`;
+        }
+    } catch(e) {
+        lbEl.innerHTML = '<p style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">Classement indisponible 😕</p>';
+    }
+}
+
+function getUserId() {
+    let id = localStorage.getItem('vichyu_uid');
+    if (!id) {
+        id = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('vichyu_uid', id);
+    }
+    return id;
+}
+
+function showNotifBanner(msg) {
+    let banner = document.getElementById('notif-banner');
+    if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'notif-banner';
+        banner.className = 'notif-banner';
+        document.body.appendChild(banner);
+    }
+    banner.innerHTML = `<i class="fa-solid fa-bell"></i> ${msg}`;
+    banner.classList.add('show');
+    setTimeout(() => banner.classList.remove('show'), 3500);
+}
+
+function launchSavingEffect(amount) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+        position:fixed; top:50%; left:50%;
+        transform:translate(-50%,-50%);
+        display:flex; flex-direction:column; align-items:center; gap:10px;
+        z-index:99999; pointer-events:none;
+        animation:savingPop 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    `;
+    el.innerHTML = `
+        <span style="font-size:72px;line-height:1;">💰</span>
+        <span style="font-size:28px;font-weight:900;color:#00b894;background:white;padding:8px 20px;border-radius:20px;box-shadow:0 8px 25px rgba(0,184,148,0.3);">+ ${parseFloat(amount).toFixed(2)}€ économisés !</span>
+    `;
+    document.body.appendChild(el);
+    const style = document.createElement('style');
+    style.innerText = '@keyframes savingPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5);}40%{opacity:1;transform:translate(-50%,-50%) scale(1.05);}80%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-55%) scale(0.95);}}';
+    document.head.appendChild(style);
+    setTimeout(() => { el.remove(); style.remove(); }, 900);
+}
+
+function launchConfetti(level) {
+    const colors = ['#6c5ce7','#a29bfe','#fdcb6e','#ff4757','#00b894'];
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:99998;overflow:hidden;';
+    document.body.appendChild(container);
+    for (let i = 0; i < 80; i++) {
+        const c = document.createElement('div');
+        const size = Math.random()*10+5;
+        c.style.cssText = `position:absolute;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};left:${Math.random()*100}%;top:-10px;animation:confettiFall ${1.5+Math.random()*2}s ease-in ${Math.random()*0.8}s forwards;`;
+        container.appendChild(c);
+    }
+    const style = document.createElement('style');
+    style.innerText = `@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}`;
+    document.head.appendChild(style);
+    setTimeout(() => { container.remove(); style.remove(); }, 4000);
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════════════
+// GÉOLOCALISATION
+// ═══════════════════════════════════════════════════════
+let userLat = null, userLng = null;
+
+function haversine(lat1,lng1,lat2,lng2) {
+    const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+    const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function updateDistanceBadges() {
+    if (userLat===null) return;
+    document.querySelectorAll('.card').forEach(card => {
+        const onclick = card.getAttribute('onclick') || '';
+        const coords = onclick.match(/(\d+\.\d+),(\d+\.\d+)/);
+        if (!coords) return;
+        const dist = haversine(userLat, userLng, parseFloat(coords[1]), parseFloat(coords[2]));
+        const old = card.querySelector('.dist-badge');
+        if (old) old.remove();
+        if (dist <= 1) {
+            const badge = document.createElement('span');
+            badge.className = 'dist-badge';
+            badge.style.cssText = 'background:#00b894;color:white;font-size:9px;font-weight:800;padding:2px 6px;border-radius:20px;vertical-align:middle;margin-left:4px;';
+            badge.innerText = `📍 à ${dist<1?Math.round(dist*1000)+'m':dist.toFixed(1)+'km'}`;
+            const p = card.querySelector('.card-info p');
+            if (p) p.appendChild(badge);
+        }
+    });
+}
+
+function initGeolocation() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.watchPosition(pos => { userLat=pos.coords.latitude; userLng=pos.coords.longitude; updateDistanceBadges(); }, ()=>{}, {enableHighAccuracy:true,maximumAge:30000});
+}
+
+// ═══════════════════════════════════════════════════════
+// PULL TO REFRESH
+// ═══════════════════════════════════════════════════════
+let ptrStartY=0, ptrActive=false;
+document.addEventListener('touchstart', e => { if(window.scrollY===0&&currentPage==='home'){ptrStartY=e.touches[0].clientY;ptrActive=true;} }, {passive:true});
+document.addEventListener('touchmove', e => { if(!ptrActive) return; const dist=e.touches[0].clientY-ptrStartY; const ind=document.getElementById('ptr-indicator'); if(dist>20){ind.classList.add('visible');document.getElementById('ptr-text').innerText=dist>80?'Relâche pour actualiser':'Tire pour actualiser...';} }, {passive:true});
+document.addEventListener('touchend', e => {
+    if(!ptrActive) return; ptrActive=false;
+    const dist=e.changedTouches[0].clientY-ptrStartY;
+    const ind=document.getElementById('ptr-indicator');
+    if(dist>80){ind.classList.add('loading');document.getElementById('ptr-text').innerText='Actualisation...';loadData().then(()=>{setTimeout(()=>{ind.classList.remove('visible','loading');document.getElementById('ptr-text').innerText='Relâche pour actualiser';showToast('Bons plans actualisés ✅');},800);});}
+    else ind.classList.remove('visible');
+}, {passive:true});
+
+// ═══════════════════════════════════════════════════════
+// UPLOAD IMAGE
+// ═══════════════════════════════════════════════════════
+function upImg(e, type) {
+    const file=e.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=(event)=>{
+        const img=new Image();
+        img.onload=()=>{
+            const MAX=800; let w=img.width,h=img.height;
+            if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+            const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+            canvas.getContext('2d').drawImage(img,0,0,w,h);
+            const data=canvas.toDataURL('image/jpeg',0.6);
+            try {
+                if(type==='p'){document.getElementById('p-img').src=data;localStorage.setItem('p_i',data);}
+                else{document.getElementById('id-img').src=data;document.getElementById('id-img').style.display='block';localStorage.setItem('id_i',data);}
+            } catch(err){showToast('⚠️ Image trop lourde, réessaie avec une plus petite.');}
+        };
+        img.src=event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function zoomID(s) { const src=document.getElementById('id-img').src; if(s&&src){document.getElementById('zImg').src=src;document.getElementById('zoom-overlay').style.display='flex';}else{document.getElementById('zoom-overlay').style.display='none';} }
+function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
+function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U",url:window.location.href}).then(()=>{ localStorage.setItem('has_shared','1'); updateLevelUI(); }).catch(()=>{}); }
+function rep() { window.location.href='mailto:contact@vichyu.fr'; }
+function signalerEvenement() {
+    const s = "Signaler un événement — Vichy'U";
+    const c = "Bonjour David,\n\nJe souhaite signaler un événement à venir :\n- Titre :\n- Date et heure :\n- Lieu :\n- Description :\n\nMerci !";
+    window.location.href = `mailto:contact@vichyu.fr?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(c)}`;
+}
+
+function proposerBonPlan() { const s='Nouveau Bon Plan - Vichy\'U'; const c='Bonjour,\n\nJe souhaite proposer un nouveau bon plan :\n- Établissement :\n- Offre :\n- Description :\n\nMerci !'; window.location.href=`mailto:contact@vichyu.fr?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(c)}`; }
+
+function hideSplash() {
+    const splash = document.getElementById('splash');
+    if (!splash || splash.style.display === 'none') return;
+    splash.classList.add('hide');
+    setTimeout(() => {
+        splash.style.display = 'none';
+        splash.style.pointerEvents = 'none';
+    }, 500);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    // Sécurité absolue : splash disparaît dans tous les cas après 4s
+    setTimeout(hideSplash, 4000);
+    const savedTheme=localStorage.getItem('th');
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark=savedTheme!==null?savedTheme==='true':prefersDark;
+    if(isDark){document.body.classList.add('dark');document.getElementById('theme-icon').className='fa-solid fa-sun';}
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',e=>{if(localStorage.getItem('th')===null){document.body.classList.toggle('dark',e.matches);document.getElementById('theme-icon').className=e.matches?'fa-solid fa-sun':'fa-solid fa-moon';}});
+
+    document.getElementById('fn').value=localStorage.getItem('u_f')||'';
+    if(localStorage.getItem('p_i')) document.getElementById('p-img').src=localStorage.getItem('p_i');
+    if(localStorage.getItem('id_i')){document.getElementById('id-img').src=localStorage.getItem('id_i');document.getElementById('id-img').style.display='block';}
+    refreshSavingsUI();
+
+    const prenom=localStorage.getItem('u_f');
+    if(prenom&&prenom.trim()!==''){
+        const taglines=['Prêt à faire des économies ? 💰','De nouveaux bons plans t\'attendent ! 🎉','Vichy a des surprises pour toi 👀','Ton porte-monnaie va te remercier 😄','Les meilleures offres sont là 🔥'];
+        const tagline=taglines[Math.floor(Math.random()*taglines.length)];
+        document.getElementById('splash-tagline').style.display='none';
+        const g=document.getElementById('splash-greeting');
+        g.style.display='flex'; g.style.flexDirection='column'; g.style.alignItems='center'; g.style.gap='8px';
+        g.innerHTML=`<span style="font-size:22px;font-weight:800;">Bonjour ${prenom.trim()} 👋</span><span style="font-size:14px;font-weight:400;opacity:0.85;">${tagline}</span>`;
+    }
+
+    setTimeout(hideSplash, 3500);
+    loadData();
+    setTimeout(initGeolocation, 1000);
+
+    if (ENABLE_WELCOME_POPUP && !sessionStorage.getItem('pop')) {
+        setTimeout(() => {
+            // Rotation équitable : chaque partenaire Premium s'affiche à tour de rôle
+            const premiumDeals = appData.deals.filter(d => d.partner && d.plan === 'premium');
+            if (premiumDeals.length === 0) return;
+            const lastIdx = parseInt(localStorage.getItem('popup_last_idx') || '-1');
+            const nextIdx = (lastIdx + 1) % premiumDeals.length;
+            localStorage.setItem('popup_last_idx', nextIdx);
+            const p = premiumDeals[nextIdx];
+            openDetails(p.title, p.emoji, p.offer, p.lat, p.lng, p.savings, p.desc, p.expiryDate || '', p.id);
+            sessionStorage.setItem('pop', 'true');
+        }, 2500);
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Vichy'U — Flyer Partenaire v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: A4; margin: 0; }
+  @media print { body { margin: 0; } .page { box-shadow: none !important; } }
+
+  body {
+    background: #e0e0ee;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #4954EC;
+    padding: 32px 40px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; top: -50px; right: -50px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+  .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 40px; color: white; letter-spacing: -1px; line-height: 1; }
+  .brand-sub { font-size: 11px; color: rgba(255,255,255,0.65); font-weight: 300; margin-top: 4px; letter-spacing: 0.5px; }
+  .url-badge { background: rgba(255,255,255,0.15); color: white; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; padding: 6px 15px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+  .header-tagline { font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 300; line-height: 1.5; max-width: 400px; padding-left: 12px; border-left: 3px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
+  .header-tagline strong { color: white; }
+
+  /* ── FLASH STRIP ── */
+  .flash-strip {
+    background: linear-gradient(135deg, #ff6b35, #f9ca24);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .flash-icon { font-size: 28px; flex-shrink: 0; }
+  .flash-text h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: white; margin-bottom: 2px; }
+  .flash-text p { font-size: 11px; color: rgba(255,255,255,0.88); line-height: 1.4; }
+  .flash-price {
+    margin-left: auto;
+    background: rgba(255,255,255,0.25);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .flash-features { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .flash-chip { background: rgba(255,255,255,0.2); color: white; font-size: 10px; font-weight: 600; padding: 2px 9px; border-radius: 20px; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: #4954EC; padding: 18px 40px 12px;
+  }
+
+  /* ── PLANS ── */
+  .plans { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 0 40px; }
+
+  .plan { border-radius: 14px; padding: 18px 16px; position: relative; display: flex; flex-direction: column; gap: 8px; }
+  .plan-essential { background: #F8F9FE; border: 1px solid #E8E8F5; }
+  .plan-visible { background: #FFFBF0; border: 2px solid #F5C842; }
+  .plan-premium { background: #F5F0FF; border: 1px solid #C4B5FD; }
+
+  .plan-badge { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font-family: 'Syne', sans-serif; font-size: 8px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 11px; border-radius: 20px; white-space: nowrap; }
+  .badge-pop { background: #F5C842; color: #2d2d2d; }
+  .badge-excl { background: #4954EC; color: white; }
+
+  .plan-tier { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; margin-top: 4px; }
+  .plan-price { font-family: 'Syne', sans-serif; font-weight: 800; line-height: 1; }
+  .plan-price .amount { font-size: 32px; color: #1a1a2e; }
+  .plan-price .period { font-size: 11px; color: #999; font-family: 'DM Sans', sans-serif; font-weight: 400; }
+  .plan-price .free { font-size: 28px; color: #00B894; }
+  .plan-cta-text { font-size: 10px; font-weight: 700; color: #4a4a6a; }
+
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .plan-features li { font-size: 10px; color: #555; display: flex; align-items: flex-start; gap: 5px; line-height: 1.4; }
+  .plan-features li::before { content: '✓'; font-size: 9px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .plan-essential .plan-features li::before { color: #00B894; }
+  .plan-visible .plan-features li::before { color: #D4A017; }
+  .plan-premium .plan-features li::before { color: #8B5CF6; }
+
+  /* ── ENGAGEMENTS ── */
+  .engagements { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 16px 40px; }
+  .engage-item { text-align: center; padding: 12px 8px; background: #F8F9FE; border-radius: 12px; }
+  .engage-icon { font-size: 20px; margin-bottom: 5px; }
+  .engage-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; color: #1a1a2e; margin-bottom: 2px; }
+  .engage-desc { font-size: 9px; color: #888; line-height: 1.4; }
+
+  /* ── ÉTABLISSEMENTS ── */
+  .etablissements { padding: 0 40px 16px; }
+  .etab-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .etab-chip { background: #F8F9FE; border: 1px solid #E8E8F5; border-radius: 20px; padding: 4px 11px; font-size: 10px; color: #4a4a6a; display: flex; align-items: center; gap: 5px; }
+  .etab-chip .badge { color: #4954EC; font-weight: 700; font-size: 9px; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, #E8E8F5, transparent); margin: 0 40px; }
+
+  /* ── FOOTER ── */
+  .footer { margin-top: auto; background: #1a1a2e; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: white; }
+  .footer-contact { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .cta-btn { background: #4954EC; color: white; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; padding: 9px 20px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; gap: 7px; }
+  .cta-btn::after { content: '→'; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="brand-name">Vichy'U 🎓</div>
+        <div class="brand-sub">L'application des bons plans étudiants de Vichy</div>
+      </div>
+      <div class="url-badge">vichyu.fr</div>
+    </div>
+    <div class="header-tagline">
+      Votre établissement directement dans la poche des étudiants de Vichy.<br>
+      <strong>Sans engagement. Sans commission.</strong>
+    </div>
+  </div>
+
+  <!-- FLASH STRIP -->
+  <div class="flash-strip">
+    <div class="flash-icon">⚡</div>
+    <div class="flash-text">
+      <h3>Offre Flash — testez sans abonnement</h3>
+      <p>Votre promo en tête de l'app avec un compte à rebours en direct. Résultat le jour même.</p>
+      <div class="flash-features">
+        <span class="flash-chip">Priorité absolue</span>
+        <span class="flash-chip">Compte à rebours live</span>
+        <span class="flash-chip">Durée au choix</span>
+        <span class="flash-chip">Sans engagement</span>
+      </div>
+    </div>
+    <div class="flash-price">9€ / flash</div>
+  </div>
+
+  <!-- FORMULES -->
+  <div class="section-label">Formules partenaires</div>
+  <div class="plans">
+
+    <div class="plan plan-essential">
+      <div class="plan-tier">Essentiel</div>
+      <div class="plan-price"><span class="free">Gratuit</span></div>
+      <div class="plan-cta-text">Pour commencer</div>
+      <ul class="plan-features">
+        <li>Listing dans les bons plans</li>
+        <li>Fiche détail + description</li>
+        <li>Lien vers Google Maps</li>
+        <li>Visible par tous les étudiants</li>
+      </ul>
+    </div>
+
+    <div class="plan plan-visible">
+      <div class="plan-badge badge-pop">⭐ Populaire</div>
+      <div class="plan-tier">Visible</div>
+      <div class="plan-price"><span class="amount">9,90€</span><span class="period"> /mois</span></div>
+      <div class="plan-cta-text">Pour se démarquer</div>
+      <ul class="plan-features">
+        <li>Tout de la formule Essentiel</li>
+        <li>Badge 💎 PREMIUM</li>
+        <li>Section "Nos Partenaires" en tête</li>
+        <li>Bannière animée sur l'accueil</li>
+        <li>Compteur d'étudiants en temps réel</li>
+        <li>1 offre Flash offerte / mois</li>
+      </ul>
+    </div>
+
+    <div class="plan plan-premium">
+      <div class="plan-badge badge-excl">💎 Exclusif</div>
+      <div class="plan-tier">Premium</div>
+      <div class="plan-price"><span class="amount">49€</span><span class="period"> /mois</span></div>
+      <div class="plan-cta-text">Visibilité maximale</div>
+      <ul class="plan-features">
+        <li>Tout de la formule Visible</li>
+        <li>Popup exclusive au démarrage</li>
+        <li>1 seul partenaire — exclusivité</li>
+        <li>100% de visibilité à chaque ouverture</li>
+        <li>Stats mensuelles personnalisées</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- LANCEMENT -->
+  <div style="padding: 12px 40px 4px;">
+    <div style="background: linear-gradient(135deg, #4954EC, #7C3AED); border-radius: 12px; padding: 11px 20px; display: flex; align-items: center; justify-content: space-between;">
+      <div>
+        <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:12px; color:white;">🎁 Offre de lancement — 1er mois offert</div>
+        <div style="font-size:10px; color:rgba(255,255,255,0.7); margin-top:2px;">Testez sans risque · Résiliable à tout moment</div>
+      </div>
+      <div style="background:white; color:#4954EC; font-family:'Syne',sans-serif; font-weight:800; font-size:10px; padding:5px 14px; border-radius:20px; white-space:nowrap;">Sans engagement</div>
+    </div>
+  </div>
+
+  <!-- ENGAGEMENTS -->
+  <div class="section-label" style="padding-top:14px;">Nos engagements</div>
+  <div class="engagements">
+    <div class="engage-item">
+      <div class="engage-icon">🤝</div>
+      <div class="engage-title">Sans engagement</div>
+      <div class="engage-desc">Résiliable à tout moment, sans préavis</div>
+    </div>
+    <div class="engage-item">
+      <div class="engage-icon">🎯</div>
+      <div class="engage-title">100% local</div>
+      <div class="engage-desc">Uniquement des étudiants de Vichy</div>
+    </div>
+    <div class="engage-item">
+      <div class="engage-icon">⚡</div>
+      <div class="engage-title">Zéro effort</div>
+      <div class="engage-desc">Je m'occupe de tout, rien à installer</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ÉTABLISSEMENTS -->
+  <div class="section-label" style="padding-top:14px;">Déjà présents sur l'application</div>
+  <div class="etablissements">
+    <div class="etab-grid">
+      <div class="etab-chip">🥷 Parcours Ninja <span class="badge">💎 Premium</span></div>
+      <div class="etab-chip">🌮 O'Tacos <span class="badge">⭐ Visible</span></div>
+      <div class="etab-chip">🍿 CGR Vichy</div>
+      <div class="etab-chip">☕ Columbus Café</div>
+      <div class="etab-chip">🧗 Vertical Limit</div>
+      <div class="etab-chip">⛰️ Arca Bloc</div>
+      <div class="etab-chip">🏊 Stade Aquatique</div>
+      <div class="etab-chip">🤸 Crazy Jump Park</div>
+      <div class="etab-chip">🎭 Musée de l'Opéra</div>
+      <div class="etab-chip">🎳 Spacebowl</div>
+      <div class="etab-chip">🔫 Laser Game</div>
+      <div class="etab-chip">📱 Répar'Tout</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-name">David · Vichy'U</div>
+      <div class="footer-contact">contact@vichyu.fr · vichyu.fr</div>
+    </div>
+    <a class="cta-btn" href="mailto:contact@vichyu.fr">Devenir partenaire</a>
+  </div>
+
+</div>
+</body>
+</html>

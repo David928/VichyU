@@ -1,0 +1,315 @@
+{
+  "banners": [
+    {
+      "id": "otacos",
+      "title": "O'Tacos",
+      "emoji": "🌮",
+      "icon": "🔥",
+      "subtitle": "Le 3ème offert aujourd'hui !",
+      "offer": "3ème Tacos offert.",
+      "gradient": "linear-gradient(135deg, #6c5ce7, #a29bfe)",
+      "lat": 46.125,
+      "lng": 3.422,
+      "savings": 5.0,
+      "desc": "Sur présentation de l'application. Pour l'achat de deux tacos (M, L ou XL), le troisième de taille identique est offert !"
+    },
+    {
+      "id": "cinema",
+      "title": "CGR Cinéma",
+      "emoji": "🍿",
+      "icon": "🎬",
+      "subtitle": "Ta place à 7€ seulement !",
+      "offer": "La place de ciné à 7€.",
+      "gradient": "linear-gradient(135deg, #ff4757, #ff6b81)",
+      "lat": 46.1221,
+      "lng": 3.4215,
+      "savings": 4.0,
+      "desc": "Tarif préférentiel pour tous les étudiants de Vichy. Valable tous les jours, sur tous les films (hors majoration 3D)."
+    }
+  ],
+  "flash": [
+    {
+      "id": "flash-crazy",
+      "title": "Crazy Jump Park",
+      "emoji": "🤸",
+      "offer": "Session à 7€ au lieu de 12€ — ce soir seulement !",
+      "endTime": "2026-04-30T23:59:00",
+      "lat": 46.1384,
+      "lng": 3.4357,
+      "savings": 5.0,
+      "desc": "Offre flash exceptionnelle ! Ta session de trampoline est à 7€ ce soir uniquement. Sur présentation de l'app."
+    }
+  ],
+  "deals": [
+    {
+      "id": "ninja",
+      "title": "Le parcours ninja",
+      "emoji": "🥷",
+      "offer": "8€ par ninja",
+      "lat": 46.1149,
+      "lng": 3.4373,
+      "savings": 4.0,
+      "savingsDisplay": "Économise 4.00€",
+      "cat": "loisirs",
+      "addedDate": "2025-03-01",
+      "desc": "Un parcours d'obstacles épique pour tester ton agilité ! Profite de 8€ au lieu de 12€ sur présentation de la carte étudiant.",
+      "plan": "premium",
+      "partner": true,
+      "dashCode": "NINJA001"
+    },
+    {
+      "id": "otacos",
+      "title": "O'Tacos",
+      "emoji": "🌮",
+      "offer": "3ème Tacos offert.",
+      "lat": 46.125,
+      "lng": 3.422,
+      "savings": 5.0,
+      "savingsDisplay": "Économise 5.00€",
+      "cat": "restos",
+      "addedDate": "2026-03-10",
+      "expiryDate": "2026-06-30",
+      "partner": true,
+      "plan": "visible",
+      "desc": "Sur présentation de l'application. Pour l'achat de deux tacos (M, L ou XL), le troisième de taille identique est offert !",
+      "dashCode": "OTACOS01"
+    },
+    {
+      "id": "cinema",
+      "title": "CGR Vichy",
+      "emoji": "🍿",
+      "offer": "La place de ciné à 7.50€.",
+      "lat": 46.1268,
+      "lng": 3.4222,
+      "savings": 3.5,
+      "savingsDisplay": "Économise 3.50€",
+      "cat": "loisirs",
+      "addedDate": "2025-03-01",
+      "desc": "Tarif préférentiel pour tous les étudiants de Vichy. Valable tous les jours, sur tous les films (hors majoration 3D).",
+      "dashCode": "CINEMA01",
+      "partner": true,
+      "plan": "premium"
+    },
+    {
+      "id": "columbus",
+      "title": "Columbus Cafe",
+      "emoji": "☕",
+      "offer": "-15% sur ta commande.",
+      "lat": 46.1235,
+      "lng": 3.4241,
+      "savings": 0,
+      "savingsDisplay": "-15%",
+      "cat": "restos",
+      "addedDate": "2025-03-01",
+      "desc": "Une pause muffin ? Profite de 15% de réduction immédiate sur l'ensemble de ton ticket de caisse."
+    },
+    {
+      "id": "vertical",
+      "title": "Vertical Limit",
+      "emoji": "🧗",
+      "offer": "8€ par étudiant",
+      "lat": 46.115,
+      "lng": 3.4372,
+      "savings": 4.0,
+      "savingsDisplay": "Économise 4.00€",
+      "cat": "sport",
+      "addedDate": "2026-03-15",
+      "desc": "Vertical Limit, l'unique salle d'escalade Clip'n Climb de l'Allier en Auvergne.",
+      "partner": true,
+      "plan": "premium",
+      "dashCode": "VERTC001"
+    },
+    {
+      "id": "arcabloc",
+      "title": "Arca bloc",
+      "emoji": "⛰️",
+      "offer": "11€ en illimitée.",
+      "lat": 46.1147,
+      "lng": 3.4368,
+      "savings": 3.0,
+      "savingsDisplay": "Économise 3.00€",
+      "cat": "sport",
+      "addedDate": "2025-03-01",
+      "desc": "Grimpe en toute liberté ! Ta séance d'escalade de bloc est à 11€ au lieu de 14€ sur présentation de ta carte étudiant."
+    },
+    {
+      "id": "stade",
+      "title": "Stade Aquatique",
+      "emoji": "🏊",
+      "offer": "Tarif : 4,70€",
+      "lat": 46.1279,
+      "lng": 3.3973,
+      "savings": 1.3,
+      "savingsDisplay": "Économise 1.30€",
+      "cat": "sport",
+      "addedDate": "2025-03-01",
+      "desc": "Profite du bassin olympique et de l'espace détente pour seulement 4,70€ (au lieu de 6€)."
+    },
+    {
+      "id": "crazy",
+      "title": "Crazy Jump Park",
+      "emoji": "🤸",
+      "offer": "Tarif : 9€",
+      "lat": 46.1384,
+      "lng": 3.4357,
+      "savings": 3.0,
+      "savingsDisplay": "Économise 3.00€",
+      "cat": "loisirs",
+      "addedDate": "2026-03-12",
+      "desc": "Envie de te défouler ? Ta session de trampoline est à 9€ au lieu de 12€. Profite d'une économie de 3€ sur présentation de ta carte étudiant !"
+    },
+    {
+      "id": "repartout",
+      "title": "Répar'Tout",
+      "emoji": "📱",
+      "offer": "-50% protections.",
+      "lat": 46.124,
+      "lng": 3.421,
+      "savings": 10.0,
+      "savingsDisplay": "Économise 10.00€",
+      "cat": "tech",
+      "addedDate": "2025-03-01",
+      "desc": "Un écran cassé ? Une batterie fatiguée ? Profite de 50% de remise sur les coques et verres trempés."
+    },
+    {
+      "id": "opera",
+      "title": "Musée de l'Opéra",
+      "emoji": "🎭",
+      "offer": "Tarif : 4€ l'entrée",
+      "lat": 46.1224,
+      "lng": 3.4231,
+      "savings": 1.0,
+      "savingsDisplay": "Économise 1.00€",
+      "cat": "culture",
+      "addedDate": "2025-03-01",
+      "desc": "Plonge dans l'histoire prestigieuse de l'Opéra de Vichy. Tarif réduit à 4€ pour les étudiants sur présentation de la carte."
+    },
+    {
+      "id": "bowling",
+      "title": "Spacebowl Cusset",
+      "emoji": "🎳",
+      "offer": "Partie dès 6€",
+      "lat": 46.1409,
+      "lng": 3.4439,
+      "savings": 2.0,
+      "savingsDisplay": "Partie à partir de 6€",
+      "cat": "loisirs",
+      "addedDate": "2025-03-01",
+      "desc": "Défie tes potes au bowling ! Profite des tarifs réduits le mercredi et samedi après-midi (6€ la partie)."
+    },
+    {
+      "id": "laser",
+      "title": "Laser Game Spacebowl",
+      "emoji": "🔫",
+      "offer": "Partie dès 7€",
+      "lat": 46.1409,
+      "lng": 3.4439,
+      "savings": 1.0,
+      "savingsDisplay": "Partie à partir de 7€",
+      "cat": "loisirs",
+      "addedDate": "2026-03-17",
+      "desc": "Éclate-toi dans un labyrinthe futuriste ! La partie de Laser Game est à tarif réduit sur présentation de ta carte étudiant."
+    }
+  ],
+  "events": [
+    {
+      "id": "vide-grenier",
+      "day": "5",
+      "month": "Avr",
+      "title": "Vide-grenier Étudiant",
+      "time": "09h00",
+      "place": "Parvis du Pôle Lardy",
+      "desc": "Grande brocante étudiante ! Vends ou chine des affaires à petits prix. Inscription gratuite pour tenir un stand."
+    },
+    {
+      "id": "tournoi-fifa",
+      "day": "7",
+      "month": "Avr",
+      "title": "Tournoi FIFA 25",
+      "time": "18h00",
+      "place": "BDE Vichy",
+      "desc": "Tournoi FIFA ouvert à tous les étudiants. 1ère place : bon plan offert ! Inscription sur place 30min avant."
+    },
+    {
+      "id": "clean-vichy",
+      "day": "9",
+      "month": "Avr",
+      "title": "Clean Walk Vichy",
+      "time": "10h00",
+      "place": "Parc des Sources",
+      "desc": "Ramassage de déchets collectif autour du parc. Gants et sacs fournis. Petit-déjeuner offert aux participants !"
+    },
+    {
+      "id": "soiree-espagnole",
+      "day": "11",
+      "month": "Avr",
+      "title": "Soirée Espagnole",
+      "time": "21h00",
+      "place": "Bar Le Barrio",
+      "desc": "Tapas, musique et ambiance garantie ! Entrée gratuite sur présentation de l'app Vichy'U avant 22h."
+    },
+    {
+      "id": "conf-entrepreneuriat",
+      "day": "14",
+      "month": "Avr",
+      "title": "Conférence Entrepreneuriat",
+      "time": "17h00",
+      "place": "Pôle Lardy — Amphi A",
+      "desc": "Trois jeunes entrepreneurs locaux partagent leur parcours. Idéal si tu as un projet. Entrée libre."
+    },
+    {
+      "id": "marche-producteurs",
+      "day": "16",
+      "month": "Avr",
+      "title": "Marché des Producteurs",
+      "time": "08h00",
+      "place": "Place Charles de Gaulle",
+      "desc": "Marché local avec producteurs de l'Allier. Fruits, légumes, fromages et spécialités régionales à prix directs."
+    },
+    {
+      "id": "tournoi-basket",
+      "day": "19",
+      "month": "Avr",
+      "title": "Tournoi Basket 3x3",
+      "time": "14h00",
+      "place": "Gymnase Thierry Magnin",
+      "desc": "Tournoi de basket 3 contre 3 ouvert aux étudiants. Forme ton équipe et inscris-toi par groupe de 3 minimum."
+    },
+    {
+      "id": "cinema-plein-air",
+      "day": "22",
+      "month": "Avr",
+      "title": "Cinéma Plein Air",
+      "time": "21h30",
+      "place": "Parc de l'Allier",
+      "desc": "Projection gratuite en plein air au bord de l'Allier. Apporte ton plaid ! Film annoncé 48h avant sur les réseaux."
+    },
+    {
+      "id": "job-dating",
+      "day": "24",
+      "month": "Avr",
+      "title": "Job Dating Été",
+      "time": "10h00",
+      "place": "Hôtel de Ville de Vichy",
+      "desc": "Rencontre des employeurs locaux pour décrocher un job d'été. CV obligatoire, tenue correcte recommandée."
+    },
+    {
+      "id": "soiree-fin-annee",
+      "day": "28",
+      "month": "Avr",
+      "title": "Soirée Fin de Semestre",
+      "time": "22h00",
+      "place": "L'Appart Club",
+      "desc": "La grande soirée de fin de semestre organisée par le BDE ! Entrée réduite à 3€ sur présentation de l'app."
+    },
+    {
+      "id": "randonnee-gorges",
+      "day": "30",
+      "month": "Avr",
+      "title": "Randonnée Gorges de la Sioule",
+      "time": "08h30",
+      "place": "Départ Parking Pôle Lardy",
+      "desc": "Sortie nature organisée par l'asso étudiante. Niveau facile, 12km. Covoiturage organisé, pique-nique tiré du sac."
+    }
+  ]
+}
