@@ -6,6 +6,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const VAPID_PUBLIC_KEY = Deno.env.get('VAPID_PUBLIC_KEY')!;
 const VAPID_PRIVATE_KEY = Deno.env.get('VAPID_PRIVATE_KEY')!;
+const ADMIN_PASSWORD = Deno.env.get('ADMIN_PASSWORD')!;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
@@ -16,7 +17,16 @@ webpush.setVapidDetails(
 );
 
 Deno.serve(async (req) => {
-  const { title, body, url } = await req.json();
+  const { title, body, url, password, dry_run } = await req.json();
+
+  if (password !== ADMIN_PASSWORD) {
+    return new Response('Mot de passe incorrect', { status: 401 });
+  }
+
+  // dry_run = juste vérifier le mot de passe sans envoyer
+  if (dry_run) {
+    return new Response(JSON.stringify({ ok: true }), { headers: { 'Content-Type': 'application/json' } });
+  }
   if (!title || !body) return new Response('Paramètres manquants', { status: 400 });
 
   // Récupérer tous les abonnés
