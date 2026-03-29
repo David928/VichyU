@@ -677,6 +677,7 @@
             <div class="ob-dot" id="ob-dot-1"></div>
             <div class="ob-dot" id="ob-dot-2"></div>
             <div class="ob-dot" id="ob-dot-3"></div>
+            <div class="ob-dot" id="ob-dot-4"></div>
         </div>
 
         <!-- Étapes -->
@@ -709,8 +710,19 @@
                 <p id="ob-loc-status" style="font-size:13px; color:var(--text-light); margin-top:12px;"></p>
             </div>
 
-            <!-- Étape 3 : Installer l'app -->
+            <!-- Étape 3 : Notifications -->
             <div class="ob-step" id="ob-step-3" style="text-align:center; display:none;">
+                <div style="font-size:72px; margin-bottom:24px;">🔔</div>
+                <h1 style="font-size:26px; font-weight:900; margin:0 0 10px; color:var(--text);">Alertes bons plans</h1>
+                <p style="font-size:14px; color:var(--text-light); margin:0 0 28px; line-height:1.5;">Active les notifications pour être le premier averti des offres flash !</p>
+                <button onclick="obRequestNotif()" style="width:100%; padding:16px; background:linear-gradient(135deg,#5d5fef,#a29bfe); color:white; border:none; border-radius:16px; font-size:16px; font-weight:800; cursor:pointer;">
+                    🔔 Activer les alertes
+                </button>
+                <p id="ob-notif-status" style="font-size:13px; color:var(--text-light); margin-top:12px;"></p>
+            </div>
+
+            <!-- Étape 4 : Installer l'app -->
+            <div class="ob-step" id="ob-step-4" style="text-align:center; display:none;">
                 <div style="font-size:72px; margin-bottom:24px;">📲</div>
                 <h1 style="font-size:26px; font-weight:900; margin:0 0 10px; color:var(--text);">Installe l'app !</h1>
                 <p style="font-size:14px; color:var(--text-light); margin:0; line-height:1.5;">
@@ -1395,7 +1407,7 @@ function exportDashboardPDF() {
 // ONBOARDING
 // ═══════════════════════════════════════════════════════
 let obCurrentStep = 0;
-const OB_TOTAL = 4;
+const OB_TOTAL = 5;
 
 function obShow() {
     if (localStorage.getItem('onboarding_done')) return;
@@ -1452,6 +1464,57 @@ function obRequestLocation() {
         () => { status.innerHTML = '✅ Localisation activée !'; setTimeout(() => obGoTo(3), 800); },
         () => { status.textContent = 'Refusé — tu pourras l\'activer plus tard.'; setTimeout(() => obGoTo(3), 1200); }
     );
+}
+
+async function obRequestNotif() {
+    const status = document.getElementById('ob-notif-status');
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        status.textContent = 'Notifications non supportées sur ce navigateur.';
+        setTimeout(() => obGoTo(4), 1200);
+        return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+        status.textContent = 'Refusé — tu pourras l\'activer plus tard dans le profil.';
+        setTimeout(() => obGoTo(4), 1200);
+        return;
+    }
+    status.innerHTML = '✅ Notifications activées !';
+    await subscribeToPush();
+    setTimeout(() => obGoTo(4), 800);
+}
+
+async function subscribeToPush() {
+    try {
+        const reg = await navigator.serviceWorker.ready;
+        const existing = await reg.pushManager.getSubscription();
+        if (existing) return; // déjà abonné
+
+        const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: 'BDCXY_ouFRdd43l7A5ZdEP7xYWIXI4_wTiDL2o8ajOSNC51CH2PkR8ypWU50WAerdv7kxj97XUybl_po-EIZ_Uk'
+        });
+        const subJson = sub.toJSON();
+        const userId = getUserId();
+        const userName = localStorage.getItem('u_f') || '';
+        await fetch(`${SUPABASE_URL}/rest/v1/push_subscriptions`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'resolution=merge-duplicates'
+            },
+            body: JSON.stringify({
+                endpoint: subJson.endpoint,
+                keys: subJson.keys,
+                user_id: userId,
+                user_name: userName
+            })
+        });
+    } catch(e) {
+        console.error('Erreur abonnement push:', e);
+    }
 }
 
 // ═══════════════════════════════════════════════════════
