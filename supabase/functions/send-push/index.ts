@@ -16,22 +16,31 @@ webpush.setVapidDetails(
   VAPID_PRIVATE_KEY
 );
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+
   const { title, body, url, password, dry_run } = await req.json();
 
   if (password !== ADMIN_PASSWORD) {
-    return new Response('Mot de passe incorrect', { status: 401 });
+    return new Response('Mot de passe incorrect', { status: 401, headers: corsHeaders });
   }
 
   // dry_run = juste vérifier le mot de passe sans envoyer
   if (dry_run) {
-    return new Response(JSON.stringify({ ok: true }), { headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ ok: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
   if (!title || !body) return new Response('Paramètres manquants', { status: 400 });
 
   // Récupérer tous les abonnés
   const { data: subs, error } = await supabase.from('push_subscriptions').select('*');
-  if (error) return new Response('Erreur Supabase', { status: 500 });
+  if (error) return new Response('Erreur Supabase', { status: 500, headers: corsHeaders });
 
   const expiredIds: string[] = [];
   let sent = 0;
@@ -59,6 +68,6 @@ Deno.serve(async (req) => {
   }
 
   return new Response(JSON.stringify({ sent, cleaned: expiredIds.length }), {
-    headers: { 'Content-Type': 'application/json' }
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
   });
 });
