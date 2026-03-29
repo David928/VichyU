@@ -16,12 +16,6 @@ webpush.setVapidDetails(
 );
 
 Deno.serve(async (req) => {
-  // Vérification auth
-  const authHeader = req.headers.get('Authorization');
-  if (authHeader !== `Bearer ${SUPABASE_SERVICE_KEY}`) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
   const { title, body, url } = await req.json();
   if (!title || !body) return new Response('Paramètres manquants', { status: 400 });
 
