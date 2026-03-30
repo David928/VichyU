@@ -589,7 +589,13 @@
             <input type="file" id="id-up" hidden accept="image/*" onchange="upImg(event,'id')">
         </div>
 
-        <div onclick="document.getElementById('install-help').style.display='flex'" style="margin-top:15px; background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:12px;">
+        <div onclick="enableNotifFromProfile()" id="notif-profile-btn" style="margin-top:15px; background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:12px;">
+            <div style="background:#ffeaa7; color:#fdcb6e; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-bell"></i></div>
+            <div style="flex:1"><h4 style="margin:0; font-size:14px;" id="notif-profile-label">Activer les alertes</h4><p style="margin:0; font-size:12px; opacity:0.7">Sois le premier averti des offres flash</p></div>
+            <i class="fa-solid fa-chevron-right" style="opacity:0.3"></i>
+        </div>
+
+        <div onclick="document.getElementById('install-help').style.display='flex'" style="margin-top:10px; background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:12px;">
             <div style="background:#e3f2fd; color:#2196f3; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-download"></i></div>
             <div style="flex:1"><h4 style="margin:0; font-size:14px;">Installer l'application</h4><p style="margin:0; font-size:12px; opacity:0.7">Ajoute Vichy'U sur ton écran d'accueil</p></div>
             <i class="fa-solid fa-chevron-right" style="opacity:0.3"></i>
@@ -1744,7 +1750,7 @@ function go(p, el) {
     if (p === 'agenda')  document.getElementById('agenda-page').style.display = 'block';
     if (p === 'partner') document.getElementById('partner-page').style.display = 'block';
     if (p === 'map')   { document.getElementById('map-page').style.display = 'block'; setTimeout(() => { initMap(); displayMarkers(); }, 200); }
-    if (p === 'profile') { document.getElementById('profile-page').style.display = 'flex'; refreshSavingsUI(); }
+    if (p === 'profile') { document.getElementById('profile-page').style.display = 'flex'; refreshSavingsUI(); updateNotifProfileBtn(); }
     if (p === 'rewards') { document.getElementById('rewards-page').style.display = 'flex'; document.getElementById('rewards-page').style.flexDirection = 'column'; refreshRewardsUI(); }
     window.scrollTo({ top: 0, behavior: 'instant' });
     currentPage = p;
@@ -2271,6 +2277,42 @@ function upImg(e, type) {
 
 function zoomID(s) { const src=document.getElementById('id-img').src; if(s&&src){document.getElementById('zImg').src=src;document.getElementById('zoom-overlay').style.display='flex';}else{document.getElementById('zoom-overlay').style.display='none';} }
 function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
+
+async function enableNotifFromProfile() {
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        showToast('Notifications non supportées sur ce navigateur');
+        return;
+    }
+    const reg = await navigator.serviceWorker.ready;
+    const existing = await reg.pushManager.getSubscription();
+    if (existing) { showToast('Notifications déjà activées ✅'); return; }
+
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') { showToast('Permission refusée ❌'); return; }
+
+    await subscribeToPush();
+    showToast('Notifications activées ✅');
+    updateNotifProfileBtn();
+}
+
+async function updateNotifProfileBtn() {
+    const btn = document.getElementById('notif-profile-btn');
+    const label = document.getElementById('notif-profile-label');
+    if (!btn || !label) return;
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        btn.style.opacity = '0.4';
+        label.textContent = 'Notifications non supportées';
+        return;
+    }
+    try {
+        const reg = await navigator.serviceWorker.ready;
+        const existing = await reg.pushManager.getSubscription();
+        if (existing || Notification.permission === 'granted') {
+            label.textContent = '✅ Alertes activées';
+            btn.style.cursor = 'default';
+        }
+    } catch(_) {}
+}
 function shareApp() { if(navigator.share) navigator.share({title:"Vichy'U",url:window.location.href}).then(()=>{ localStorage.setItem('has_shared','1'); updateLevelUI(); }).catch(()=>{}); }
 function rep() { window.location.href='mailto:contact@vichyu.fr'; }
 function signalerEvenement() {
