@@ -112,8 +112,16 @@
 
         /* ─── ÉVÉNEMENTS ─── */
         .event-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .event-card.boosted { border: 2px solid #f9ca24; background: linear-gradient(135deg, rgba(249,202,36,0.05), var(--card-bg)); }
+        .event-card.spotlight { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); border: none; color: white; margin-bottom: 16px; }
+        .event-card.spotlight .event-info h4 { color: white; }
+        .event-card.spotlight .event-info p { color: rgba(255,255,255,0.75); }
         .event-date { background: var(--primary); color: white; min-width: 55px; height: 55px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; line-height: 1; }
+        .event-card.spotlight .event-date { background: rgba(255,255,255,0.2); }
         .event-date span { font-size: 10px; text-transform: uppercase; font-weight: 400; }
+        .event-plan-badge { font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+        .event-plan-badge.boosted { background: #f9ca24; color: #2d3436; }
+        .event-plan-badge.spotlight { background: rgba(255,255,255,0.25); color: white; }
         .event-info h4 { margin: 0; font-size: 14px; }
 
         /* ─── NAV ─── */
@@ -507,6 +515,31 @@
                 </ul>
                 <button class="plan-cta prem" onclick="contactPartner('Premium')">Choisir cette formule →</button>
             </div>
+        </div>
+
+        <!-- MISE EN AVANT ÉVÉNEMENTS -->
+        <div style="background:var(--card-bg); border:1px solid var(--border); border-radius:20px; padding:20px; margin-bottom:20px;">
+            <h3 style="margin:0 0 6px; font-size:16px; font-weight:800;">📅 Mettre en avant un événement</h3>
+            <p style="margin:0 0 16px; font-size:13px; color:var(--text-light);">Tu organises un événement ? Donne-lui plus de visibilité dans l'agenda étudiant.</p>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+                <div style="background:var(--bg); border-radius:14px; padding:14px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:13px; font-weight:800;">⭐ Mis en avant</div>
+                        <div style="font-size:11px; color:var(--text-light); margin-top:2px;">Card dorée + priorité dans la liste</div>
+                    </div>
+                    <div style="font-size:16px; font-weight:900; color:var(--primary);">9€</div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(108,92,231,0.1),rgba(162,155,254,0.1)); border:1px solid #a29bfe; border-radius:14px; padding:14px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:13px; font-weight:800;">🌟 Événement Sponsorisé</div>
+                        <div style="font-size:11px; color:var(--text-light); margin-top:2px;">1ère position + card premium violette</div>
+                    </div>
+                    <div style="font-size:16px; font-weight:900; color:var(--primary);">19€</div>
+                </div>
+            </div>
+            <button onclick="contactPartner('Événement')" style="width:100%; padding:14px; background:linear-gradient(135deg,#f9ca24,#f0932b); color:white; border:none; border-radius:14px; font-size:14px; font-weight:800; cursor:pointer;">
+                Booster mon événement →
+            </button>
         </div>
 
         <!-- Accès dashboard -->
@@ -1154,12 +1187,32 @@ function renderEvents(events) {
         list.innerHTML = '<p style="text-align:center; color:var(--text-light); padding:30px;">Aucun événement à venir pour le moment 📭</p>';
         return;
     }
-    list.innerHTML = upcoming.map(e => `
-        <div class="event-card" onclick="openEvent('${escQ(e.title)}','📍 ${escQ(e.place)}','${escQ(e.desc)}','${e.day}','${e.month}','${e.time}')">
+
+    // Tri : spotlight en premier, puis boosted, puis normal
+    const sorted = [
+        ...upcoming.filter(e => e.plan === 'spotlight'),
+        ...upcoming.filter(e => e.plan === 'boosted'),
+        ...upcoming.filter(e => !e.plan)
+    ];
+
+    list.innerHTML = sorted.map(e => {
+        const isSpotlight = e.plan === 'spotlight';
+        const isBoosted = e.plan === 'boosted';
+        const badge = isSpotlight
+            ? '<span class="event-plan-badge spotlight">⭐ ÉVÉNEMENT SPONSORISÉ</span>'
+            : isBoosted
+            ? '<span class="event-plan-badge boosted">⭐ MIS EN AVANT</span>'
+            : '';
+        return `
+        <div class="event-card ${e.plan || ''}" onclick="openEvent('${escQ(e.title)}','📍 ${escQ(e.place)}','${escQ(e.desc)}','${e.day}','${e.month}','${e.time}')">
             <div class="event-date">${e.day}<span>${e.month}</span></div>
-            <div class="event-info"><h4>${e.title}</h4><p>${e.time} - ${e.place}</p></div>
-        </div>
-    `).join('');
+            <div class="event-info">
+                <h4>${e.title}</h4>
+                <p>${e.time} - ${e.place}</p>
+                ${badge}
+            </div>
+        </div>`;
+    }).join('');
 }
 
 function escQ(str) { return str ? str.replace(/'/g, "\\'") : ''; }

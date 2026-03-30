@@ -215,7 +215,8 @@
       "title": "Vide-grenier Étudiant",
       "time": "09h00",
       "place": "Parvis du Pôle Lardy",
-      "desc": "Grande brocante étudiante ! Vends ou chine des affaires à petits prix. Inscription gratuite pour tenir un stand."
+      "desc": "Grande brocante étudiante ! Vends ou chine des affaires à petits prix. Inscription gratuite pour tenir un stand.",
+      "plan": "spotlight"
     },
     {
       "id": "tournoi-fifa",
@@ -224,7 +225,8 @@
       "title": "Tournoi FIFA 25",
       "time": "18h00",
       "place": "BDE Vichy",
-      "desc": "Tournoi FIFA ouvert à tous les étudiants. 1ère place : bon plan offert ! Inscription sur place 30min avant."
+      "desc": "Tournoi FIFA ouvert à tous les étudiants. 1ère place : bon plan offert ! Inscription sur place 30min avant.",
+      "plan": "boosted"
     },
     {
       "id": "clean-vichy",
