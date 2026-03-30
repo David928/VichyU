@@ -1051,17 +1051,25 @@ function expiryMessage(expiryDate) {
 function renderDeals(deals) {
     const favs = JSON.parse(localStorage.getItem('f')) || [];
     const list = document.getElementById('deals-list');
-    // Un deal "expiré" avec partner=true repasse en gratuit (visible mais sans style partenaire)
-    const allDeals = deals.map(d => {
-        if (d.partner && expiryStatus(d.expiryDate) === 'expired') {
-            return { ...d, partner: false, plan: null }; // rétrogradé (offre limitée expirée)
-        }
-        if (d.partner && d.partnerUntil && new Date() > new Date(d.partnerUntil)) {
-            return { ...d, partner: false, plan: null }; // rétrogradé (contrat partenaire terminé, invisible pour les étudiants)
-        }
-        return d;
-    });
-    const active = allDeals; // on garde tout, expiré ou non
+    const now = new Date();
+    const allDeals = deals
+        .filter(d => {
+            // startDate : deal invisible jusqu'à la date de début
+            if (d.startDate && now < new Date(d.startDate)) return false;
+            return true;
+        })
+        .map(d => {
+            // expiryDate : offre limitée expirée → repasse en classique
+            if (d.partner && expiryStatus(d.expiryDate) === 'expired') {
+                return { ...d, partner: false, plan: null };
+            }
+            // partnerUntil : contrat terminé → repasse en classique (invisible pour les étudiants)
+            if (d.partner && d.partnerUntil && now > new Date(d.partnerUntil)) {
+                return { ...d, partner: false, plan: null };
+            }
+            return d;
+        });
+    const active = allDeals;
     const partners = active.filter(d => d.partner);
     const regular = active.filter(d => !d.partner);
 
