@@ -633,11 +633,9 @@
             <div style="flex:1"><h4 style="margin:0; font-size:14px;">Installer l'application</h4><p style="margin:0; font-size:12px; opacity:0.7">Ajoute Vichy'U sur ton écran d'accueil</p></div>
             <i class="fa-solid fa-chevron-right" style="opacity:0.3"></i>
         </div>
-        <button style="background:var(--primary); color:white; border:none; padding:18px; border-radius:20px; font-weight:800; width:100%; margin-top:20px; cursor:pointer;" onclick="shareApp()">PARTAGER L'APPLI</button>
-        <button onclick="openAdmin()" style="background:transparent; border:none; color:var(--text-light); font-size:11px; opacity:0.3; margin-top:12px; cursor:pointer; width:100%;">⚙️ Admin</button>
 
         <!-- BOUTON PARTENAIRES -->
-        <div onclick="go('partner', null)" style="margin-top:15px; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); padding:18px 20px; border-radius:20px; display:flex; align-items:center; gap:14px; cursor:pointer;">
+        <div onclick="go('partner', null)" style="margin-top:10px; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); padding:18px 20px; border-radius:20px; display:flex; align-items:center; gap:14px; cursor:pointer;">
             <div style="background:rgba(108,92,231,0.3); width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px;">💎</div>
             <div style="flex:1;">
                 <h4 style="margin:0; font-size:14px; font-weight:800; color:white;">Devenir Partenaire</h4>
@@ -645,6 +643,13 @@
             </div>
             <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,0.4);"></i>
         </div>
+
+        <div onclick="shareApp()" style="margin-top:10px; background:var(--card-bg); padding:15px; border-radius:20px; border:1px solid var(--border); cursor:pointer; display:flex; align-items:center; gap:12px;">
+            <div style="background:#e8f5e9; color:#43a047; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-share-nodes"></i></div>
+            <div style="flex:1"><h4 style="margin:0; font-size:14px;">Partager l'application</h4><p style="margin:0; font-size:12px; opacity:0.7">Fais découvrir Vichy'U à tes amis</p></div>
+            <i class="fa-solid fa-chevron-right" style="opacity:0.3"></i>
+        </div>
+        <button onclick="openAdmin()" style="background:transparent; border:none; color:var(--text-light); font-size:11px; opacity:0.3; margin-top:12px; cursor:pointer; width:100%;">⚙️ Admin</button>
 
         <div style="width:100%; margin-top:15px; background:var(--card-bg); border-radius:20px; border:1px solid var(--border); overflow:hidden;">
             <div style="background:linear-gradient(135deg, #4954ec, #a29bfe); padding:20px; text-align:center;">
@@ -2370,6 +2375,19 @@ async function enableNotifFromProfile() {
         if (!('serviceWorker' in navigator)) { showToast('Service Worker non supporté ❌'); return; }
         if (!('PushManager' in window)) { showToast('Push non supporté ❌'); return; }
 
+        const reg = await navigator.serviceWorker.ready;
+        const existing = await reg.pushManager.getSubscription();
+
+        // Si déjà abonné → proposer de désactiver
+        if (existing) {
+            if (confirm('Les alertes sont activées. Veux-tu les désactiver ?')) {
+                await existing.unsubscribe();
+                showToast('Alertes désactivées');
+                updateNotifProfileBtn();
+            }
+            return;
+        }
+
         if (Notification.permission === 'denied') {
             showToast('Notifications bloquées — autorise-les dans les réglages du navigateur');
             return;
@@ -2377,10 +2395,6 @@ async function enableNotifFromProfile() {
 
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') { showToast('Permission refusée ❌'); return; }
-
-        const reg = await navigator.serviceWorker.ready;
-        const existing = await reg.pushManager.getSubscription();
-        if (existing) { showToast('Notifications déjà activées ✅'); updateNotifProfileBtn(); return; }
 
         await subscribeToPush();
         showToast('Notifications activées ✅');
@@ -2402,9 +2416,12 @@ async function updateNotifProfileBtn() {
     try {
         const reg = await navigator.serviceWorker.ready;
         const existing = await reg.pushManager.getSubscription();
-        if (existing || Notification.permission === 'granted') {
-            label.textContent = '✅ Alertes activées';
-            btn.style.cursor = 'default';
+        if (existing) {
+            label.textContent = '✅ Alertes activées — appuie pour désactiver';
+            btn.style.cursor = 'pointer';
+        } else {
+            label.textContent = 'Activer les alertes';
+            btn.style.cursor = 'pointer';
         }
     } catch(_) {}
 }
