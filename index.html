@@ -2484,7 +2484,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ENABLE_WELCOME_POPUP && !sessionStorage.getItem('pop')) {
         setTimeout(() => {
             // Rotation équitable : chaque partenaire Premium s'affiche à tour de rôle
-            const premiumDeals = appData.deals.filter(d => d.partner && d.plan === 'premium');
+            const now = new Date();
+            const premiumDeals = appData.deals.filter(d => d.partner && d.plan === 'premium' && (!d.startDate || now >= new Date(d.startDate)) && (!d.partnerUntil || now <= new Date(d.partnerUntil)));
             if (premiumDeals.length === 0) return;
             const lastIdx = parseInt(localStorage.getItem('popup_last_idx') || '-1');
             const nextIdx = (lastIdx + 1) % premiumDeals.length;
