@@ -2279,20 +2279,29 @@ function zoomID(s) { const src=document.getElementById('id-img').src; if(s&&src)
 function sv() { localStorage.setItem('u_f', document.getElementById('fn').value); }
 
 async function enableNotifFromProfile() {
-    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-        showToast('Notifications non supportées sur ce navigateur');
-        return;
+    try {
+        if (!('Notification' in window)) { showToast('Notifications non supportées ❌'); return; }
+        if (!('serviceWorker' in navigator)) { showToast('Service Worker non supporté ❌'); return; }
+        if (!('PushManager' in window)) { showToast('Push non supporté ❌'); return; }
+
+        if (Notification.permission === 'denied') {
+            showToast('Notifications bloquées — autorise-les dans les réglages du navigateur');
+            return;
+        }
+
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') { showToast('Permission refusée ❌'); return; }
+
+        const reg = await navigator.serviceWorker.ready;
+        const existing = await reg.pushManager.getSubscription();
+        if (existing) { showToast('Notifications déjà activées ✅'); updateNotifProfileBtn(); return; }
+
+        await subscribeToPush();
+        showToast('Notifications activées ✅');
+        updateNotifProfileBtn();
+    } catch(e) {
+        showToast('Erreur : ' + e.message);
     }
-    const reg = await navigator.serviceWorker.ready;
-    const existing = await reg.pushManager.getSubscription();
-    if (existing) { showToast('Notifications déjà activées ✅'); return; }
-
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') { showToast('Permission refusée ❌'); return; }
-
-    await subscribeToPush();
-    showToast('Notifications activées ✅');
-    updateNotifProfileBtn();
 }
 
 async function updateNotifProfileBtn() {
