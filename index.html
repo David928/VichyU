@@ -1002,7 +1002,12 @@ async function loadData() {
         );
         const dbFlash = await flashRes.json();
         if (Array.isArray(dbFlash) && dbFlash.length > 0) {
-            appData.flash = [...(appData.flash || []), ...dbFlash];
+            // Normaliser end_time → endTime pour compatibilité avec renderFlash
+            const normalized = dbFlash.map(f => {
+                const deal = (appData.deals || []).find(d => d.id === f.deal_id);
+                return { ...f, endTime: f.end_time, lat: deal?.lat, lng: deal?.lng };
+            });
+            appData.flash = [...(appData.flash || []), ...normalized];
         }
     } catch(e) {}
 
