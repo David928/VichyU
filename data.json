@@ -74,6 +74,23 @@
       "desc": "Sur présentation de l'application. Pour l'achat de deux tacos (M, L ou XL), le troisième de taille identique est offert !"
     },
     {
+      "id": "elancia",
+      "title": "Elancia",
+      "emoji": "🏋️",
+      "offer": "Abonnement à 39,90€/mois.",
+      "lat": 46.1483,
+      "lng": 3.4303,
+      "savings": 10.0,
+      "savingsDisplay": "Économise 10.00€/mois",
+      "cat": "sport",
+      "desc": "La salle de sport premium de Cusset, à deux pas de Vichy. Cardio, musculation, cours collectifs et coaching personnalisé avec un coach diplômé d'État. Accès illimité 7j/7 de 6h à 23h. Abonnement à 39,90€/mois au lieu de 49,90€ sur présentation de ton justificatif étudiant.",
+      "addedDate": "2026-03-31",
+      "startDate": "2026-03-31",
+      "expiryDate": "2026-04-30",
+      "partner": true,
+      "plan": "premium"
+    }
+    {
       "id": "cinema",
       "title": "CGR Vichy",
       "emoji": "🍿",
