@@ -1512,24 +1512,36 @@ async function sendAdminNotif() {
     btn.textContent = '⏳ Envoi en cours...';
     btn.disabled = true;
 
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, body, url: '/', password: adminPassword })
-    });
-    const data = await res.json();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, body, url: '/', password: adminPassword }),
+            signal: controller.signal
+        });
+        clearTimeout(timeout);
+        const data = await res.json();
 
-    btn.textContent = 'Envoyer à tous 🚀';
-    btn.disabled = false;
+        btn.textContent = 'Envoyer à tous 🚀';
+        btn.disabled = false;
 
-    if (res.ok) {
-        result.style.color = '#00b894';
-        result.textContent = `✅ Envoyé à ${data.sent} étudiant${data.sent > 1 ? 's' : ''} !`;
-        document.getElementById('notif-title').value = '';
-        document.getElementById('notif-body').value = '';
-    } else {
+        if (res.ok) {
+            result.style.color = '#00b894';
+            result.textContent = `✅ Envoyé à ${data.sent} étudiant${data.sent > 1 ? 's' : ''} !`;
+            document.getElementById('notif-title').value = '';
+            document.getElementById('notif-body').value = '';
+        } else {
+            result.style.color = '#ff4757';
+            result.textContent = 'Erreur lors de l\'envoi ❌';
+        }
+    } catch(e) {
+        clearTimeout(timeout);
+        btn.textContent = 'Envoyer à tous 🚀';
+        btn.disabled = false;
         result.style.color = '#ff4757';
-        result.textContent = 'Erreur lors de l\'envoi ❌';
+        result.textContent = e.name === 'AbortError' ? 'Timeout — réessaie ❌' : 'Erreur réseau ❌';
     }
 }
 
