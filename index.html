@@ -837,6 +837,38 @@
             <div id="dash-reviews-list"></div>
         </div>
 
+        <!-- Section offres flash partenaire -->
+        <div id="dash-flash-section" style="display:none; margin-top:16px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+                <h4 style="margin:0; font-size:15px; font-weight:800;">⚡ Offres Flash</h4>
+                <span id="dash-flash-counter" style="font-size:12px; color:var(--text-light); font-weight:700;"></span>
+            </div>
+            <div style="background:var(--bg); border-radius:16px; padding:16px; margin-bottom:12px;">
+                <input type="text" id="flash-offer-text" placeholder="Ex: Session à 7€ au lieu de 12€ — ce soir !" maxlength="60"
+                    style="width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; font-size:13px; background:var(--card-bg); color:var(--text); outline:none; box-sizing:border-box; margin-bottom:8px;">
+                <textarea id="flash-offer-desc" placeholder="Description (optionnel)" maxlength="200" rows="2"
+                    style="width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; font-size:13px; background:var(--card-bg); color:var(--text); outline:none; box-sizing:border-box; resize:none; margin-bottom:8px;"></textarea>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <div style="flex:1;">
+                        <div style="font-size:11px; color:var(--text-light); font-weight:700; margin-bottom:4px;">Fin de l'offre (max 24h)</div>
+                        <input type="datetime-local" id="flash-offer-end"
+                            style="width:100%; padding:10px; border:1px solid var(--border); border-radius:12px; font-size:13px; background:var(--card-bg); color:var(--text); outline:none; box-sizing:border-box;">
+                    </div>
+                    <div style="width:90px;">
+                        <div style="font-size:11px; color:var(--text-light); font-weight:700; margin-bottom:4px;">Économie (€)</div>
+                        <input type="number" id="flash-offer-savings" placeholder="5" min="0" max="99"
+                            style="width:100%; padding:10px; border:1px solid var(--border); border-radius:12px; font-size:13px; background:var(--card-bg); color:var(--text); outline:none; box-sizing:border-box;">
+                    </div>
+                </div>
+                <button onclick="submitFlashOffer()" id="flash-submit-btn"
+                    style="width:100%; padding:13px; background:linear-gradient(135deg,#ff6b35,#f9ca24); color:white; border:none; border-radius:12px; font-size:14px; font-weight:800; cursor:pointer;">
+                    ⚡ Lancer l'offre flash
+                </button>
+                <p id="flash-result" style="font-size:12px; text-align:center; margin:8px 0 0;"></p>
+            </div>
+            <div id="dash-flash-list"></div>
+        </div>
+
         <div class="dash-footer" id="dash-export-date"></div>
     </div>
 </div>
@@ -961,7 +993,20 @@ async function loadData() {
         return;
     }
 
-    // 3. Render — chaque section indépendante pour qu'une erreur n'en bloque pas une autre
+    // 3. Charger les offres flash depuis Supabase et les fusionner avec data.json
+    try {
+        const now = new Date().toISOString();
+        const flashRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/flash_offers?end_time=gt.${now}&select=*&order=end_time.asc`,
+            { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+        );
+        const dbFlash = await flashRes.json();
+        if (Array.isArray(dbFlash) && dbFlash.length > 0) {
+            appData.flash = [...(appData.flash || []), ...dbFlash];
+        }
+    } catch(e) {}
+
+    // 4. Render — chaque section indépendante pour qu'une erreur n'en bloque pas une autre
     try { renderDeals(Array.isArray(appData.deals) ? appData.deals : []); } catch(e) { console.error('[renderDeals]', e); }
     try { renderBanners(Array.isArray(appData.banners) ? appData.banners : []); } catch(e) { console.error('[renderBanners]', e); }
     try { renderEvents(Array.isArray(appData.events) ? appData.events : []); } catch(e) { console.error('[renderEvents]', e); }
@@ -1520,7 +1565,112 @@ async function openDashboard() {
             </div>
         `).join('');
     }
+
+    // Section offres flash (premium et visible uniquement)
+    const flashSection = document.getElementById('dash-flash-section');
+    if (deal.plan === 'premium' || deal.plan === 'visible') {
+        flashSection.style.display = 'block';
+        window._dashDeal = deal;
+        // Bornes datetime : min = +30min, max = +24h
+        const minEnd = new Date(); minEnd.setMinutes(minEnd.getMinutes() + 30);
+        const maxEnd = new Date(); maxEnd.setHours(maxEnd.getHours() + 24);
+        const toLocal = d => new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0,16);
+        document.getElementById('flash-offer-end').min = toLocal(minEnd);
+        document.getElementById('flash-offer-end').max = toLocal(maxEnd);
+        await loadDashFlash(deal);
+    } else {
+        flashSection.style.display = 'none';
+    }
 }
+
+async function loadDashFlash(deal) {
+    const maxPerMonth = deal.plan === 'premium' ? 3 : 1;
+    const startOfMonth = new Date(); startOfMonth.setDate(1); startOfMonth.setHours(0,0,0,0);
+
+    const countRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/flash_offers?deal_id=eq.${deal.id}&created_at=gte.${startOfMonth.toISOString()}&select=id`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const countData = await countRes.json();
+    const used = Array.isArray(countData) ? countData.length : 0;
+    const remaining = maxPerMonth - used;
+
+    document.getElementById('dash-flash-counter').textContent = `${used}/${maxPerMonth} ce mois`;
+    const btn = document.getElementById('flash-submit-btn');
+    if (remaining <= 0) {
+        btn.disabled = true; btn.style.opacity = '0.5';
+        btn.textContent = 'Quota mensuel atteint';
+    } else {
+        btn.disabled = false; btn.style.opacity = '1';
+        btn.textContent = '⚡ Lancer l\'offre flash';
+    }
+
+    const now = new Date().toISOString();
+    const activeRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/flash_offers?deal_id=eq.${deal.id}&end_time=gt.${now}&select=*&order=end_time.asc`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const activeFlash = await activeRes.json();
+    const listEl = document.getElementById('dash-flash-list');
+    if (!Array.isArray(activeFlash) || activeFlash.length === 0) {
+        listEl.innerHTML = '<p style="font-size:12px;color:var(--text-light);text-align:center;padding:4px 0;">Aucune offre flash active</p>';
+    } else {
+        listEl.innerHTML = activeFlash.map(f => `
+            <div style="background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(249,202,36,0.08)); border:1px solid rgba(255,107,53,0.25); border-radius:14px; padding:12px; margin-bottom:8px;">
+                <div style="font-size:13px; font-weight:800;">⚡ ${f.offer}</div>
+                <div style="font-size:11px; color:var(--text-light); margin-top:3px;">Expire le ${new Date(f.end_time).toLocaleDateString('fr-FR', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+            </div>
+        `).join('');
+    }
+}
+
+async function submitFlashOffer() {
+    const deal = window._dashDeal;
+    if (!deal) return;
+    const offer = document.getElementById('flash-offer-text').value.trim();
+    const desc = document.getElementById('flash-offer-desc').value.trim();
+    const endTime = document.getElementById('flash-offer-end').value;
+    const savings = parseFloat(document.getElementById('flash-offer-savings').value) || 0;
+
+    if (!offer) { showToast('Saisis le texte de l\'offre ❌'); return; }
+    if (!endTime) { showToast('Choisis une heure de fin ❌'); return; }
+    const end = new Date(endTime);
+    const diffH = (end - new Date()) / 3600000;
+    if (diffH <= 0) { showToast('L\'heure de fin doit être dans le futur ❌'); return; }
+    if (diffH > 24) { showToast('Durée maximum 24h ❌'); return; }
+
+    const btn = document.getElementById('flash-submit-btn');
+    const result = document.getElementById('flash-result');
+    btn.disabled = true; btn.textContent = '⏳ En cours...';
+
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/flash_offers`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+                deal_id: deal.id, title: deal.title, emoji: deal.emoji,
+                offer, desc: desc || offer, end_time: end.toISOString(), savings
+            })
+        });
+        if (res.ok) {
+            result.style.color = '#00b894';
+            result.textContent = '✅ Offre flash lancée !';
+            document.getElementById('flash-offer-text').value = '';
+            document.getElementById('flash-offer-desc').value = '';
+            document.getElementById('flash-offer-end').value = '';
+            document.getElementById('flash-offer-savings').value = '';
+            await loadDashFlash(deal);
+        } else {
+            throw new Error();
+        }
+    } catch(e) {
+        result.style.color = '#ff4757';
+        result.textContent = 'Erreur lors de la création ❌';
+        btn.disabled = false; btn.textContent = '⚡ Lancer l\'offre flash';
+    }
 
 function closeDashboard() { document.getElementById('dashboard-overlay').style.display = 'none'; }
 
