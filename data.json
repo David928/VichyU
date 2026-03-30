@@ -54,7 +54,8 @@
       "addedDate": "2025-03-01",
       "desc": "Un parcours d'obstacles épique pour tester ton agilité ! Profite de 8€ au lieu de 12€ sur présentation de la carte étudiant.",
       "plan": "premium",
-      "partner": true
+      "partner": true,
+      "partnerUntil": "2026-09-01"
     },
     {
       "id": "otacos",
@@ -85,7 +86,8 @@
       "addedDate": "2025-03-01",
       "desc": "Tarif préférentiel pour tous les étudiants de Vichy. Valable tous les jours, sur tous les films (hors majoration 3D).",
       "partner": true,
-      "plan": "premium"
+      "plan": "premium",
+      "partnerUntil": "2026-09-01"
     },
     {
       "id": "columbus",
@@ -113,7 +115,8 @@
       "addedDate": "2026-03-15",
       "desc": "Vertical Limit, l'unique salle d'escalade Clip'n Climb de l'Allier en Auvergne.",
       "partner": true,
-      "plan": "premium"
+      "plan": "premium",
+      "partnerUntil": "2026-09-01"
     },
     {
       "id": "arcabloc",
