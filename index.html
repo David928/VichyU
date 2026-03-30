@@ -1618,6 +1618,13 @@ async function obRequestNotif() {
     setTimeout(() => obGoTo(4), 800);
 }
 
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
+
 async function subscribeToPush() {
     try {
         const reg = await navigator.serviceWorker.ready;
@@ -1626,7 +1633,7 @@ async function subscribeToPush() {
 
         const sub = await reg.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: 'BDCXY_ouFRdd43l7A5ZdEP7xYWIXI4_wTiDL2o8ajOSNC51CH2PkR8ypWU50WAerdv7kxj97XUybl_po-EIZ_Uk'
+            applicationServerKey: urlBase64ToUint8Array('BDCXY_ouFRdd43l7A5ZdEP7xYWIXI4_wTiDL2o8ajOSNC51CH2PkR8ypWU50WAerdv7kxj97XUybl_po-EIZ_Uk')
         });
         const subJson = sub.toJSON();
         const userId = getUserId();
