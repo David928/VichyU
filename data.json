@@ -88,7 +88,7 @@
       "startDate": "2026-03-31",
       "expiryDate": "2026-04-30",
       "partner": true,
-      "plan": "premium"
+      "plan": "premium",
     }
     {
       "id": "cinema",
