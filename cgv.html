@@ -244,7 +244,7 @@
 
     <div class="update-badge">
         <i class="fa-regular fa-calendar"></i>
-        Mise à jour : juillet 2025
+        Mise à jour : avril 2026
     </div>
 
     <!-- OBJET -->
@@ -360,7 +360,7 @@
             <div class="section-icon"><i class="fa-solid fa-xmark-circle"></i></div>
             <h2>Résiliation des abonnements</h2>
         </div>
-        <p>Les abonnements sont sans engagement minimum. Le partenaire peut résilier à tout moment par email à <a href="/cdn-cgi/l/email-protection#a5c6cacbd1c4c6d1e5d3ccc6cddcd08bc3d7" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="284b47465c494b5c685e414b40515d064e5a">[email&#160;protected]</span></a>.</p>
+        <p>Les abonnements sont sans engagement minimum. Le partenaire peut résilier à tout moment par email à <span id="resil-email"></span>.</p>
         <p>La résiliation prend effet à la fin de la période mensuelle en cours (aucun remboursement au prorata de la période déjà entamée).</p>
         <div class="alert-box">
             <p>Le droit de rétractation de 14 jours prévu par le Code de la consommation <strong>ne s'applique pas</strong> aux prestations conclues entre professionnels (B2B) dans le cadre de leur activité commerciale.</p>
@@ -399,4 +399,22 @@
             <h2>Droit applicable & juridiction</h2>
         </div>
         <p>Les présentes CGV sont soumises au droit français. En cas de litige non résolu amiablement, les tribunaux compétents du ressort de Cusset (03) seront seuls compétents.</p>
-        <p style="margin-top:10px;">Pour tout différend, contacter en premier lieu : <a href="/cdn-cgi/l/email-protection#6d0e0203190c0e192d1b040e051418430b1f" st
+        <p style="margin-top:10px;">Tout litige fera l'objet d'une tentative de résolution amiable avant toute action judiciaire. Contact : <span id="cgv-email"></span></p>
+    </div>
+
+</div>
+
+<footer>
+    © 2025 Vichy'U — Gonzales David · SIRET 512 196 759
+</footer>
+
+<script>
+    const e = 'contact' + '@' + 'vichyu.fr';
+    const el = document.getElementById('cgv-email');
+    if (el) el.innerHTML = '<a href="mailto:' + e + '" style="color:#5d5fef;">' + e + '</a>';
+    const er = document.getElementById('resil-email');
+    if (er) er.innerHTML = '<a href="mailto:' + e + '" style="color:#5d5fef;">' + e + '</a>';
+</script>
+
+</body>
+</html>
