@@ -207,7 +207,7 @@
             </div>
             <div class="info-item">
                 <span class="info-label">Contact</span>
-                <span class="info-value"><a href="mailto:contact@vichyu.fr">contact@vichyu.fr</a></span>
+                <span class="info-value" id="ml-contact"></span>
             </div>
         </div>
     </div>
@@ -263,7 +263,7 @@
             </div>
         </div>
         <p>Conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679), vous disposez d'un droit d'accès, de rectification et de suppression de vos données.</p>
-        <p style="margin-top:10px;">Pour toute demande, contactez : <a href="mailto:contact@vichyu.fr" style="color: var(--primary);">contact@vichyu.fr</a></p>
+        <p style="margin-top:10px;">Pour toute demande, contactez : <span id="ml-rgpd"></span></p>
         <p style="margin-top:10px;">Le responsable du traitement est : Gonzales David, 180 avenue des Graviers, 03200 Abrest.</p>
     </div>
 
@@ -283,4 +283,23 @@
             <div class="section-icon"><i class="fa-solid fa-gavel"></i></div>
             <h2>Droit applicable & juridiction</h2>
         </div>
-        <p>Les présentes mentions légales sont régies par le droit fra
+        <p>Les présentes mentions légales sont régies par le droit français. En cas de litige, et à défaut de résolution amiable, les tribunaux compétents du ressort de Cusset (03) seront seuls compétents.</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2025 Vichy'U — Gonzales David · SIRET 512 196 759
+</footer>
+
+<script>
+    const e = 'contact' + '@' + 'vichyu.fr';
+    const link = '<a href="mailto:' + e + '" style="color:#5d5fef;">' + e + '</a>';
+    const c = document.getElementById('ml-contact');
+    if (c) c.innerHTML = link;
+    const r = document.getElementById('ml-rgpd');
+    if (r) r.innerHTML = link;
+</script>
+
+</body>
+</html>
