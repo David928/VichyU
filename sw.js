@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vichyu-v13';
+const CACHE_NAME = 'vichyu-v14';
 const ASSETS = [
   '/',
   '/index.html',
