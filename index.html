@@ -2041,13 +2041,12 @@ function openDetails(t, e, off, lat, lng, s, d, expiry, dealId) {
         expiryEl.style.display = 'none';
     }
 
-    document.getElementById('mGo').onclick = () => {
+    document.getElementById('mGo').onclick = async () => {
         if (s > 0) { addSaving(s); launchSavingEffect(s); }
-        if (dealId) incrementClick(dealId);
-        // Attendre la fin de l'animation avant d'ouvrir Maps
+        if (dealId) await incrementClick(dealId);
         setTimeout(() => {
             window.location.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-        }, s > 0 ? 900 : 0);
+        }, s > 0 ? 900 : 300);
     };
 
     // Compteur de vues
