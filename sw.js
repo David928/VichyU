@@ -1,7 +1,9 @@
-const CACHE_NAME = 'vichyu-v14';
+const CACHE_NAME = 'vichyu-v15';
 const ASSETS = [
   '/',
   '/index.html',
+  '/mentions.html',
+  '/cgv.html',
   '/data.json',
   '/logo.png',
   '/icon.png',
